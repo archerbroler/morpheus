@@ -90,11 +90,6 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 3389) {
 # from OUTSIDE -> ME
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 80) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:80 http ☆");
-    if search(DATA.data, "<title>Apache") {
-      msg("\n[morpheus] host:TaRONE   [ ♛ ]");
-      msg("[morpheus] | status: remote connection detected!");
-      msg("[morpheus] |_ info : Apache webserver detected ✔\n");
-    }
 }
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 443) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:443 https ☆");
@@ -194,11 +189,6 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 21) {
 # from OUTSIDE ->  ANDROID
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 80) {
   msg("[morpheus] host:TaRTWO   [ <- ]  port:80 http ☆");
-    if search(DATA.data, "<title>Apache") {
-      msg("\n[morpheus] host:TaRONE   [ ♛ ]");
-      msg("[morpheus] | status: remote connection detected!");
-      msg("[morpheus] |_ info : Apache webserver detected ✔\n");
-    }
 }
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 443) {
   msg("[morpheus] host:TaRTWO   [ <- ]  port:443 https ☆");
