@@ -210,8 +210,8 @@ if [ "$?" -eq "0" ]; then
 
 # get user input to build filter
 echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
-rhost=$(zenity --title="☠ ARP poison [RHOST] ☠" --text "example: $IP\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
-gateway=$(zenity --title="☠ ARP poison [GATEWAY] ☠" --text "example: 192.168.1.254\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
+rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "example: $IP\n\n[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "example: 192.168.1.254\n\n[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
 
   echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
   cp $IPATH/filters/firewall.eft $IPATH/filters/firewall.bk > /dev/null 2>&1
@@ -219,8 +219,8 @@ gateway=$(zenity --title="☠ ARP poison [GATEWAY] ☠" --text "example: 192.168
 
   echo ${BlueF}[☠]${white} Edit firewall.eft '(filter)'${RedF}!${Reset};
   sleep 1
-  fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose first target to filter." --entry --width 300) > /dev/null 2>&1
-  fil_two=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose last target to filter." --entry --width 300) > /dev/null 2>&1
+fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose first target to filter through morpheus." --entry --width 300) > /dev/null 2>&1
+  fil_two=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose last target to filter through morpheus." --entry --width 300) > /dev/null 2>&1
   # replace values in template.filter with sed bash command
   cd $IPATH/filters
   sed -i "s|TaRONE|$fil_one|g" firewall.eft
@@ -299,8 +299,8 @@ if [ "$?" -eq "0" ]; then
 
 # get user input to build filter
 echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
-rhost=$(zenity --title="☠ ARP poison Enter RHOST ☠" --text "example: $IP\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
-gateway=$(zenity --title="☠ ARP poison Enter GATEWAY ☠" --text "example: 192.168.1.254\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
+rhost=$(zenity --title="☠ Enter RHOST ☠" --text "example: $IP\n\n[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
+gateway=$(zenity --title="☠ ARP poison Enter GATEWAY ☠" --text "example: 192.168.1.254\n\n[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
 
   echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
   cp $IPATH/filters/template.eft $IPATH/filters/template.bk > /dev/null 2>&1

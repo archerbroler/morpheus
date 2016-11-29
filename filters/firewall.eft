@@ -78,25 +78,25 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 443) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:443 https ☆");
 }
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 445) {
-  msg("[morpheus] host:TaRONE   [ <- ]  port:445 netbios ☠");
-  msg("[morpheus] |_status: remote connections to this are suspicious!");
+  msg("\n[morpheus] host:TaRONE   [ <- ]  port:445 netbios ☠");
+  msg("[morpheus] | status: remote connection detected!");
+  msg("[morpheus] |_ advice: nmap -sV -PN --script vuln TaRONE\n");
     # log credentials into morpheus/logs/smb_creds
     if (regex(DECODED.data, ".*password.*")) {
       log(DECODED.data, "./smb_creds");
-      msg("\n[morpheus] host:TaRONE   [ ♛ ]");
+      msg("[morpheus] host:TaRONE   [ ♛ ]");
       msg("[morpheus] | status: login detected!");
       msg("[morpheus] |_ credentials found, logfile stored ✔\n");
     }
 }
 if (ip.dst == 'TaRONE' && ip.proto == UDP && udp.src == 137) {
-  msg("[morpheus] host:TaRONE   [ -> ]  port:137 netbios ☠");
+  msg("[morpheus] host:TaRONE   [ <- ]  port:137 netbios ☠");
 }
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 139) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:139 netbios ☠");
 }
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 23) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:23 telnet ☠");
-  msg("[morpheus] |_status: remote connections to this are suspicious!");
     # log credentials into morpheus/logs/telnet_creds
     if (regex(DECODED.data, ".*password.*")) {
       log(DECODED.data, "./telnet_creds");
@@ -130,8 +130,14 @@ if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 80) {
 if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 443) {
   msg("[morpheus] host:TaRTWO   [ -> ]  port:443 https ☆");
 }
+if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 445) {
+  msg("[morpheus] host:TaRTWO   [ -> ]  port:445 netbios ☠");
+}
 if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 139) {
   msg("[morpheus] host:TaRTWO   [ -> ]  port:139 netbios ☆");
+}
+if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 22) {
+  msg("[morpheus] host:TaRTWO   [ -> ]  port:22 ssh ☠");
 }
 
 
@@ -143,8 +149,14 @@ if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 80) {
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 443) {
   msg("[morpheus] host:TaRTWO   [ <- ]  port:443 https ☆");
 }
+if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 445) {
+  msg("[morpheus] host:TaRTWO   [ <- ]  port:445 smb ☆");
+}
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 139) {
   msg("[morpheus] host:TaRTWO   [ <- ]  port:139 netbios ☆");
+}
+if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 22) {
+  msg("[morpheus] host:TaRTWO   [ <- ]  port:22 ssh ☆");
 }
 
 
@@ -166,13 +178,6 @@ if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 445) {
 }
 if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 139) {
   msg("[morpheus] host:192.168.1.253  [ -> ]  port:139 netbios ☠");
-        # log credentials into morpheus/logs/smb_creds
-        if (regex(DECODED.data, ".*USER.*")) {
-         log(DECODED.data, "./smb_creds");
-         msg("\n[morpheus] host:TaRTWO   [ ♛ ]");
-         msg("[morpheus] | status: login detected!");
-         msg("[morpheus] |_ credentials found, logfile stored ✔\n");
-    }
 }
 if (ip.src == '192.168.1.253' && ip.proto == UDP && udp.dst == 53) {
   msg("[morpheus] host:192.168.1.253  [ -> ]  port:53 domain ☆");
@@ -230,6 +235,9 @@ if (ip.src == '192.168.1.254' && ip.proto == TCP && tcp.dst == 23) {
 if (ip.src == '192.168.1.254' && ip.proto == TCP && tcp.dst == 22) {
   msg("[morpheus] host:192.168.1.254  [ -> ]  port:22 ssh ☆");
 }
+if (ip.src == '192.168.1.254' && ip.proto == TCP && tcp.dst == 21) {
+  msg("[morpheus] host:192.168.1.254  [ -> ]  port:21 ftp ☆");
+}
 
 
 ##
@@ -241,37 +249,47 @@ if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 443) {
   msg("[morpheus] host:192.168.1.254  [ <- ]  port:443 https ☆");
 }
 if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 445) {
-  msg("[morpheus] host:192.168.1.254  [ <- ]  port:445 netbios ☠");
-  msg("[morpheus] |_status: remote connections to this are suspicious!");
+  msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:445 netbios ☠");
+  msg("[morpheus] | status: remote connection detected!");
+  msg("[morpheus] |_ advice: nmap -sV -PN --script vuln 192.168.1.254\n");
     # log credentials into morpheus/logs/smb_creds
     if (regex(DECODED.data, ".*password.*")) {
       log(DECODED.data, "./smb_creds");
-      msg("\n[morpheus] host:TaRTWO   [ ♛ ]");
+      msg("[morpheus] host:192.168.1.254   [ ♛ ]");
       msg("[morpheus] | status: login detected!");
       msg("[morpheus] |_ credentials found, logfile stored ✔\n");
     }
 }
 if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 139) {
-  msg("[morpheus] host:192.168.1.254  [ <- ]  port:139 netbios ☠");
+  msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:139 netbios ☠");
+  msg("[morpheus] | status: remote connection detected!");
+  msg("[morpheus] |_ advice: nmap -sV -PN --script vuln 192.168.1.254\n");
 }
 if (ip.dst == '192.168.1.254' && ip.proto == UDP && udp.src == 53) {
   msg("[morpheus] host:192.168.1.254  [ <- ]  port:53 domain ☆");
 }
 if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 23) {
-  msg("[morpheus] host:192.168.1.254  [ <- ]  port:23 telnet ☠");
-  msg("[morpheus] |_status: remote connections to this are suspicious!");
+  msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:23 telnet ☠");
+  msg("[morpheus] | status: remote connection detected!");
+  msg("[morpheus] |_ advice: nmap -sV -PN --script vuln 192.168.1.254\n");
     # log credentials into morpheus/logs/telnet_creds
     if (regex(DECODED.data, ".*password.*")) {
       log(DECODED.data, "./telnet_creds");
-      msg("\n[morpheus] host:TaRTWO   [ ♛ ]");
+      msg("[morpheus] host:192.168.1.254   [ ♛ ]");
       msg("[morpheus] | status: login detected!");
       msg("[morpheus] |_ credentials found, logfile stored ✔\n");
     }
 }
 if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 22) {
-  msg("[morpheus] host:192.168.1.254  [ <- ]  port:22 ssh ☆");
+  msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:22 ssh ☆");
+  msg("[morpheus] | status: remote connection detected!");
+  msg("[morpheus] |_ advice: nmap -sV -PN --script vuln 192.168.1.254\n");
 }
-
+if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 21) {
+  msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:21 ftp ☠");
+  msg("[morpheus] | status: remote connection detected!");
+  msg("[morpheus] |_ advice: nmap -sV -PN --script vuln 192.168.1.254\n");
+}
 
 
 
