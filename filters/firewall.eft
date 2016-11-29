@@ -67,6 +67,19 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 22) {
          msg("[morpheus] |_ credentials found, logfile stored...\n");
     }
 }
+# reporting venom/metasploit rat agents...
+if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 666) {
+  msg("\n[morpheus] host:TaRONE   [ ♛ ]  port:666 rat ☠");
+  msg("[morpheus] | status: possible rat agent found!");
+  msg("[morpheus] |  info : venom tool uses this port in is rat agents.");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 666 --script vuln TaRONE\n");
+}
+if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 4444) {
+  msg("\n[morpheus] host:TaRONE   [ ♛ ]  port:4444 rat ☠");
+  msg("[morpheus] | status: possible rat agent found!");
+  msg("[morpheus] |  info : metasploit uses this port in is rat agents.");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 4444 --script vuln TaRONE\n");
+}
 
 
 ##
@@ -80,7 +93,8 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 443) {
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 445) {
   msg("\n[morpheus] host:TaRONE   [ <- ]  port:445 netbios ☠");
   msg("[morpheus] | status: remote connection detected!");
-  msg("[morpheus] |_ advice: nmap -sV -PN --script vuln TaRONE\n");
+  msg("[morpheus] |  info : port used by netapi vulnerability.");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 445 --script vuln TaRONE\n");
     # log credentials into morpheus/logs/smb_creds
     if (regex(DECODED.data, ".*password.*")) {
       log(DECODED.data, "./smb_creds");
@@ -107,6 +121,19 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 23) {
 }
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 22) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:22 ssh ☆");
+}
+# reporting venom default rat port...
+if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 666) {
+  msg("\n[morpheus] host:TaRONE   [ ♛ ]  port:666 rat ☠");
+  msg("[morpheus] | status: possible rat agent found!");
+  msg("[morpheus] |  info : venom tool uses this port in is rat agents.");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 666 --script vuln TaRONE\n");
+}
+if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 4444) {
+  msg("\n[morpheus] host:TaRONE   [ ♛ ]  port:4444 rat ☠");
+  msg("[morpheus] | status: possible rat agent found!");
+  msg("[morpheus] |  info : metasploit uses this port in is rat agents.");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 4444 --script vuln TaRONE\n");
 }
 
 
@@ -251,7 +278,8 @@ if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 443) {
 if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 445) {
   msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:445 netbios ☠");
   msg("[morpheus] | status: remote connection detected!");
-  msg("[morpheus] |_ advice: nmap -sV -PN --script vuln 192.168.1.254\n");
+  msg("[morpheus] |  info : port used by netapi vulnerability.");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 445 --script vuln 192.168.1.254\n");
     # log credentials into morpheus/logs/smb_creds
     if (regex(DECODED.data, ".*password.*")) {
       log(DECODED.data, "./smb_creds");
@@ -263,7 +291,7 @@ if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 445) {
 if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 139) {
   msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:139 netbios ☠");
   msg("[morpheus] | status: remote connection detected!");
-  msg("[morpheus] |_ advice: nmap -sV -PN --script vuln 192.168.1.254\n");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 139 --script vuln 192.168.1.254\n");
 }
 if (ip.dst == '192.168.1.254' && ip.proto == UDP && udp.src == 53) {
   msg("[morpheus] host:192.168.1.254  [ <- ]  port:53 domain ☆");
@@ -271,7 +299,7 @@ if (ip.dst == '192.168.1.254' && ip.proto == UDP && udp.src == 53) {
 if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 23) {
   msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:23 telnet ☠");
   msg("[morpheus] | status: remote connection detected!");
-  msg("[morpheus] |_ advice: nmap -sV -PN --script vuln 192.168.1.254\n");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 23 --script vuln 192.168.1.254\n");
     # log credentials into morpheus/logs/telnet_creds
     if (regex(DECODED.data, ".*password.*")) {
       log(DECODED.data, "./telnet_creds");
@@ -283,12 +311,12 @@ if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 23) {
 if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 22) {
   msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:22 ssh ☆");
   msg("[morpheus] | status: remote connection detected!");
-  msg("[morpheus] |_ advice: nmap -sV -PN --script vuln 192.168.1.254\n");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 22 --script vuln 192.168.1.254\n");
 }
 if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 21) {
   msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:21 ftp ☠");
   msg("[morpheus] | status: remote connection detected!");
-  msg("[morpheus] |_ advice: nmap -sV -PN --script vuln 192.168.1.254\n");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 21--script vuln 192.168.1.254\n");
 }
 
 
