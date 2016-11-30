@@ -200,8 +200,9 @@ fi
 sh_stage9 () {
 cat << !
 ---
--- This module acts like a firewall reporting/blocking tcp/udp connections
--- made by ip addr inside local lan (manual) and auto compile/lunch filter.
+-- This module acts like a firewall reporting/blocking/capture_credentials
+-- from selected targets (rhost) tcp/udp connections made inside local lan
+-- under mitm attacks, morpheus will auto compile/lunch filters.
 ---
 !
 sleep 2
@@ -288,7 +289,7 @@ fi
 sh_stageW () {
 cat << !
 ---
--- This module allow you to write your own filter.
+-- This module allow you to write your own filter from scratch.
 -- morpheus presents a 'template' previous build for you to write
 -- your own command logic and automate the compiling/lunch of the filter.
 ---
@@ -301,7 +302,7 @@ if [ "$?" -eq "0" ]; then
 # get user input to build filter
 echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
 rhost=$(zenity --title="☠ Enter RHOST ☠" --text "[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
-gateway=$(zenity --title="☠ ARP poison Enter GATEWAY ☠" --text "[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
 
   echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
   cp $IPATH/filters/template.eft $IPATH/filters/template.bk > /dev/null 2>&1
@@ -380,7 +381,7 @@ if [ "$?" -eq "0" ]; then
   IP_RANGE=`ip route | grep "kernel" | awk {'print $1'}`
   echo ${BlueF}[☠]${white} Ip Range${RedF}:${white}$IP_RANGE${RedF}! ${Reset};
   nmap -sn $IP_RANGE | grep "for" | awk {'print $3,$5,$6'} > $IPATH/logs/lan.mop
-  cat $IPATH/logs/lan.mop | zenity --title "☠ LOCAL LAN REPORT ☠" --text-info --width 450 --height 400 > /dev/null 2>&1
+  cat $IPATH/logs/lan.mop | zenity --title "☠ LOCAL LAN REPORT ☠" --text-info --width 410 --height 400 > /dev/null 2>&1
 
     # cleanup
     echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
@@ -439,15 +440,15 @@ cat << !
     +--------+----------------------------------------------------------+
     | OPTION |                DESCRIPTION(filters)                      |
     +--------+----------------------------------------------------------+
-    |   1    -  Drop all packets from source ip addr (packet drop)      |
+    |   1    -  Drop all packets from source ip addr (packet drop,kill) |
     |   2    -  Redirect browser traffic to another ip addr (domain)    |
     |   3    -  Replace website images (img src=http://another.png)     |
-    |   4    -  Replace website text   (replace: a,e,i by f,h,k)        |
+    |   4    -  Replace website text   (replace: world by world)        |
     |   5    -  https downgrade attack (replace: https y http)          |
     |   6    -  ssh downgrade attack   (replace: SSH-1.99 by SSH-1.51)  |
     |   7    -  Rotate website document 180 degrees (CSS3 injection)    |
-    |   8    -  Inject backdoor into html request (executable.exe)      |
-    |   9    -  firewall.eft report/block tcp/udp connections (manual)  |
+    |   8    -  Inject backdoor into <head>html request (exec.exe)      |
+    |   9    -  firewall report/block/capture_creds tcp/udp             |
     |                                                                   |
     |   W    -  Write your own filter and use morpheus to inject it     |
     |   S    -  Scan local lan for live hosts (Nmap framework)          |
