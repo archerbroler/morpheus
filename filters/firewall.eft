@@ -83,15 +83,38 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 4444) {
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 3389) {
   msg("[morpheus] host:TaRONE   [ -> ]  port:3389 rdp ☆");
 }
+#
+# IF YOU DONT WANT MANY DISPLAY OUTPUTS IN TERMINAL (very verbose)
+# THEN YOU NEED TO COMMENT (#) THIS ENTIRE FUNTION...
+# IF YOU WANT TO BE PARANOIC, THEN LEAVE THIS FUNTION AS IT IS...
+#
 if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
   msg("[morpheus] host:TaRONE   [ -> ]  port:53 dns ☆");
   if (search(DATA.data, "facebook")) {
     msg("\n[morpheus] host:TaRONE   [ ♛ ]");
     msg("[morpheus] | status: possible facebook dns query found!");
+    msg("[morpheus] |  rank : normal connection from source!");
     msg("[morpheus] |  info : 65 64 67 65 2d 63 68 61 74 08 66 61 63 65 62 6f 6f 6b 03 6f 6d");
     msg("[morpheus] |_ decoded: edge-chat.facebook.com\n");
+  }else{
+  if (search(DATA.data, "arpa")) {
+    msg("\n[morpheus] host:TaRONE   [ ♛ ]");
+    msg("[morpheus] | status: possible arpa dns query found!");
+    msg("[morpheus] |  rank : normal connection? OR arp poison query?");
+    msg("[morpheus] |  info : 64 64 62 04 61 72 70 61");
+    msg("[morpheus] |_ decoded: ddr.arpa\n");
+  }else{
+  if (search(DATA.data, "google")) {
+    msg("\n[morpheus] host:TaRONE   [ ♛ ]");
+    msg("[morpheus] | status: possible google dns query found!");
+    msg("[morpheus] |  rank : normal connection from source!");
+    msg("[morpheus] |  info : 77 77 77 06 67 6f 6f 67 6c 65 02 70 74");
+    msg("[morpheus] |_ decoded: www.google.com\n");
+  }
+  }
   }
 }
+# END OF PORT:53 QUERY FUNTION 
 
 
 
