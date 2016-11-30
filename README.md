@@ -29,7 +29,9 @@
     3º - attacker modifies webpage response (contents)
     4º - modified packet its forward back to target host
 
-    "morpheus automates the above described steps in a easy-automated-user-friendly-interface"
+    morpheus ships with some pre-configurated filters but it will allow users
+    to improve them (morpheus scripting console) when lunching the attack, in
+    the end of the attack morpheus will revert the filter to is default stage...
 
 
 # What can we acomplish by using filters?
@@ -81,10 +83,6 @@
     firewall [option 9] pre-configurated filter will capture credentials
     of the follow services: http,ftp,ssh,telnet (facebook uses https/ssl)
     and it will allow users to block connections tcp/udp from selected ip addr
-
-    morpheus ships with some pre-configurated filters but it will allow users
-    to improve them (morpheus scripting console) when lunching the attack, in
-    the end of the attack morpheus will revert the filter to is default stage...
 
 ![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-option9.png)
 
