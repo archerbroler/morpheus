@@ -42,7 +42,7 @@
     replacing images in webpages, replace text in webpages, inject payloads using html <form> tag
     denial-of-service attacks (drop,kill packets from source), https/ssh downgrade attacks,
     redirect target browser traffic to another domain and gives you the ability to build
-    compile your filter from scratch and lunch it through morpheus framework.
+    compile your filter from scratch and lunch it through morpheus framework (option W).
 
     "filters can be extended using browser languages like: javascript,css,flash,etc"...
 
