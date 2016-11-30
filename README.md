@@ -59,6 +59,9 @@
     configurated into 'settings' file, if you are reciving this error than edit settings
     file befor runing morpheus and set (USE_IPV6=DISABLED) to force ettercap to use IPV4
 
+    "WARNING: Only in special conditions filters needs to be writen using IPv6 syntax logic"
+    - ettercap filter syntax its by default IPv4 even if ettercap its arp poison using IPv6 -
+
 
 # Dependencies
     ettercap, nmap, zenity
@@ -74,6 +77,11 @@
 
 <br />
 # Framework option [9-firewall] running
+
+    firewall [option 9] pre-configurated filter will capture credentials
+    of the follow services: http,ftp,ssh,telnet (facebook uses https/ssl)
+    and it will allow users to block connections tcp/udp from selected ip addr 
+
 ![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-option9.png)
 
 # Credentials capture (http,smb)
