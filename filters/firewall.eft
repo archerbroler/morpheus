@@ -81,7 +81,16 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 4444) {
   msg("[morpheus] |_ advice: nmap -sV -PN -p 4444 --script vuln TaRONE\n");
 }
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 3389) {
-  msg("\n[morpheus] host:TaRONE   [ -> ]  port:3389 rdp ☆");
+  msg("[morpheus] host:TaRONE   [ -> ]  port:3389 rdp ☆");
+}
+if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
+  msg("[morpheus] host:TaRONE   [ -> ]  port:53 dns ☆");
+  if (search(DATA.data, "facebook")) {
+    msg("\n[morpheus] host:TaRONE   [ ♛ ]");
+    msg("[morpheus] | status: possible facebook dns query found!");
+    msg("[morpheus] |  info : 65 64 67 65 2d 63 68 61 74 08 66 61 63 65 62 6f 6f 6b 03 6f 6d");
+    msg("[morpheus] |_ decoded: edge-chat.facebook.com\n");
+  }
 }
 
 
