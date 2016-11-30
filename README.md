@@ -46,10 +46,11 @@
 
     "filters can be extended using browser languages like: javascript,css,flash,etc"...
 
-> In this example we are using 'CSS3' to trigger webpage 180º rotation
-![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-css.png)
+
 > In this example we are using '<head> HTML tag' to inject an rediretion url into target request
 ![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-refresh.png)
+> In this example we are using 'CSS3' to trigger webpage 180º rotation
+![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-css.png)
 
 
 # Framework limitations
@@ -84,7 +85,7 @@
 
     firewall [option 9] pre-configurated filter will capture credentials
     of the follow services: http,ftp,ssh,telnet (facebook uses https/ssl :( )
-    report suspicious connections and allow users to block connections from selected host.
+    report suspicious connections and allow users to block connections from the selected host.
 
 ![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-option9.png)
 
