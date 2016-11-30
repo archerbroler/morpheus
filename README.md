@@ -27,13 +27,14 @@
     1º - attacker -> arp poison local lan (mitm)
     2º - target   -> requests webpage from network (wan)
     3º - attacker -> modifies webpage response (contents)
-    4º - attacker -> modified packet its forward back to target
+    4º - attacker -> modified packet its forward back to target host
 
     morpheus ships with some pre-configurated filters but it will allow users
     to improve them when lunching the attack (morpheus scripting console).
     In the end of the attack morpheus will revert the filter back to is default
     stage, this will allow users to improve filters at running time without
     the fear of messing with filter command syntax and spoil the filter...
+
     "Perfect for scripting fans to safely test new concepts"...
 
 
