@@ -32,6 +32,8 @@
     morpheus ships with some pre-configurated filters but it will allow users
     to improve them (morpheus scripting console) when lunching the attack, in
     the end of the attack morpheus will revert the filter to is default stage...
+    This will allow users to improve filters at run time without the fear of
+    messing with filter command syntax and spoil the filter...
 
 
 # What can we acomplish by using filters?
