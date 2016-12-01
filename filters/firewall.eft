@@ -263,11 +263,18 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 3389) {
 }
 if (ip.dst == 'TaRONE' && ip.proto == UDP && udp.src == 53) {
   msg("\n[morpheus] host:TaRONE   [ <- ]  port:53 dns ☠");
-    if (search(DATA.data, "CNAME")) {
+    if (search(DATA.data, "bbjj.househot.com")) {
       msg("[morpheus] | status: remote connection found!");
-      msg("[morpheus] |  info : possible Bot infected host comm.");
-      msg("[morpheus] |  hex  : 30 78 30 30 30 36 43 4e 41 4d 45");
-      msg("[morpheus] |_ decoded: 0x0006 CNAME\n");
+      msg("[morpheus] |  info : possible Mocbot IRC Bot (MS06-040)");
+      msg("[morpheus] |  hex  : 62 62 6a 6a 2e 68 6f 75 73 65 68 6f 74 2e 63 6f 6d");
+      msg("[morpheus] |_ decoded: bbjj.househot.com\n");
+    }else{
+    if (search(DATA.data, "ypgw.wallloan.com")) {
+      msg("[morpheus] | status: remote connection found!");
+      msg("[morpheus] |  info : possible Mocbot IRC Bot (MS06-040)");
+      msg("[morpheus] |  hex  : 79 70 67 77 2e 77 61 6c 6c 6c 6f 61 6e 2e 63 6f 6d");
+      msg("[morpheus] |_ decoded: ypgw.wallloan.com\n");
+    }
     }
 }
 
