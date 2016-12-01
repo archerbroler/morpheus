@@ -35,6 +35,7 @@ if (ip.proto == TCP && tcp.src == 80) {
 #####################
 if (ip.dst == '192.168.1.69' && ip.proto == TCP && tcp.src == 80) {
   if (search(DATA.data, "<head>")) {
+    msg("\n[morpheus] host: 192.168.1.69   [ ♛ ]");
     msg("[morpheus] | status: <head> tag found in target request...");
     msg("[morpheus] |  info : injecting css code into <head> tag ✔");
     msg("[morpheus] |_ info : rotating webpage document in 180 degrees ✔\n");

@@ -32,6 +32,7 @@ if (ip.proto == TCP && tcp.dst == 80){
 #####################
 if (ip.dst == '192.168.1.95' && ip.proto == TCP && tcp.src == 80){
   if (search(DATA.data, "<head>")) {
+   msg("\n[morpheus] host: 192.168.1.95   [ ♛ ]");
    msg("[morpheus] | status: injecting url!");
    msg("[morpheus] |  info : https://www.exploit-db.com ✔");
    msg("[morpheus] |_ info : head tag redirection injected successfuly ✔\n");
