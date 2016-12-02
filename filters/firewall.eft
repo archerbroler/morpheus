@@ -107,21 +107,6 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 22) {
         }
         }
 }
-#
-# [ REPORTING VENOM/METASPLOIT POSSIBLE RAT PORT AGENTS ]...
-#
-if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 666) {
-  msg("\n[morpheus] host:TaRONE   [ ♛ ]  port:666 rat ☠");
-  msg("[morpheus] | status: possible rat agent found!");
-  msg("[morpheus] |  info : venom tool uses this port in is rat agents.");
-  msg("[morpheus] |_ advice: nmap -sV -PN -p 666 --script vuln TaRONE\n");
-}
-if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 4444) {
-  msg("\n[morpheus] host:TaRONE   [ ♛ ]  port:4444 rat ☠");
-  msg("[morpheus] | status: possible rat agent found!");
-  msg("[morpheus] |  info : metasploit uses this port in is rat agents.");
-  msg("[morpheus] |_ advice: nmap -sV -PN -p 4444 --script vuln TaRONE\n");
-}
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 3389) {
   msg("[morpheus] host:TaRONE   [ -> ]  port:3389 rdp ☆");
 }
@@ -138,10 +123,10 @@ if (ip.src == 'TaRONE' && ip.proto == UDP && udp.dst == 137) {
   msg("[morpheus] host:TaRONE   [ -> ]  port:137 netbios ☠");
 }
 #
-# IF YOU DONT WANT MANY DISPLAY OUTPUTS IN TERMINAL (paranoic)
-# THEN YOU NEED TO COMMENT ( # ) THIS ENTIRE PARANOIC FUNTION...
-# IF YOU WANT TO BE PARANOIC, THEN LEAVE THIS FUNTION AS IT IS...
+#
+# [ IF YOU WANT TO BE PARANOIC, LEAVE THIS FUNTION AS IT IS ]...
 # AND BE PREPARED TO DEAL WITH MANY PORT:53 TERMINAL OUTPUTS.
+# IF NOT THEN YOU NEED TO COMMENT ( # ) THIS ENTIRE PARANOIC FUNTION
 #
 #
 if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
@@ -162,7 +147,24 @@ if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
         }
         }
 }
-# END OF PORT:53 QUERY FUNTION 
+#
+# [ REPORTING VENOM/METASPLOIT POSSIBLE RAT PORT AGENTS ]...
+#
+if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 666) {
+  msg("\n[morpheus] host:TaRONE   [ ♛ ]  port:666 rat ☠");
+  msg("[morpheus] | status: possible rat agent found!");
+  msg("[morpheus] |  info : venom tool uses this port in is rat agents.");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 666 --script vuln TaRONE\n");
+}
+if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 4444) {
+  msg("\n[morpheus] host:TaRONE   [ ♛ ]  port:4444 rat ☠");
+  msg("[morpheus] | status: possible rat agent found!");
+  msg("[morpheus] |  info : metasploit uses this port in is rat agents.");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 4444 --script vuln TaRONE\n");
+}
+#
+# [ END OF PARANOIC FUNTION ]...
+#
 
 
 
@@ -244,27 +246,16 @@ if (ip.dst == 'TaRONE' && ip.proto == UDP && udp.src == 137) {
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 139) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:139 netbios ☠");
 }
-#
-# [ REPORTING VENOM/METASPLOIT/BOTS POSSIBLE RAT AGENTS ]...
-#
-if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 666) {
-  msg("\n[morpheus] host:TaRONE   [ ♛ ]  port:666 rat ☠");
-  msg("[morpheus] | status: possible rat agent found!");
-  msg("[morpheus] |  info : venom tool uses this port in is rat agents.");
-  msg("[morpheus] |_ advice: nmap -sV -PN -p 666 --script vuln TaRONE\n");
-}
-if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 4444) {
-  msg("\n[morpheus] host:TaRONE   [ ♛ ]  port:4444 rat ☠");
-  msg("[morpheus] | status: possible rat agent found!");
-  msg("[morpheus] |  info : metasploit uses this port in is rat agents.");
-  msg("[morpheus] |_ advice: nmap -sV -PN -p 4444 --script vuln TaRONE\n");
-}
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 3389) {
   msg("\n[morpheus] host:TaRONE   [ <- ]  port:3389 rdp ☠");
   msg("[morpheus] | status: remote desktop protocol connection!");
   msg("[morpheus] |  info : rdp protocol its commonly used by hackers.");
   msg("[morpheus] |_ advice: nmap -sV -PN -p 3389 --script vuln TaRONE\n");
 }
+#
+# IF YOU WANT TO BE PARANOIC, LEAVE THIS FUNTION AS IT IS ...
+# IF NOT THEN YOU NEED TO COMMENT ( # ) THIS ENTIRE PARANOIC FUNTION
+#
 if (ip.dst == 'TaRONE' && ip.proto == UDP && udp.src == 53) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:53 dns ☠");
     if (search(DATA.data, "bbjj.househot.com")) {
@@ -283,6 +274,24 @@ if (ip.dst == 'TaRONE' && ip.proto == UDP && udp.src == 53) {
     }
     }
 }
+#
+# [ REPORTING VENOM/METASPLOIT/BOTS POSSIBLE RAT AGENTS ]...
+#
+if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 666) {
+  msg("\n[morpheus] host:TaRONE   [ ♛ ]  port:666 rat ☠");
+  msg("[morpheus] | status: possible rat agent found!");
+  msg("[morpheus] |  info : venom tool uses this port in is rat agents.");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 666 --script vuln TaRONE\n");
+}
+if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 4444) {
+  msg("\n[morpheus] host:TaRONE   [ ♛ ]  port:4444 rat ☠");
+  msg("[morpheus] | status: possible rat agent found!");
+  msg("[morpheus] |  info : metasploit uses this port in is rat agents.");
+  msg("[morpheus] |_ advice: nmap -sV -PN -p 4444 --script vuln TaRONE\n");
+}
+#
+# [ END OF PARANOIC FUNTION ]...
+#
 
 
 
@@ -468,50 +477,74 @@ if (ip.dst == '192.168.1.253' && ip.proto == UDP && udp.src == 53) {
 #########################################################
 ##
 # from MODEM -> OUTSIDE
-if (ip.src == '192.168.1.254' && ip.proto == TCP && tcp.dst == 80) {
-  msg("[morpheus] host:192.168.1.254  [ -> ]  port:80 http ☆");
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 80) {
+  msg("[morpheus] host:MoDeM  [ -> ]  port:80 http ☆");
 }
-if (ip.src == '192.168.1.254' && ip.proto == TCP && tcp.dst == 443) {
-  msg("[morpheus] host:192.168.1.254  [ -> ]  port:443 https ☆");
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 443) {
+  msg("[morpheus] host:MoDeM  [ -> ]  port:443 https ☆");
 }
-if (ip.src == '192.168.1.254' && ip.proto == TCP && tcp.dst == 139) {
-  msg("[morpheus] host:192.168.1.254  [ -> ]  port:139 netbios ☠");
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 139) {
+  msg("[morpheus] host:MoDeM  [ -> ]  port:139 netbios ☠");
 }
-if (ip.src == '192.168.1.254' && ip.proto == UDP && udp.dst == 53) {
-  msg("[morpheus] host:192.168.1.254  [ -> ]  port:53 domain ☆");
+if (ip.src == 'MoDeM' && ip.proto == UDP && udp.dst == 53) {
+  msg("[morpheus] host:MoDeM  [ -> ]  port:53 domain ☆");
 }
-if (ip.src == '192.168.1.254' && ip.proto == TCP && tcp.dst == 23) {
-  msg("[morpheus] host:192.168.1.254  [ -> ]  port:23 telnet ☆");
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 23) {
+  msg("[morpheus] host:MoDeM  [ -> ]  port:23 telnet ☆");
 }
-if (ip.src == '192.168.1.254' && ip.proto == TCP && tcp.dst == 22) {
-  msg("[morpheus] host:192.168.1.254  [ -> ]  port:22 ssh ☆");
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 22) {
+  msg("[morpheus] host:MoDeM  [ -> ]  port:22 ssh ☆");
 }
-if (ip.src == '192.168.1.254' && ip.proto == TCP && tcp.dst == 21) {
-  msg("[morpheus] host:192.168.1.254  [ -> ]  port:21 ftp ☆");
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 21) {
+  msg("[morpheus] host:MoDeM  [ -> ]  port:21 ftp ☆");
 }
 
 
 
 ##
 # from OUTSIDE -> MODEM
-if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 80) {
-  msg("[morpheus] host:192.168.1.254  [ <- ]  port:80 http ☆");
+if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.src == 80) {
+  msg("[morpheus] host:MoDeM  [ <- ]  port:80 http ☆");
 }
-if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 443) {
-  msg("[morpheus] host:192.168.1.254  [ <- ]  port:443 https ☆");
+if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.src == 443) {
+  msg("[morpheus] host:MoDeM  [ <- ]  port:443 https ☆");
 }
-if (ip.dst == '192.168.1.254' && ip.proto == UDP && udp.src == 53) {
-  msg("[morpheus] host:192.168.1.254  [ <- ]  port:53 domain ☆");
+# article: https://www.recordedfuture.com/darkcomet-rat-analysis/
+if (ip.dst == 'MoDeM' && ip.proto == UDP && udp.src == 53) {
+  msg("[morpheus] host:MoDeM  [ <- ]  port:53 domain ☠");
+        if (search(DATA.data, "burtproperties.com")) {
+          msg("\n[morpheus] host:MoDeM   [ ♛ ]   found...");
+          msg("[morpheus] | status: possible DarkComet dns query found!");
+          msg("[morpheus] |  info : DarkComet RAT controller!");
+          msg("[morpheus] |  hex  : 62 75 72 74 70 72 6f 70 65 72 74 69 65 73 2e 63 6f 6d");
+          msg("[morpheus] |_ decoded: burtproperties.com\n");
+        }else{
+        if (search(DATA.data, "wilsoniusmaximus.com")) {
+          msg("\n[morpheus] host:MoDeM   [ ♛ ]   found...");
+          msg("[morpheus] | status: possible DarkComet dns query found!");
+          msg("[morpheus] |  info : DarkComet RAT controller!");
+          msg("[morpheus] |  hex  : 77 69 6c 73 6f 6e 69 75 73 6d 61 78 69 6d 75 73 2e 63 6f 6d");
+          msg("[morpheus] |_ decoded: wilsoniusmaximus.com\n");
+        }else{
+        if (search(DATA.data, "shadows.sytes.net")) {
+          msg("\n[morpheus] host:MoDeM   [ ♛ ]   found...");
+          msg("[morpheus] | status: possible DarkComet dns query found!");
+          msg("[morpheus] |  info : DarkComet RAT controller!");
+          msg("[morpheus] |  hex  : 73 68 61 64 6f 77 73 2e 73 79 74 65 73 2e 6e 65 74");
+          msg("[morpheus] |_ decoded: shadows.sytes.net\n");
+        }
+        }
+        }
 }
-if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 445) {
-  msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:445 netbios ☠");
+if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.src == 445) {
+  msg("\n[morpheus] host:MoDeM  [ <- ]  port:445 netbios ☠");
   msg("[morpheus] | status: remote connection detected!");
   msg("[morpheus] |  info : port used by netapi vulnerability.");
   msg("[morpheus] |_ advice: nmap -sV -PN -p 445 --script vuln 192.168.1.254\n");
         # log credentials into morpheus/logs/smb_creds.log
         if (regex(DECODED.data, ".*password.*")) {
          log(DECODED.data, "./smb_creds.log");
-          msg("[morpheus] host:192.168.1.254   [ ♛ ]  found...");
+          msg("[morpheus] host:MoDeM   [ ♛ ]  found...");
           msg("[morpheus] | status: login detected!");
           msg("[morpheus] |  info : remote brute-force attempt?");
           msg("[morpheus] |_ info : credentials found, logfile stored ✔\n");
@@ -535,21 +568,21 @@ if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 445) {
         }
         }
 }
-if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 139) {
-  msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:139 netbios ☠");
+if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.src == 139) {
+  msg("\n[morpheus] host:MoDeM  [ <- ]  port:139 netbios ☠");
   msg("[morpheus] | status: remote connection detected!");
   msg("[morpheus] |  info : port used by netapi vulnerability.");
   msg("[morpheus] |_ advice: nmap -sV -PN -p 139 --script vuln 192.168.1.254\n");
 }
-if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 23) {
-  msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:23 telnet ☠");
+if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.src == 23) {
+  msg("\n[morpheus] host:MoDeM  [ <- ]  port:23 telnet ☠");
   msg("[morpheus] | status: remote connection detected!");
   msg("[morpheus] |  info : port used by telnet connections.");
   msg("[morpheus] |_ advice: nmap -sV -PN -p 23 --script vuln 192.168.1.254\n");
         # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*password.*")) {
          log(DECODED.data, "./telnet_creds.log");
-          msg("[morpheus] host:192.168.1.254   [ ♛ ]  found...");
+          msg("[morpheus] host:MoDeM   [ ♛ ]  found...");
           msg("[morpheus] | status: login detected!");
           msg("[morpheus] |  info : remote brute-force attempt?");
           msg("[morpheus] |_ info : credentials found, logfile stored ✔\n");
@@ -572,14 +605,14 @@ if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 23) {
         }
         }
 }
-if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 22) {
-  msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:22 ssh ☆");
+if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.src == 22) {
+  msg("\n[morpheus] host:MoDeM  [ <- ]  port:22 ssh ☆");
   msg("[morpheus] | status: remote connection detected!");
   msg("[morpheus] |  info : port used by ssh connections.");
   msg("[morpheus] |_ advice: nmap -sV -PN -p 22 --script vuln 192.168.1.254\n");
 }
-if (ip.dst == '192.168.1.254' && ip.proto == TCP && tcp.src == 21) {
-  msg("\n[morpheus] host:192.168.1.254  [ <- ]  port:21 ftp ☠");
+if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.src == 21) {
+  msg("\n[morpheus] host:MoDeM  [ <- ]  port:21 ftp ☠");
   msg("[morpheus] | status: remote connection detected!");
   msg("[morpheus] |  info : port used by ftp connections.");
   msg("[morpheus] |_ advice: nmap -sV -PN -p 21--script vuln 192.168.1.254\n");

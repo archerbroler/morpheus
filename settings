@@ -52,9 +52,10 @@ USE_IPV6=ACTIVE
 ### ETTERCAP INSTALL PATH
 # just change the next values to point to
 # your ettercap install folders.
------------------------------------
+-------------------------------------------
 ETTER_DNS=/etc/ettercap/etter.dns
 ETTER_CONF=/etc/ettercap/etter.conf
------------------------------------
+ETTER_FIEL=/usr/share/ettercap/etter.fields
+-------------------------------------------
 
 

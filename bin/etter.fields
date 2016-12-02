@@ -14,7 +14,6 @@
 #                                                                          # 
 #  This file contains the form fields recognized as user or password by    #
 #  the HTTP dissector. You can add your own fields in the right section    #
-#  /usr/share/ettercap/etter.fields                                        #
 #                                                                          #
 ############################################################################
 

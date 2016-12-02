@@ -1,13 +1,13 @@
-[![Version](https://img.shields.io/badge/MORPHEUS-1.5-brightgreen.svg?maxAge=259200)]()
+[![Version](https://img.shields.io/badge/MORPHEUS-1.6-brightgreen.svg?maxAge=259200)]()
 [![Stage](https://img.shields.io/badge/Release-developing-red.svg)]()
 [![Build](https://img.shields.io/badge/Supported_OS-linux-orange.svg)]()
 [![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)]()
 [![AUR](https://img.shields.io/aur/license/yaourt.svg)]()
 
 # Morpheus - automated ettercap TCP/IP Hijacking tool
-![morpheus v1.5-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-banner.png)
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-banner.png)
 
-    Version release : v1.5-Alpha
+    Version release : v1.6-Alpha
     Author : pedro ubuntu  [ r00t-3xp10it ]
     Distros Supported : Linux Ubuntu, Kali, Mint, Parrot OS
     Suspicious-Shell-Activity (SSA) RedTeam develop @2016
@@ -49,9 +49,9 @@
 
 
 > In this example we are using '<head> HTML tag' to inject an rediretion url into target request
-![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-refresh.png)
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-refresh.png)
 > In this example we are using 'CSS3' to trigger webpage 180º rotation
-![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-css.png)
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-css.png)
 
 
 # Framework limitations
@@ -60,7 +60,7 @@
     3º - target system sometimes needs to clear netcache for arp poison to be effective
 
 > incorrect number of token (///) in TARGET !!
-![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-error1.png)
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-error1.png)
 
     morpheus by default will run ettercap using IPv6 (USE_IPV6=ACTIVE) like its previous
     configurated into the 'settings' file, if you are reciving this error edit settings
@@ -88,13 +88,13 @@
     of the follow services: http,ftp,ssh,telnet (facebook uses https/ssl :( )
     report suspicious connections and allow users to block connections from the selected host.
 
-![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-option9.png)
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-option9.png)
 
-![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-creds5.png)
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-creds5.png)
 
-![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-creds2.png)
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-creds2.png)
 
-![morpheus v1.2-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-creds1.png)
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-creds1.png)
 
 <br />
 ---
