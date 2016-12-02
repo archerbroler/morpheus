@@ -550,32 +550,6 @@ fi
 
 
 
-# -----------------------------------
-# FIND PUBLIC IP ADDRESS GEO-LOCATION
-# -----------------------------------
-sh_stageG () {
-cat << !
----
--- This module reports ip-geolocation (public ips)
--- using https://db-ip.com website.
----
-!
-sleep 1
-# run module?
-rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 330) > /dev/null 2>&1
-if [ "$?" -eq "0" ]; then
-  echo ${BlueF}[☠]${white} Track ip-geolocation${RedF}! ${Reset};
-  sleep 2
-  # grab ip range + scan with nmap + zenity display results
-  rhost=$(zenity --title="☠ Enter PUBLIC IP ADDR ☠" --text "\nPublic ip address to geolocate?" --entry --width 250) > /dev/null 2>&1
-  xdg-open "https://db-ip.com/$rhost"
-
-else
-  echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
-  sleep 2
-fi
-}
-
 
 # easter egg: targets to test modules.
 sh_stageT () {
@@ -650,7 +624,6 @@ cat << !
     |                                                                   |
     |   W    -  Write your own filter            [ use morpheus tool  ] |
     |   S    -  Scan LAN for live hosts          [ use nmap framework ] |
-    |   G    -  Track ip geolocation             [ public ip's only   ] |
     |   E    -  Exit/close Morpheus              [ safelly close tasks] |
     ╚───────────────────────────────────────────────────────────────────╣
                                                        SSA-RedTeam©2016_⌋
@@ -669,8 +642,6 @@ W) sh_stageW ;;
 w) sh_stageW ;;
 S) sh_stageS ;;
 s) sh_stageS ;;
-G) sh_stageG ;;
-g) sh_stageG ;;
 -h) sh_help ;;
 help) sh_help ;;
 --help) sh_help ;;
