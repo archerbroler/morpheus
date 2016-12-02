@@ -10,17 +10,38 @@
 #                                                                          #
 ############################################################################
 
+
 ##
 #  This filter will drop (kill) any packet send
 #  to/from specified ip address (target ip addr)
 ##
 
 
+
 #
-# Filter packets from source
+# just to be sure that target system its talking to LAN?
+#
+if (ip.src == 'TaRgEt' || ip.dst == 'TaRgEt') {
+  if (ip.proto == TCP && tcp.src == 443 || tcp.dst == 443) {
+    msg("[morpheus] host:TaRgEt   [ <> ]  port:443(tcp) https ☆");
+  }else{
+  if (ip.proto == TCP && tcp.src == 80 || tcp.dst == 80) {
+    msg("[morpheus] host:TaRgEt   [ <> ]  port:80(tcp) http ☆");
+  }else{
+  if (ip.proto == UDP && udp.src == 53 || udp.dst == 53) {
+    msg("[morpheus] host:TaRgEt   [ <> ]  port:53(udp) domain ☆");
+  }
+  }
+  }
+}
+
+
+
+#
+# Filter (drop/kill) packets from source ip addr.
 #
 if (ip.src == 'TaRgEt') {
-  msg("[morpheus] host:TaRgEt   [ ⊶  ]  found...");
+  msg("\n[morpheus] host:TaRgEt   [ ⊶  ]  found...");
   msg("[morpheus] | status: block connection (src)!");
   msg("[morpheus] |  info : drop target tcp/udp packet ✔");
   msg("[morpheus] |_ info : kill target tcp/udp connection ✔\n");
@@ -29,10 +50,10 @@ if (ip.src == 'TaRgEt') {
 kill();
 }
 #
-# Filter packets from destination.
+# Filter (drop/kill) packets from destination ip addr.
 #
 if (ip.dst == 'TaRgEt') {
-  msg("[morpheus] host:TaRgEt   [ ⊶  ]  found...");
+  msg("\n[morpheus] host:TaRgEt   [ ⊶  ]  found...");
   msg("[morpheus] | status: block connection (dst)!");
   msg("[morpheus] |  info : drop target tcp/udp packet ✔");
   msg("[morpheus] |_ info : kill target tcp/udp connection ✔\n");
@@ -50,7 +71,7 @@ kill();
 ##
 # kill IPv6 connections
 # un-comment this funtion to filter any tcp/udp connections
-# made to OR from target ip addr (perform D0S againts ip addr)
+# made to OR from target ip addr (perform D0S againts ipv6 addr)
 #
 #if (eth.proto == IP6 && ipv6.src == '2001:db8::1' || ipv6.dst == '2001:db8::1') {
 # msg("[morpheus] host:2001:db8::1..   [ ⊶  ]  found...");
