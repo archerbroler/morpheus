@@ -9,7 +9,7 @@
 ###
 # Resize terminal windows size befor running the tool (gnome terminal)
 # Special thanks to h4x0r Milton@Barra for this little piece of heaven! :D
-resize -s 32 85 > /dev/null
+resize -s 31 85 > /dev/null
 # inicio
 
 
