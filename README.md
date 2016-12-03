@@ -72,9 +72,8 @@
 > correct ettercap configuration display (running as Admin with ssl disectores active)
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-sslBug3.png)
 
-    By default morpheus (at startup) will replace the original etter.conf/etter.dns
-    provided by ettercap 'to config ettercap framework privileges befor runing morpheus'
-    at framework exit morpheus will revert etter.conf/etter.dns to is original state.. 
+    By default morpheus (at startup) will replace the original etter.conf/etter.dns files
+    provided by ettercap, at framework exit morpheus will revert files to is original state.. 
 
 <br />
 
