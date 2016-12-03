@@ -66,10 +66,10 @@
     configurated into the 'settings' file, if you are reciving this error edit settings
     file befor runing morpheus and set (USE_IPV6=DISABLED) to force ettercap to use IPV4
 
-> morpheus needs ettercap to be executed with higth privilege to use ssl disectores.
+> morpheus needs ettercap to be executed with higth privileges to use ssl disectors.
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-sslBug.png)
 
-> correct ettercap configuration display (running as Admin with ssl disectores active)
+> correct ettercap configuration display (running as Admin with ssl disectors active)
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-sslBug3.png)
 
     By default morpheus (at startup) will replace the original etter.conf/etter.dns files
