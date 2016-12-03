@@ -66,8 +66,12 @@
     configurated into the 'settings' file, if you are reciving this error edit settings
     file befor runing morpheus and set (USE_IPV6=DISABLED) to force ettercap to use IPV4
 
-    "WARNING: Only in special conditions filters needs to be writen using IPv6 syntax logic"
-    - ettercap filter syntax its by default IPv4 even if ettercap its arp poison using IPv6 -
+> morpheus needs ettercap to be executed with higth privilege to use ssl disectores. 
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-sslBug.png)
+
+> correct ettercap configuration display.
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-sslBug3.png)
+
 
 
 # Dependencies
