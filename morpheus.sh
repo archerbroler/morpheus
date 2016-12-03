@@ -149,11 +149,8 @@ case $DiStR0 in
 clear
 
 # config internal framework settings
-echo ${BlueF}[☠]${white}[Configurating settings${RedF}:${Reset};
-echo ${BlueF}[☠]${white}[ ip addr ${GreenF}✔${white} ][ ip range ${GreenF}✔${white} ][ gateway ${GreenF}✔${white} ][ interface ${GreenF}✔${white} ]${Reset};
-sleep 1
-echo ${BlueF}[☠]${white}[ replace original etter.conf ${GreenF}✔${white} ][ completing tasks ${GreenF}✔${white} ]${Reset};
-ping -c 3 www.google.com | zenity --progress --pulsate --title "☠ MORPHEUS TCP/IP HIJACKING ☠" --text="Config internal framework settings..." --percentage=0 --auto-close --width 300 > /dev/null 2>&1
+echo ${BlueF}[☠]${white} Configurating settings${RedF}...${Reset};
+ping -c 4 www.google.com | zenity --progress --pulsate --title "☠ MORPHEUS TCP/IP HIJACKING ☠" --text="Config internal framework settings...\nip addr, ip range, gateway, interface, etter.conf" --percentage=0 --auto-close --width 300 > /dev/null 2>&1
 if [ -e $Econ ]; then
   cp $Econ /tmp/etter.conf > /dev/null 2>&1
   cp $IPATH/bin/etter.conf $Econ > /dev/null 2>&1
