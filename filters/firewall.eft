@@ -14,10 +14,12 @@
 
 ##
 #  This filter will act like a firewall reporting OR blocking connections
-#  inside Local Lan (selected targets) Reports suspicious tcp activity In
+#  inside Local Lan (selected targets), Reports suspicious tcp activity In
 #  the targets selected And also dumps to a logfile logins captured under
 #  mitm + filter execution In services like: http,ssh,smb,telnet,ftp...
+#  Repors the existence of bootnet connections And reports DHCP requests. 
 ##
+
 
 
 
@@ -127,6 +129,7 @@ if (ip.src == 'TaRONE' && ip.proto == UDP && udp.dst == 137) {
 # [ IF YOU WANT TO BE PARANOIC, LEAVE THIS FUNTION AS IT IS ]...
 # AND BE PREPARED TO DEAL WITH MANY PORT:53 TERMINAL OUTPUTS.
 # IF NOT THEN YOU NEED TO COMMENT ( # ) THIS ENTIRE PARANOIC FUNTION
+# ( ping -c 3 www.linux.org == arpa dns query :D )
 #
 #
 if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
@@ -148,7 +151,7 @@ if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
         }
 }
 #
-# [ REPORTING VENOM/METASPLOIT POSSIBLE RAT PORT AGENTS ]...
+# [ Reporting venom/metasploit possible rat ports ]...
 #
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 666) {
   msg("\n[morpheus] host:TaRONE   [ ⊶  ]  port:666 rat ☠");
@@ -165,6 +168,7 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 4444) {
 #
 # [ END OF PARANOIC FUNTION ]...
 #
+
 
 
 
@@ -275,7 +279,7 @@ if (ip.dst == 'TaRONE' && ip.proto == UDP && udp.src == 53) {
     }
 }
 #
-# [ REPORTING VENOM/METASPLOIT/BOTS POSSIBLE RAT AGENTS ]...
+# [ Reporting venom/metasploit/bots possible ports ]...
 #
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 666) {
   msg("\n[morpheus] host:TaRONE   [ ⊶  ]  port:666 rat ☠");
@@ -292,6 +296,7 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 4444) {
 #
 # [ END OF PARANOIC FUNTION ]...
 #
+
 
 
 
@@ -373,6 +378,7 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 21) {
 
 
 
+
 ##
 # from OUTSIDE ->  TARGET2
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 80) {
@@ -399,6 +405,7 @@ if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 23) {
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 21) {
   msg("[morpheus] host:TaRTWO   [ <- ]  port:21 ftp ☆");
 }
+
 
 
 
@@ -450,6 +457,7 @@ if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 139) {
 
 
 
+
 ##
 # from OUTSIDE -> GATEWAY
 if (ip.dst == '192.168.1.253' && ip.proto == TCP && tcp.src == 80) {
@@ -467,6 +475,7 @@ if (ip.dst == '192.168.1.253' && ip.proto == TCP && tcp.src == 139) {
 if (ip.dst == '192.168.1.253' && ip.proto == UDP && udp.src == 53) {
   msg("[morpheus] host:192.168.1.253  [ <- ]  port:53 domain ☆");
 }
+
 
 
 
@@ -498,6 +507,7 @@ if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 22) {
 if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 21) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:21 ftp ☆");
 }
+
 
 
 
@@ -617,6 +627,40 @@ if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.src == 21) {
   msg("[morpheus] |  info : port used by ftp connections.");
   msg("[morpheus] |_ advice: nmap -sV -PN -p 21--script vuln 192.168.1.254\n");
 }
+#
+# PARANOIC DISCOVER: what devices (smartphones) are anuncing is presence to modem.
+# Its writen to identify my phones, but it will report the connection of androids too.
+# This funtion may also help us identify ARP poison attacks (many requests)
+# 
+if (ip.src == '0.0.0.0' && ip.proto == UDP && udp.dst == 67) {
+  # DHCP: 192.168.1.95 respond to router (my is ip IS... my hostname IS...)
+  if (search(DATA.data, "android-7f926b4b94fd40c17")) {
+    msg("\n[morpheus] host:0.0.0.0        [ ⊶  ]  found...");
+    msg("[morpheus] | status: DHCP request TO modem!");
+    msg("[morpheus] |  port : 67/UDP(dst) bootp-DHCP ✔");
+    msg("[morpheus] |  info : android_pedr0 anunces is presence ✔");
+    msg("[morpheus] |_ name : android-7f926b4b94fd40c17\n");
+  }else{
+    # DHCP: 192.168.1.97 respond to router (my is ip IS... my hostname IS...)
+    if (search(DATA.data, "android-d3d4ee5705593d22")) {
+      msg("\n[morpheus] host:0.0.0.0        [ ⊶  ]  found...");
+      msg("[morpheus] | status: DHCP request TO modem!");
+      msg("[morpheus] |  port : 67/UDP(dst) bootp-DHCP ✔");
+      msg("[morpheus] |  info : android carlos anunces is presence ✔");
+      msg("[morpheus] |_ name : android-d3d4ee5705593d22\n");
+  }else{
+    # DHCP: ???.???.?? respond to router (my is ip IS... my hostname IS...)
+    if (search(DATA.data, "android")) {
+      msg("\n[morpheus] host:0.0.0.0        [ ⊶  ]  found...");
+      msg("[morpheus] | status: DHCP request TO modem!");
+      msg("[morpheus] |  port : 67/UDP(dst) bootp-DHCP ✔");
+      msg("[morpheus] |  info : android ??? anunces is presence ✔");
+      msg("[morpheus] |_ name : android-???\n");
+    }
+    }
+  }
+}
+
 
 
 
