@@ -67,7 +67,7 @@
     file befor runing morpheus and set (USE_IPV6=DISABLED) to force ettercap to use IPV4
 
 > morpheus needs ettercap to be executed with higth privilege to use ssl disectores.
-Screenshot: user its NOT running ettercap as admin and do not have conf SSL disectors .
+ Screenshot: user its NOT running ettercap as admin and do not have conf SSL disectors .
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-sslBug.png)
 
 > correct ettercap configuration display (running as Admin with ssl disectores active)
