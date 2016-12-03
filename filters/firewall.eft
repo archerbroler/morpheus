@@ -519,7 +519,10 @@ if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.src == 80) {
 if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.src == 443) {
   msg("[morpheus] host:MoDeM  [ <- ]  port:443 https ☆");
 }
+#
+# DETECTS: the presence of darkcomet rat connections...
 # article: https://www.recordedfuture.com/darkcomet-rat-analysis/
+#
 if (ip.dst == 'MoDeM' && ip.proto == UDP && udp.src == 53) {
   msg("[morpheus] host:MoDeM  [ <- ]  port:53 domain ☠");
         if (search(DATA.data, "burtproperties.com")) {
