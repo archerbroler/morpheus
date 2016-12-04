@@ -525,25 +525,25 @@ if (ip.dst == '192.168.1.253' && ip.proto == UDP && udp.src == 53) {
 #########################################################
 ##
 # from MODEM -> OUTSIDE
-if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 80) {
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 80) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:80 http ☆");
 }
-if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 443) {
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 443) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:443 https ☆");
 }
-if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 139) {
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 139) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:139 netbios ☠");
 }
-if (ip.src == 'MoDeM' && ip.proto == UDP && udp.src == 53) {
+if (ip.src == 'MoDeM' && ip.proto == UDP && udp.dst == 53) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:53 dns ☆");
 }
-if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 23) {
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 23) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:23 telnet ☆");
 }
-if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 22) {
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 22) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:22 ssh ☆");
 }
-if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 21) {
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 21) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:21 ftp ☆");
 }
 
