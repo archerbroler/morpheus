@@ -588,6 +588,8 @@ echo "${BlueF}    |  ${YellowF}http://malwareforensics1.blogspot.pt${BlueF}     
 echo "${BlueF}    |  ${YellowF}http://www.portugalpesca.com/forum/login.php${BlueF}                     |"
 echo "${BlueF}    |  ${YellowF}telnet 216.58.214.174 [TELNET]${BlueF}                                   |"
 echo "${BlueF}    |  ${YellowF}telnet 192.168.1.254  [TELNET]${BlueF}                                   |"
+echo "${BlueF}    |  ${YellowF}ftp 192.168.1.254     [FTP]${BlueF}                                      |"
+echo "${BlueF}    |  ${YellowF}ssh 192.168.1.254     [SSH]${BlueF}                                      |"
 echo "${BlueF}    ╠───────────────────────────────────────────────────────────────────╝"
 sleep 1
 echo "${BlueF}    ╘ ${white}Press [${GreenF}ENTER${white}] to 'return' to main menu${RedF}!"

