@@ -28,7 +28,7 @@ PROMPT_DISPLAY=--▷
 # reports into morpheus/logs folder.
 # accepted values are: YES or NO
 -----------------
-WRITE_LOGFILES=NO
+WRITE_LOGFILES=YES
 -----------------
 # how to read the logfiles stored?
 # cd logs && etterlog -c firewall.ecp
