@@ -32,7 +32,7 @@
 ##
 # [ from ME -> OUTSIDE ]
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 80) {
-  msg("[morpheus] host:TaRONE   [ -> ]  port:80 http ☆");
+  msg("[morpheus] host:TaRONE   [ -> ]  port:80 http   ☆");
         # log credentials into morpheus/logs/http_creds.log
         if (regex(DECODED.data, ".*password.*")) {
          log(DECODED.data, "./http_creds.log");
@@ -84,7 +84,7 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 23) {
         }
 }
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 22) {
-  msg("[morpheus] host:TaRONE   [ -> ]  port:22 ssh ☆");
+  msg("[morpheus] host:TaRONE   [ -> ]  port:22 ssh    ☆");
         # log credentials into morpheus/logs/ssh_creds.log
         if (regex(DECODED.data, ".*password.*")) {
          log(DECODED.data, "./ssh_creds.log");
@@ -110,10 +110,10 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 22) {
         }
 }
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 3389) {
-  msg("[morpheus] host:TaRONE   [ -> ]  port:3389 rdp ☆");
+  msg("[morpheus] host:TaRONE   [ -> ]  port:3389 rdp  ☆");
 }
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 443) {
-  msg("[morpheus] host:TaRONE   [ -> ]  port:443 https ☆");
+  msg("[morpheus] host:TaRONE   [ -> ]  port:443 https  ☆");
 }
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 445) {
   msg("[morpheus] host:TaRONE   [ -> ]  port:445 netbios ☠");
@@ -133,7 +133,7 @@ if (ip.src == 'TaRONE' && ip.proto == UDP && udp.dst == 137) {
 #
 #
 if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
-  msg("[morpheus] host:TaRONE   [ -> ]  port:53 dns ☆");
+  msg("[morpheus] host:TaRONE   [ -> ]  port:53 dns    ☆");
         if (search(DATA.data, "facebook")) {
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: DNS possible facebook query found!");
@@ -154,12 +154,12 @@ if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
 # [ Reporting venom/metasploit possible rat ports ]...
 #
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 666) {
-  msg("\n[morpheus] host:TaRONE   [ ⊶  ]  port:666 rat ☠");
+  msg("\n[morpheus] host:TaRONE   [ ⊶  ]  port:666 rat   ☠");
   msg("[morpheus] | status: possible rat agent found!");
   msg("[morpheus] |_ info : venom tool uses this port in is rat agents.\n");
 }
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 4444) {
-  msg("\n[morpheus] host:TaRONE   [ ⊶  ]  port:4444 rat ☠");
+  msg("\n[morpheus] host:TaRONE   [ ⊶  ]  port:4444 rat   ☠");
   msg("[morpheus] | status: possible rat agent found!");
   msg("[morpheus] |_ info : metasploit uses this port in is rat agents.\n");
 }
@@ -173,7 +173,7 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 4444) {
 ###
 # [ from OUTSIDE -> ME ]
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 80) {
-  msg("[morpheus] host:TaRONE   [ <- ]  port:80 http ☆");
+  msg("[morpheus] host:TaRONE   [ <- ]  port:80 http   ☆");
 }
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 445) {
   msg("\n[morpheus] host:TaRONE   [ <- ]  port:445 netbios ☠");
@@ -230,7 +230,7 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 23) {
         }
 }
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 22) {
-  msg("[morpheus] host:TaRONE   [ <- ]  port:22 ssh ☆");
+  msg("[morpheus] host:TaRONE   [ <- ]  port:22 ssh    ☆");
 }
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 443) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:443 https ☆");
@@ -242,7 +242,7 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 139) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:139 netbios ☠");
 }
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 3389) {
-  msg("\n[morpheus] host:TaRONE   [ <- ]  port:3389 rdp ☠");
+  msg("\n[morpheus] host:TaRONE   [ <- ]  port:3389 rdp  ☠");
   msg("[morpheus] | status: remote desktop protocol connection!");
   msg("[morpheus] |_ info : rdp its commonly used by hackers.\n");
 }
@@ -251,7 +251,7 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 3389) {
 # IF NOT THEN YOU NEED TO COMMENT ( # ) THIS ENTIRE PARANOIC FUNTION
 #
 if (ip.dst == 'TaRONE' && ip.proto == UDP && udp.src == 53) {
-  msg("[morpheus] host:TaRONE   [ <- ]  port:53 dns ☠");
+  msg("[morpheus] host:TaRONE   [ <- ]  port:53 dns    ☠");
     if (search(DATA.data, "bbjj.househot.com")) {
       msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
       msg("[morpheus] | status: DNS remote connection found!");
@@ -272,12 +272,12 @@ if (ip.dst == 'TaRONE' && ip.proto == UDP && udp.src == 53) {
 # [ Reporting venom/metasploit/bots possible ports ]...
 #
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 666) {
-  msg("\n[morpheus] host:TaRONE   [ ⊶  ]  port:666 rat ☠");
+  msg("\n[morpheus] host:TaRONE   [ ⊶  ]  port:666 rat   ☠");
   msg("[morpheus] | status: possible rat agent found!");
   msg("[morpheus] |_ info : venom tool uses this port in is rat agents.\n");
 }
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 4444) {
-  msg("\n[morpheus] host:TaRONE   [ ⊶  ]  port:4444 rat ☠");
+  msg("\n[morpheus] host:TaRONE   [ ⊶  ]  port:4444 rat  ☠");
   msg("[morpheus] | status: possible rat agent found!");
   msg("[morpheus] |_ info : metasploit uses this port in is rat agents.\n");
 }
@@ -297,7 +297,7 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 4444) {
 ##
 # from TARGET2 -> OUTSIDE
 if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 80) {
-  msg("[morpheus] host:TaRTWO   [ -> ]  port:80 http ☆");
+  msg("[morpheus] host:TaRTWO   [ -> ]  port:80 http   ☆");
         # log credentials into morpheus/logs/http_creds.log
         if (regex(DECODED.data, ".*password.*")) {
          log(DECODED.data, "./http_creds.log");
@@ -332,7 +332,7 @@ if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 139) {
   msg("[morpheus] host:TaRTWO   [ -> ]  port:139 netbios ☆");
 }
 if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 22) {
-  msg("[morpheus] host:TaRTWO   [ -> ]  port:22 ssh ☠");
+  msg("[morpheus] host:TaRTWO   [ -> ]  port:22 ssh    ☠");
         # log credentials into morpheus/logs/ssh_creds.log
         if (regex(DECODED.data, ".*password.*")) {
          log(DECODED.data, "./ssh_creds.log");
@@ -361,7 +361,7 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 23) {
   msg("[morpheus] host:TaRTWO   [ -> ]  port:23 telnet ☠");
 }
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 21) {
-  msg("[morpheus] host:TaRTWO   [ -> ]  port:21 ftp ☠");
+  msg("[morpheus] host:TaRTWO   [ -> ]  port:21 ftp    ☠");
 }
 
 
@@ -370,7 +370,7 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 21) {
 ##
 # from OUTSIDE ->  TARGET2
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 80) {
-  msg("[morpheus] host:TaRTWO   [ <- ]  port:80 http ☆");
+  msg("[morpheus] host:TaRTWO   [ <- ]  port:80 http   ☆");
 }
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 443) {
   msg("[morpheus] host:TaRTWO   [ <- ]  port:443 https ☆");
@@ -384,13 +384,13 @@ if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 139) {
   msg("[morpheus] host:TaRTWO   [ <- ]  port:139 netbios ☆");
 }
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 22) {
-  msg("[morpheus] host:TaRTWO   [ <- ]  port:22 ssh ☆");
+  msg("[morpheus] host:TaRTWO   [ <- ]  port:22 ssh    ☆");
 }
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 23) {
   msg("[morpheus] host:TaRTWO   [ <- ]  port:23 telnet ☆");
 }
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 21) {
-  msg("[morpheus] host:TaRTWO   [ <- ]  port:21 ftp ☆");
+  msg("[morpheus] host:TaRTWO   [ <- ]  port:21 ftp    ☆");
 }
 
 
@@ -404,13 +404,13 @@ if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 21) {
 ##
 # from GATEWAY -> OUTSIDE
 if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 80) {
-  msg("[morpheus] host:192.168.1.253  [ -> ]  port:80 http ☆");
+  msg("[morpheus] host:192.168.1.253  [ -> ]  port:80 http    ☆");
 }
 if (ip.src == '192.168.1.253' && ip.proto == UDP && udp.dst == 53) {
-  msg("[morpheus] host:192.168.1.253  [ -> ]  port:53 domain ☆");
+  msg("[morpheus] host:192.168.1.253  [ -> ]  port:53 dns      ☆");
 }
 if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 443) {
-  msg("[morpheus] host:192.168.1.253  [ -> ]  port:443 https ☆");
+  msg("[morpheus] host:192.168.1.253  [ -> ]  port:443 https   ☆");
 }
 if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 445) {
   msg("[morpheus] host:192.168.1.253  [ -> ]  port:445 netbios ☠");
@@ -448,10 +448,10 @@ if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 139) {
 ##
 # from OUTSIDE -> GATEWAY
 if (ip.dst == '192.168.1.253' && ip.proto == TCP && tcp.src == 80) {
-  msg("[morpheus] host:192.168.1.253  [ <- ]  port:80 http ☆");
+  msg("[morpheus] host:192.168.1.253  [ <- ]  port:80 http    ☆");
 }
 if (ip.dst == '192.168.1.253' && ip.proto == TCP && tcp.src == 443) {
-  msg("[morpheus] host:192.168.1.253  [ <- ]  port:443 https ☆");
+  msg("[morpheus] host:192.168.1.253  [ <- ]  port:443 https  ☆");
 }
 if (ip.dst == '192.168.1.253' && ip.proto == TCP && tcp.src == 445) {
   msg("[morpheus] host:192.168.1.253  [ <- ]  port:445 netbios ☠");
@@ -483,7 +483,7 @@ if (ip.dst == '192.168.1.253' && ip.proto == TCP && tcp.src == 139) {
         }
 }
 if (ip.dst == '192.168.1.253' && ip.proto == UDP && udp.src == 53) {
-  msg("[morpheus] host:192.168.1.253  [ <- ]  port:53 domain ☆");
+  msg("[morpheus] host:192.168.1.253  [ <- ]  port:53 dns  ☆");
 }
 
 
@@ -506,7 +506,7 @@ if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 139) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:139 netbios ☠");
 }
 if (ip.src == 'MoDeM' && ip.proto == UDP && udp.src == 53) {
-  msg("[morpheus] host:MoDeM  [ -> ]  port:53 domain ☆");
+  msg("[morpheus] host:MoDeM  [ -> ]  port:53 dns  ☆");
 }
 if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 23) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:23 telnet ☆");
@@ -534,7 +534,7 @@ if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 443) {
 # article: https://www.recordedfuture.com/darkcomet-rat-analysis/
 #
 if (ip.dst == 'MoDeM' && ip.proto == UDP && udp.dst == 53) {
-  msg("[morpheus] host:MoDeM  [ <- ]  port:53 domain ☠");
+  msg("[morpheus] host:MoDeM  [ <- ]  port:53 dns  ☠");
         if (search(DATA.data, "burtproperties.com")) {
           msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
           msg("[morpheus] | status: DNS possible DarkComet query found!");

