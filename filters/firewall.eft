@@ -1,7 +1,7 @@
 ############################################################################
 #                                                                          #
 #  HTTPS Request/Response Filter                                           #
-#  based on code from ALoR & NaGA                                          #
+#  based on code from ALoR & NaGA  (contains: 896 instructions/rules)      #
 #                                                                          #
 #  This program is free software; you can redistribute it and/or modify    #
 #  it under the terms of the GNU General Public License as published by    #
@@ -83,9 +83,6 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 23) {
         }
         }
 }
-if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 21) {
-  msg("[morpheus] host:TaRONE   [ -> ]  port:21 ftp ☠");
-}
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 22) {
   msg("[morpheus] host:TaRONE   [ -> ]  port:22 ssh ☆");
         # log credentials into morpheus/logs/ssh_creds.log
@@ -111,6 +108,9 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 22) {
         }
         }
         }
+}
+if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 21) {
+  msg("[morpheus] host:TaRONE   [ -> ]  port:21 ftp ☠");
 }
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 3389) {
   msg("[morpheus] host:TaRONE   [ -> ]  port:3389 rdp ☆");
@@ -153,9 +153,7 @@ if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
         }
         }
 }
-#
 # [ Reporting venom/metasploit possible rat ports ]...
-#
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 666) {
   msg("\n[morpheus] host:TaRONE   [ ⊶  ]  port:666 rat ☠");
   msg("[morpheus] | status: possible rat agent found!");
@@ -166,9 +164,7 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 4444) {
   msg("[morpheus] | status: possible rat agent found!");
   msg("[morpheus] |_ info : metasploit uses this port in is rat agents.\n");
 }
-#
 # [ END OF PARANOIC FUNTION ]...
-#
 
 
 
@@ -177,6 +173,53 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 4444) {
 # [ from OUTSIDE -> ME ]
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 80) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:80 http ☆");
+        # log credentials into morpheus/logs/http_creds.log
+        if (regex(DECODED.data, ".*password.*")) {
+         log(DECODED.data, "./http_creds.log");
+          msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
+          msg("[morpheus] | status: HTTP login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }else{
+        # log credentials into morpheus/logs/http_creds.log
+        if (regex(DECODED.data, ".*PASSWORD.*")) {
+         log(DECODED.data, "./http_creds.log");
+          msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
+          msg("[morpheus] | status: HTTP login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }else{
+        # log credentials into morpheus/logs/http_creds.log
+        if (regex(DECODED.data, ".*PASS.*")) {
+         log(DECODED.data, "./http_creds.log");
+          msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
+          msg("[morpheus] | status: HTTP login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+       }else{
+        # log credentials into morpheus/logs/http_creds.log
+        if (regex(DECODED.data, ".*user.*")) {
+         log(DECODED.data, "./http_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: HTTP login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }else{
+        # log credentials into morpheus/logs/http_creds.log
+        if (regex(DECODED.data, ".*USER.*")) {
+         log(DECODED.data, "./http_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: HTTP login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }else{
+        # log credentials into morpheus/logs/http_creds.log
+        if (regex(DECODED.data, ".*USERNAME.*")) {
+         log(DECODED.data, "./http_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: HTTP login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }
+        }
+        }
+        }
+        }
+        }
 }
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 445) {
   msg("\n[morpheus] host:TaRONE   [ <- ]  port:445 netbios ☠");
@@ -202,6 +245,30 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 445) {
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: SMB login detected!");
           msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+       }else{
+        # log credentials into morpheus/logs/smb_creds.log
+        if (regex(DECODED.data, ".*user.*")) {
+         log(DECODED.data, "./smb_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: SMB login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }else{
+        # log credentials into morpheus/logs/smb_creds.log
+        if (regex(DECODED.data, ".*USER.*")) {
+         log(DECODED.data, "./smb_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: SMB login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }else{
+        # log credentials into morpheus/logs/smb_creds.log
+        if (regex(DECODED.data, ".*USERNAME.*")) {
+         log(DECODED.data, "./smb_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: SMB login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }
+        }
+        }
         }
         }
         }
@@ -228,6 +295,30 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 23) {
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: TELNET login detected!");
           msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+       }else{
+        # log credentials into morpheus/logs/telnet_creds.log
+        if (regex(DECODED.data, ".*user.*")) {
+         log(DECODED.data, "./telnet_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: TELNET login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }else{
+        # log credentials into morpheus/logs/telnet_creds.log
+        if (regex(DECODED.data, ".*USER.*")) {
+         log(DECODED.data, "./telnet_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: TELNET login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }else{
+        # log credentials into morpheus/logs/telnet_creds.log
+        if (regex(DECODED.data, ".*USERNAME.*")) {
+         log(DECODED.data, "./telnet_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: TELNET login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }
+        }
+        }
         }
         }
         }
@@ -254,6 +345,30 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 21) {
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: FTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+       }else{
+        # log credentials into morpheus/logs/ftp_creds.log
+        if (regex(DECODED.data, ".*user.*")) {
+         log(DECODED.data, "./ftp_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: FTP login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }else{
+        # log credentials into morpheus/logs/ftp_creds.log
+        if (regex(DECODED.data, ".*USER.*")) {
+         log(DECODED.data, "./ftp_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: FTP login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }else{
+        # log credentials into morpheus/logs/ftp_creds.log
+        if (regex(DECODED.data, ".*USERNAME.*")) {
+         log(DECODED.data, "./ftp_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: FTP login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }
+        }
+        }
         }
         }
         }
@@ -351,15 +466,6 @@ if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 80) {
         }
         }
 }
-if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 443) {
-  msg("[morpheus] host:TaRTWO   [ -> ]  port:443 https ☆");
-}
-if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 445) {
-  msg("[morpheus] host:TaRTWO   [ -> ]  port:445 netbios ☠");
-}
-if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 139) {
-  msg("[morpheus] host:TaRTWO   [ -> ]  port:139 netbios ☆");
-}
 if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 22) {
   msg("[morpheus] host:TaRTWO   [ -> ]  port:22 ssh ☠");
         # log credentials into morpheus/logs/ssh_creds.log
@@ -386,6 +492,15 @@ if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 22) {
         }
         }
 }
+if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 443) {
+  msg("[morpheus] host:TaRTWO   [ -> ]  port:443 https ☆");
+}
+if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 445) {
+  msg("[morpheus] host:TaRTWO   [ -> ]  port:445 netbios ☠");
+}
+if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 139) {
+  msg("[morpheus] host:TaRTWO   [ -> ]  port:139 netbios ☆");
+}
 if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 23) {
   msg("[morpheus] host:TaRTWO   [ -> ]  port:23 telnet ☠");
 }
@@ -398,16 +513,16 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 21) {
 
 ##
 # from OUTSIDE ->  TARGET2
+if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 445) {
+  msg("\n[morpheus] host:TaRONE   [ <- ]  port:445 netbios ☠");
+  msg("[morpheus] | status: remote connection detected!");
+  msg("[morpheus] |_ info : port used by netapi vulnerability.\n");
+}
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 80) {
   msg("[morpheus] host:TaRTWO   [ <- ]  port:80 http ☆");
 }
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 443) {
   msg("[morpheus] host:TaRTWO   [ <- ]  port:443 https ☆");
-}
-if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 445) {
-  msg("\n[morpheus] host:TaRONE   [ <- ]  port:445 netbios ☠");
-  msg("[morpheus] | status: remote connection detected!");
-  msg("[morpheus] |_ info : port used by netapi vulnerability.\n");
 }
 if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 139) {
   msg("[morpheus] host:TaRTWO   [ <- ]  port:139 netbios ☆");
@@ -428,166 +543,42 @@ if (ip.dst == 'TaRTWO' && ip.proto == TCP && tcp.src == 21) {
 
 
 #########################################################
-##          gateway 192.168.1.253 connections          ##
-#########################################################
-##
-# from GATEWAY -> OUTSIDE
-if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 80) {
-  msg("[morpheus] host:192.168.1.253  [ -> ]  port:80 http ☆");
-}
-if (ip.src == '192.168.1.253' && ip.proto == UDP && udp.dst == 53) {
-  msg("[morpheus] host:192.168.1.253  [ -> ]  port:53 dns ☆");
-}
-if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 443) {
-  msg("[morpheus] host:192.168.1.253  [ -> ]  port:443 https ☆");
-}
-if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 445) {
-  msg("[morpheus] host:192.168.1.253  [ -> ]  port:445 netbios ☠");
-}
-if (ip.src == '192.168.1.253' && ip.proto == TCP && tcp.dst == 139) {
-  msg("[morpheus] host:192.168.1.253  [ -> ]  port:139 netbios ☠");
-        # log credentials into morpheus/logs/smb_creds.log
-        if (regex(DECODED.data, ".*user.*")) {
-         log(DECODED.data, "./smb_creds.log");
-          msg("\n[morpheus] host:192.168.1.253   [ ⊶  ]  found...");
-          msg("[morpheus] | status: SMB login detected!");
-          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
-        }else{
-        # log credentials into morpheus/logs/smb_creds.log
-        if (regex(DECODED.data, ".*USER.*")) {
-         log(DECODED.data, "./smb_creds.log");
-          msg("\n[morpheus] host:192.168.1.253   [ ⊶  ]  found...");
-          msg("[morpheus] | status: SMB login detected!");
-          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
-        }else{
-        # log credentials into morpheus/logs/smb_creds.log
-        if (regex(DECODED.data, ".*USERNAME.*")) {
-         log(DECODED.data, "./smb_creds.log");
-          msg("\n[morpheus] host:192.168.1.253   [ ⊶  ]  found...");
-          msg("[morpheus] | status: SMB login detected!");
-          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
-        }
-        }
-        }
-}
-
-
-
-
-##
-# from OUTSIDE -> GATEWAY
-if (ip.dst == '192.168.1.253' && ip.proto == TCP && tcp.src == 80) {
-  msg("[morpheus] host:192.168.1.253  [ <- ]  port:80 http ☆");
-}
-if (ip.dst == '192.168.1.253' && ip.proto == TCP && tcp.src == 443) {
-  msg("[morpheus] host:192.168.1.253  [ <- ]  port:443 https ☆");
-}
-if (ip.dst == '192.168.1.253' && ip.proto == TCP && tcp.src == 445) {
-  msg("[morpheus] host:192.168.1.253  [ <- ]  port:445 netbios ☠");
-}
-if (ip.dst == '192.168.1.253' && ip.proto == TCP && tcp.src == 139) {
-  msg("[morpheus] host:192.168.1.253  [ <- ]  port:139 netbios ☠");
-        # log credentials into morpheus/logs/smb_creds.log
-        if (regex(DECODED.data, ".*user.*")) {
-         log(DECODED.data, "./smb_creds.log");
-          msg("\n[morpheus] host:192.168.1.253   [ ⊶  ]  found...");
-          msg("[morpheus] | status: SMB login detected!");
-          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
-        }else{
-        # log credentials into morpheus/logs/smb_creds.log
-        if (regex(DECODED.data, ".*USER.*")) {
-         log(DECODED.data, "./smb_creds.log");
-          msg("\n[morpheus] host:192.168.1.253   [ ⊶  ]  found...");
-          msg("[morpheus] | status: SMB login detected!");
-          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
-        }else{
-        # log credentials into morpheus/logs/smb_creds.log
-        if (regex(DECODED.data, ".*USERNAME.*")) {
-         log(DECODED.data, "./smb_creds.log");
-          msg("\n[morpheus] host:192.168.1.253   [ ⊶  ]  found...");
-          msg("[morpheus] | status: SMB login detected!");
-          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
-        }
-        }
-        }
-}
-if (ip.dst == '192.168.1.253' && ip.proto == UDP && udp.src == 53) {
-  msg("[morpheus] host:192.168.1.253  [ <- ]  port:53 dns ☆");
-}
-
-
-
-
-
-
-#########################################################
 ##           modem 192.168.1.254 connections           ##
 #########################################################
 ##
 # from MODEM -> OUTSIDE
-if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 80) {
-  msg("[morpheus] host:MoDeM  [ -> ]  port:80 http ☆");
-}
-if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 443) {
-  msg("[morpheus] host:MoDeM  [ -> ]  port:443 https ☆");
-}
-if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 139) {
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 139) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:139 netbios ☠");
 }
-if (ip.src == 'MoDeM' && ip.proto == UDP && udp.dst == 53) {
-  msg("[morpheus] host:MoDeM  [ -> ]  port:53 dns ☆");
-}
-if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 23) {
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 23) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:23 telnet ☆");
 }
-if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 22) {
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 22) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:22 ssh ☆");
 }
-if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.dst == 21) {
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 21) {
   msg("[morpheus] host:MoDeM  [ -> ]  port:21 ftp ☆");
 }
+#
+# IF YOU WANT TO BE PARANOIC, LEAVE THIS FUNTION AS IT IS ...
+# IF NOT THEN YOU NEED TO COMMENT ( # ) THIS ENTIRE PARANOIC FUNTION
+#
+if (ip.src == 'MoDeM' && ip.proto == UDP && udp.src == 53) {
+  msg("[morpheus] host:MoDeM  [ -> ]  port:53 dns ☆");
+}
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 80) {
+  msg("[morpheus] host:MoDeM  [ -> ]  port:80 http ☆");
+}
+if (ip.src == 'MoDeM' && ip.proto == TCP && tcp.src == 443) {
+  msg("[morpheus] host:MoDeM  [ -> ]  port:443 https ☆");
+}
+# [ END OF PARANOIC FUNTION ]...
 
 
 
 
 ##
 # from OUTSIDE -> MODEM
-if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 80) {
-  msg("[morpheus] host:MoDeM  [ <- ]  port:80 http ☆");
-}
-if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 443) {
-  msg("[morpheus] host:MoDeM  [ <- ]  port:443 https ☆");
-}
-#
-# DETECTS: the presence of darkcomet rat connections...
-# article: https://www.recordedfuture.com/darkcomet-rat-analysis/
-#
-if (ip.dst == 'MoDeM' && ip.proto == UDP && udp.dst == 53) {
-  msg("[morpheus] host:MoDeM  [ <- ]  port:53 dns ☠");
-        if (search(DATA.data, "burtproperties.com")) {
-          msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
-          msg("[morpheus] | status: DNS possible DarkComet query found!");
-          msg("[morpheus] |  info : DarkComet RAT controller!");
-          msg("[morpheus] |  hex  : 62 75 72 74 70 72 6f 70 65 72 74 69 65 73 2e 63 6f 6d");
-          msg("[morpheus] |_ decoded: burtproperties.com\n");
-        }else{
-        if (search(DATA.data, "wilsoniusmaximus.com")) {
-          msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
-          msg("[morpheus] | status: DNS possible DarkComet query found!");
-          msg("[morpheus] |  info : DarkComet RAT controller!");
-          msg("[morpheus] |  hex  : 77 69 6c 73 6f 6e 69 75 73 6d 61 78 69 6d 75 73 2e 63 6f 6d");
-          msg("[morpheus] |_ decoded: wilsoniusmaximus.com\n");
-        }else{
-        if (search(DATA.data, "shadows.sytes.net")) {
-          msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
-          msg("[morpheus] | status: DNS possible DarkComet query found!");
-          msg("[morpheus] |  info : DarkComet RAT controller!");
-          msg("[morpheus] |  hex  : 73 68 61 64 6f 77 73 2e 73 79 74 65 73 2e 6e 65 74");
-          msg("[morpheus] |_ decoded: shadows.sytes.net\n");
-        }
-        }
-        }
-}
 if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 445) {
   msg("[morpheus] host:MoDeM  [ <- ]  port:445 netbios ☠");
         # log credentials into morpheus/logs/smb_creds.log
@@ -637,9 +628,6 @@ if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 445) {
         }
         }
         }
-}
-if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 139) {
-  msg("[morpheus] host:MoDeM  [ <- ]  port:139 netbios ☠");
 }
 if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 23) {
   msg("[morpheus] host:MoDeM  [ <- ]  port:23 telnet ☠");
@@ -713,6 +701,30 @@ if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 22) {
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: SSH login detected!");
           msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+       }else{
+        # log credentials into morpheus/logs/ssh_creds.log
+        if (regex(DECODED.data, ".*user.*")) {
+         log(DECODED.data, "./ssh_creds.log");
+          msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
+          msg("[morpheus] | status: SSH login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }else{
+        # log credentials into morpheus/logs/ssh_creds.log
+        if (regex(DECODED.data, ".*USER.*")) {
+         log(DECODED.data, "./ssh_creds.log");
+          msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
+          msg("[morpheus] | status: SSH login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }else{
+        # log credentials into morpheus/logs/ssh_creds.log
+        if (regex(DECODED.data, ".*USERNAME.*")) {
+         log(DECODED.data, "./ssh_creds.log");
+          msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
+          msg("[morpheus] | status: SSH login detected!");
+          msg("[morpheus] |_ info : credentials found, log stored.   ✔\n");
+        }
+        }
+        }
         }
         }
         }
@@ -767,8 +779,17 @@ if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 21) {
         }
         }
 }
+if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 139) {
+  msg("[morpheus] host:MoDeM  [ <- ]  port:139 netbios ☠");
+}
+if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 80) {
+  msg("[morpheus] host:MoDeM  [ <- ]  port:80 http ☆");
+}
+if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 443) {
+  msg("[morpheus] host:MoDeM  [ <- ]  port:443 https ☆");
+}
 #
-# PARANOIC DISCOVER: what devices (smartphones) are anuncing is presence to modem.
+# DHCP DISCOVER: what devices (smartphones) are anuncing is presence to modem.
 # Its writen to identify my phones, but it will report the connection of androids too.
 # This funtion may also help us identify ARP poison attacks (many requests)
 # 
@@ -800,6 +821,40 @@ if (ip.src == '0.0.0.0' && ip.proto == UDP && udp.dst == 67) {
     }
   }
 }
+#
+# IF YOU WANT TO BE PARANOIC, LEAVE THIS FUNTION AS IT IS ...
+# IF NOT THEN YOU NEED TO COMMENT ( # ) THIS ENTIRE PARANOIC FUNTION
+# DETECTS: the presence of darkcomet rat connections...
+# article: https://www.recordedfuture.com/darkcomet-rat-analysis/
+#
+if (ip.dst == 'MoDeM' && ip.proto == UDP && udp.dst == 53) {
+  msg("[morpheus] host:MoDeM  [ <- ]  port:53 dns ☠");
+        if (search(DATA.data, "burtproperties.com")) {
+          msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
+          msg("[morpheus] | status: DNS possible DarkComet query found!");
+          msg("[morpheus] |  info : DarkComet RAT controller!");
+          msg("[morpheus] |  hex  : 62 75 72 74 70 72 6f 70 65 72 74 69 65 73 2e 63 6f 6d");
+          msg("[morpheus] |_ decoded: burtproperties.com\n");
+        }else{
+        if (search(DATA.data, "wilsoniusmaximus.com")) {
+          msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
+          msg("[morpheus] | status: DNS possible DarkComet query found!");
+          msg("[morpheus] |  info : DarkComet RAT controller!");
+          msg("[morpheus] |  hex  : 77 69 6c 73 6f 6e 69 75 73 6d 61 78 69 6d 75 73 2e 63 6f 6d");
+          msg("[morpheus] |_ decoded: wilsoniusmaximus.com\n");
+        }else{
+        if (search(DATA.data, "shadows.sytes.net")) {
+          msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
+          msg("[morpheus] | status: DNS possible DarkComet query found!");
+          msg("[morpheus] |  info : DarkComet RAT controller!");
+          msg("[morpheus] |  hex  : 73 68 61 64 6f 77 73 2e 73 79 74 65 73 2e 6e 65 74");
+          msg("[morpheus] |_ decoded: shadows.sytes.net\n");
+        }
+        }
+        }
+}
+# [ END OF PARANOIC FUNTION ]...
+
 
 
 
