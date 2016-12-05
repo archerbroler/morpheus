@@ -206,8 +206,8 @@ exit
 sh_stage1 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
-echo "${BlueF}    | ${white}This module will drop/kill any tcp/udp connections attempted      ${BlueF}|"
-echo "${BlueF}    | ${white}to/from target host, droping packets from source and destination..${BlueF}|"
+echo "${BlueF}    | ${YellowF}This module will drop/kill any tcp/udp connections attempted      ${BlueF}|"
+echo "${BlueF}    | ${YellowF}to/from target, droping packets from source and destination..     ${BlueF}|"
 echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
 echo ""
 sleep 2
@@ -292,8 +292,8 @@ sh_stage3 () {
 
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
-echo "${BlueF}    | ${white}This filter will substitute the html tag '<img src=>'             ${BlueF}|"
-echo "${BlueF}    | ${white}and injects your image in any webpage requested by target         ${BlueF}|"
+echo "${BlueF}    | ${YellowF}This filter will substitute the html tag '<img src=>'             ${BlueF}|"
+echo "${BlueF}    | ${YellowF}and injects your image in any webpage requested by target         ${BlueF}|"
 echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
 echo ""
 sleep 2
@@ -376,9 +376,9 @@ fi
 sh_stage9 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
-echo "${BlueF}    | ${white}This module acts like a firewall reporting/blocking/capture_creds ${BlueF}|"
-echo "${BlueF}    | ${white}from selected targets(rhost) tcp/udp connections made inside local${BlueF}|"
-echo "${BlueF}    | ${white}Lan under mitm attacks, morpheus will auto compile/lunch filters. ${BlueF}|"
+echo "${BlueF}    | ${YellowF}This module acts like a firewall report/blocking/capture_creds    ${BlueF}|"
+echo "${BlueF}    | ${YellowF}from selected targets tcp/udp connections made inside local lan   ${BlueF}|"
+echo "${BlueF}    | ${YellowF}under mitm attacks, morpheus will auto compile/lunch the filters  ${BlueF}|"
 echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
 echo ""
 sleep 2
@@ -469,9 +469,9 @@ fi
 sh_stageW () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
-echo "${BlueF}    | ${white}This module allow you to write your own filter from scratch.      ${BlueF}|"
-echo "${BlueF}    | ${white}morpheus presents a 'template' previous build for you to write    ${BlueF}|"
-echo "${BlueF}    | ${white}your own command logic and automate the compiling/lunch of filter.${BlueF}|"
+echo "${BlueF}    | ${YellowF}This module allow you to write your own filter from scratch.      ${BlueF}|"
+echo "${BlueF}    | ${YellowF}morpheus presents a 'template' previous build for you to write    ${BlueF}|"
+echo "${BlueF}    | ${YellowF}your own command logic and automate the compile/lunch of filter.  ${BlueF}|"
 echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
 echo ""
 sleep 2
@@ -549,7 +549,7 @@ fi
 sh_stageS () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
-echo "${BlueF}    | ${white}This module uses nmap framework to report live hosts (LAN)        ${BlueF}|"
+echo "${BlueF}    | ${YellowF}This module uses nmap tool to report live hosts (LAN)             ${BlueF}|"
 echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
 echo ""
 sleep 2
