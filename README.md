@@ -103,7 +103,6 @@
     [morpheus] host:192.168.1.67   [ <- ]  port:443 https  ☠
                Destination ip      flow    source port     rank suspicious
 
-<br /><br />
 
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-option9.png)
 
