@@ -401,12 +401,16 @@ fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose fi
   fil_two=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose last target to filter through morpheus.\nchose gateway ip, if you dont have any more targets." --entry --width 250) > /dev/null 2>&1
 
 
-  # replace values in template.filter with sed bash command
   cd $IPATH/filters
+  ed=`hostname`
+  echo "$ed"7 > /tmp/test
+  hOstNaMe=`cat /tmp/test`
+  # replace values in template.filter with sed bash command
   sed -i "s|TaRONE|$fil_one|g" firewall.eft # NO dev/null to report file not existence :D
   sed -i "s|TaRTWO|$fil_two|g" firewall.eft > /dev/null 2>&1
+  sed -i "s|hOst|$hOstNaMe|g" firewall.eft > /dev/null 2>&1
   sed -i "s|MoDeM|$GaTe|g" firewall.eft > /dev/null 2>&1
-
+  rm /tmp/test /dev/null 2>&1
   cd $IPATH
   zenity --info --title="☠ MORPHEUS SCRIPTING CONSOLE ☠" --text "morpheus framework now gives you\nthe oportunity to just run the filter\nOR to scripting it further...\n\n'Have fun scripting it further'..." --width 270 > /dev/null 2>&1
   xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/firewall.eft"
@@ -601,8 +605,12 @@ read OP
 
 # help in scripting ;)
 sh_help () {
-echo ${BlueF}[☠]${white} Open webbrowser... ${Reset};
-sleep 1
+echo ""
+echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
+echo "${BlueF}    | ${YellowF}Please read my GitHub docummentation for further understandind... ${BlueF}|"
+echo "${BlueF}    ╠───────────────────────────────────────────────────────────────────╝"
+echo "${BlueF}    ╘ ${white}Please wait, open webbrowser."
+sleep 3
 xdg-open "https://github.com/r00t-3xp10it/morpheus/issues"
 }
 
