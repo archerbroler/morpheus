@@ -89,12 +89,21 @@
 
 
 <br />
-# Framework option 9 [firewall] running
+# Framework option 9 [firewall] screenshots
 
     firewall [option 9] pre-configurated filter will capture credentials
     of the follow services: http,ftp,ssh,telnet (facebook uses https/ssl :( )
     report suspicious connections and allow users to block connections from the selected host.
     "Remmenber: morpheus gives users the ability to 'add more rules' to filters befor execution :D"
+
+
+    [morpheus] host:192.168.1.67   [ -> ]  port:443 https  ☆
+               Source ip addr      flow    destination     rank good
+
+    [morpheus] host:192.168.1.67   [ <- ]  port:443 https  ☠
+               Destination ip      flow    source port     rank suspicious
+
+<br /><br />
 
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-option9.png)
 
