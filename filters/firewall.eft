@@ -1,7 +1,7 @@
 ############################################################################
 #                                                                          #
 #  HTTPS Request/Response Filter                                           #
-#  based on code from ALoR & NaGA  (contains: 946 instructions/rules)      #
+#  based on code from ALoR & NaGA  (contains: 954 instructions/rules)      #
 #                                                                          #
 #  This program is free software; you can redistribute it and/or modify    #
 #  it under the terms of the GNU General Public License as published by    #
@@ -43,14 +43,12 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 22) {
          msg("[morpheus] | status: SSH login detected!");
          msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ssh_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./ssh_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: SSH login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ssh_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./ssh_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
@@ -69,14 +67,12 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 23) {
          msg("[morpheus] | status: TELNET login detected!");
          msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./telnet_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: TELNET login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./telnet_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
@@ -95,14 +91,12 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 80) {
           msg("[morpheus] | status: HTTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/http_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./http_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: HTTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/http_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./http_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
@@ -127,12 +121,12 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 3389) {
 #
 #
 # [ IF YOU WANT TO BE PARANOIC, LEAVE THIS FUNTION AS IT IS ]...
-# AND BE PREPARED TO DEAL WITH MANY PORT:53 TERMINAL OUTPUTS.
+# AND BE PREPARED TO DEAL WITH MANY PORT:53/67 TERMINAL OUTPUTS.
 # IF NOT THEN YOU NEED TO COMMENT ( # ) THIS ENTIRE PARANOIC FUNTION
 #
 #
+# DHCP: requests, discovery...
 if (ip.src == 'TaRONE' && ip.proto == UDP && udp.dst == 67) {
-  # DHCP: 192.168.1.67 respond to router (my is ip IS... my hostname IS...)
   if (search(DATA.data, "hOst")) {
     msg("\n[morpheus] host:0.0.0.0        [ ⊶  ]  found...");
     msg("[morpheus] | status: DHCP request TO modem!");
@@ -159,7 +153,7 @@ if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
         }else{
         if (search(DATA.data, "clients4.google")) {
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
-          msg("[morpheus] | status: DNS remote connection found!");
+          msg("[morpheus] | status: DNS remote query found!");
           msg("[morpheus] |  info : normal connection from source!");
           msg("[morpheus] |  hex  : 63 6c 69 65 6e 74 73 34 2e 67 6f 6f 67 6c 65");
           msg("[morpheus] |_ decoded: clients4.google\n");
@@ -194,35 +188,30 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 21) {
           msg("[morpheus] | status: FTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ftp_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./ftp_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: FTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ftp_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./ftp_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: FTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
        }else{
-        # log credentials into morpheus/logs/ftp_creds.log
         if (regex(DECODED.data, ".*user.*")) {
          log(DECODED.data, "./ftp_creds.log");
           msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
           msg("[morpheus] | status: FTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ftp_creds.log
         if (regex(DECODED.data, ".*USER.*")) {
          log(DECODED.data, "./ftp_creds.log");
           msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
           msg("[morpheus] | status: FTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ftp_creds.log
         if (regex(DECODED.data, ".*USERNAME.*")) {
          log(DECODED.data, "./ftp_creds.log");
           msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
@@ -247,35 +236,30 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 23) {
           msg("[morpheus] | status: TELNET login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./telnet_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: TELNET login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./telnet_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: TELNET login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
        }else{
-        # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*user.*")) {
          log(DECODED.data, "./telnet_creds.log");
           msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
           msg("[morpheus] | status: TELNET login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*USER.*")) {
          log(DECODED.data, "./telnet_creds.log");
           msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
           msg("[morpheus] | status: TELNET login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*USERNAME.*")) {
          log(DECODED.data, "./telnet_creds.log");
           msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
@@ -297,35 +281,30 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 80) {
           msg("[morpheus] | status: HTTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/http_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./http_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: HTTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/http_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./http_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: HTTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
        }else{
-        # log credentials into morpheus/logs/http_creds.log
         if (regex(DECODED.data, ".*user.*")) {
          log(DECODED.data, "./http_creds.log");
           msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
           msg("[morpheus] | status: HTTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/http_creds.log
         if (regex(DECODED.data, ".*USER.*")) {
          log(DECODED.data, "./http_creds.log");
           msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
           msg("[morpheus] | status: HTTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/http_creds.log
         if (regex(DECODED.data, ".*USERNAME.*")) {
          log(DECODED.data, "./http_creds.log");
           msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
@@ -358,35 +337,30 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 445) {
           msg("[morpheus] | status: SMB login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/smb_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./smb_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: SMB login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/smb_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./smb_creds.log");
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: SMB login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
        }else{
-        # log credentials into morpheus/logs/smb_creds.log
         if (regex(DECODED.data, ".*user.*")) {
          log(DECODED.data, "./smb_creds.log");
           msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
           msg("[morpheus] | status: SMB login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/smb_creds.log
         if (regex(DECODED.data, ".*USER.*")) {
          log(DECODED.data, "./smb_creds.log");
           msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
           msg("[morpheus] | status: SMB login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/smb_creds.log
         if (regex(DECODED.data, ".*USERNAME.*")) {
          log(DECODED.data, "./smb_creds.log");
           msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
@@ -401,7 +375,7 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 445) {
 }
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 3389) {
   msg("\n[morpheus] host:TaRONE   [ <- ]  port:3389 rdp ☠");
-  msg("[morpheus] | status: remote desktop protocol connection!");
+  msg("[morpheus] | status: remote desktop connection found!");
   msg("[morpheus] |_ info : rdp its commonly used by hackers.\n");
 }
 #
@@ -412,21 +386,21 @@ if (ip.dst == 'TaRONE' && ip.proto == UDP && udp.src == 53) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:53 dns ☠");
     if (search(DATA.data, "bbjj.househot.com")) {
       msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
-      msg("[morpheus] | status: DNS remote connection found!");
+      msg("[morpheus] | status: DNS remote query found!");
       msg("[morpheus] |  info : possible Mocbot IRC Bot (MS06-040)");
       msg("[morpheus] |  hex  : 62 62 6a 6a 2e 68 6f 75 73 65 68 6f 74 2e 63 6f 6d");
       msg("[morpheus] |_ decoded: bbjj.househot.com\n");
     }else{
     if (search(DATA.data, "ypgw.wallloan.com")) {
       msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
-      msg("[morpheus] | status: DNS remote connection found!");
+      msg("[morpheus] | status: DNS remote query found!");
       msg("[morpheus] |  info : possible Mocbot IRC Bot (MS06-040)");
       msg("[morpheus] |  hex  : 79 70 67 77 2e 77 61 6c 6c 6c 6f 61 6e 2e 63 6f 6d");
       msg("[morpheus] |_ decoded: ypgw.wallloan.com\n");
     }else{
     if (search(DATA.data, "clients4.google")) {
       msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
-      msg("[morpheus] | status: DNS remote connection found!");
+      msg("[morpheus] | status: DNS remote query found!");
       msg("[morpheus] |  info : normal connection from source!");
       msg("[morpheus] |  hex  : 63 6c 69 65 6e 74 73 34 2e 67 6f 6f 67 6c 65");
       msg("[morpheus] |_ decoded: clients4.google\n");
@@ -434,9 +408,7 @@ if (ip.dst == 'TaRONE' && ip.proto == UDP && udp.src == 53) {
     }
     }
 }
-#
 # [ Reporting venom/metasploit/bots possible ports ]...
-#
 if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 666) {
   msg("\n[morpheus] host:TaRONE   [ ⊶  ]  port:666 rat ☠");
   msg("[morpheus] | status: possible rat agent found!");
@@ -447,9 +419,10 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 4444) {
   msg("[morpheus] | status: possible rat agent found!");
   msg("[morpheus] |_ info : metasploit uses this port in is rat agents.\n");
 }
-#
 # [ END OF PARANOIC FUNTION ]...
-#
+
+
+
 
 
 
@@ -474,14 +447,12 @@ if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 22) {
          msg("[morpheus] | status: SSH login detected!");
          msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ssh_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./ssh_creds.log");
           msg("\n[morpheus] host:TaRTWO   [ ⊶  ]  found...");
           msg("[morpheus] | status: SSH login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ssh_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./ssh_creds.log");
           msg("\n[morpheus] host:TaRTWO   [ ⊶  ]  found...");
@@ -503,14 +474,12 @@ if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 80) {
          msg("[morpheus] | status: HTTP login detected!");
          msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/http_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./http_creds.log");
           msg("\n[morpheus] host:TaRTWO   [ ⊶  ]   found...");
           msg("[morpheus] | status: HTTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/http_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./http_creds.log");
           msg("\n[morpheus] host:TaRTWO   [ ⊶  ]  found...");
@@ -530,10 +499,11 @@ if (ip.src == 'TaRTWO' && ip.proto == TCP && tcp.dst == 445) {
   msg("[morpheus] host:TaRTWO   [ -> ]  port:445 netbios ☠");
 }
 #
-# PARANOIC FUNTION
+# IF YOU WANT TO BE PARANOIC, LEAVE THIS FUNTION AS IT IS ...
+# IF NOT THEN YOU NEED TO COMMENT ( # ) THIS ENTIRE PARANOIC FUNTION
 #
+# DHCP: requests, discovery...
 if (ip.src == 'TaRTWO' && ip.proto == UDP && udp.dst == 67) {
-  # DHCP: 192.168.1.97 respond to router (my is ip IS... my hostname IS...)
   if (search(DATA.data, "android-d3d4ee5705593d227")) {
     msg("\n[morpheus] host:TaRTWO  [ ⊶  ]  found...");
     msg("[morpheus] | status: DHCP request TO modem!");
@@ -635,35 +605,30 @@ if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 21) {
           msg("[morpheus] | status: FTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ftp_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./ftp_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: FTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ftp_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./ftp_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: FTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
        }else{
-        # log credentials into morpheus/logs/ftp_creds.log
         if (regex(DECODED.data, ".*user.*")) {
          log(DECODED.data, "./ftp_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: FTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ftp_creds.log
         if (regex(DECODED.data, ".*USER.*")) {
          log(DECODED.data, "./ftp_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: FTP login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ftp_creds.log
         if (regex(DECODED.data, ".*USERNAME.*")) {
          log(DECODED.data, "./ftp_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
@@ -685,35 +650,30 @@ if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 22) {
           msg("[morpheus] | status: SSH login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ssh_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./ssh_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: SSH login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ssh_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./ssh_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: SSH login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
        }else{
-        # log credentials into morpheus/logs/ssh_creds.log
         if (regex(DECODED.data, ".*user.*")) {
          log(DECODED.data, "./ssh_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: SSH login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ssh_creds.log
         if (regex(DECODED.data, ".*USER.*")) {
          log(DECODED.data, "./ssh_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: SSH login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/ssh_creds.log
         if (regex(DECODED.data, ".*USERNAME.*")) {
          log(DECODED.data, "./ssh_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
@@ -735,35 +695,30 @@ if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 23) {
           msg("[morpheus] | status: TELNET login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./telnet_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: TELNET login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./telnet_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: TELNET login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*user.*")) {
          log(DECODED.data, "./telnet_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: TELNET login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*USER.*")) {
          log(DECODED.data, "./telnet_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: TELNET login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/telnet_creds.log
         if (regex(DECODED.data, ".*USERNAME.*")) {
          log(DECODED.data, "./telnet_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
@@ -794,35 +749,30 @@ if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 445) {
           msg("[morpheus] | status: SMB login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/smb_creds.log
         if (regex(DECODED.data, ".*PASSWORD.*")) {
          log(DECODED.data, "./smb_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: SMB login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/smb_creds.log
         if (regex(DECODED.data, ".*PASS.*")) {
          log(DECODED.data, "./smb_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: SMB login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/smb_creds.log
         if (regex(DECODED.data, ".*user.*")) {
          log(DECODED.data, "./smb_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: SMB login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/smb_creds.log
         if (regex(DECODED.data, ".*USER.*")) {
          log(DECODED.data, "./smb_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: SMB login detected!");
           msg("[morpheus] |_ info : credentials found, log stored ✔\n");
         }else{
-        # log credentials into morpheus/logs/smb_creds.log
         if (regex(DECODED.data, ".*USERNAME.*")) {
          log(DECODED.data, "./smb_creds.log");
           msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
@@ -836,12 +786,12 @@ if (ip.dst == 'MoDeM' && ip.proto == TCP && tcp.dst == 445) {
         }
 }
 #
+# IF YOU WANT TO BE PARANOIC, LEAVE THIS FUNTION AS IT IS ...
+# IF NOT THEN YOU NEED TO COMMENT ( # ) THIS ENTIRE PARANOIC FUNTION
+#
 # DHCP DISCOVER: what devices (smartphones) are anuncing is presence to modem.
 # Its writen to identify my phones, but it will report the connection of androids too.
-# This funtion may also help us identify ARP poison attacks (many requests)
-# 
 if (ip.src == '0.0.0.0' && ip.proto == UDP && udp.dst == 67) {
-  # DHCP: 192.168.1.95 respond to router (my is ip IS... my hostname IS...)
   if (search(DATA.data, "android-7f926b4b94fd40c17")) {
     msg("\n[morpheus] host:0.0.0.0        [ ⊶  ]  found...");
     msg("[morpheus] | status: DHCP request TO modem!");
@@ -849,15 +799,6 @@ if (ip.src == '0.0.0.0' && ip.proto == UDP && udp.dst == 67) {
     msg("[morpheus] |  info : android_pedr0 anunces is presence ✔");
     msg("[morpheus] |_ name : android-7f926b4b94fd40c17\n");
   }else{
-  # DHCP: 192.168.1.97 respond to router (my is ip IS... my hostname IS...)
-  if (search(DATA.data, "android-d3d4ee5705593d227")) {
-    msg("\n[morpheus] host:0.0.0.0        [ ⊶  ]  found...");
-    msg("[morpheus] | status: DHCP request TO modem!");
-    msg("[morpheus] |  port : 67/UDP(dst) bootp-DHCP ✔");
-    msg("[morpheus] |  info : android carlos anunces is presence ✔");
-    msg("[morpheus] |_ name : android-d3d4ee5705593d227\n");
-  }else{
-  # DHCP: ???.???.?? respond to router (my is ip IS... my hostname IS...)
   if (search(DATA.data, "android")) {
     msg("\n[morpheus] host:0.0.0.0        [ ⊶  ]  found...");
     msg("[morpheus] | status: DHCP request TO modem!");
@@ -866,14 +807,8 @@ if (ip.src == '0.0.0.0' && ip.proto == UDP && udp.dst == 67) {
     msg("[morpheus] |_ name : android-???\n");
     }
     }
-    }
 }
-#
-# IF YOU WANT TO BE PARANOIC, LEAVE THIS FUNTION AS IT IS ...
-# IF NOT THEN YOU NEED TO COMMENT ( # ) THIS ENTIRE PARANOIC FUNTION
-# DETECTS: the presence of darkcomet rat connections...
-# article: https://www.recordedfuture.com/darkcomet-rat-analysis/
-#
+# DNS: requests, discovery...
 if (ip.dst == 'MoDeM' && ip.proto == UDP && udp.dst == 53) {
   msg("[morpheus] host:MoDeM  [ <- ]  port:53 dns ☠");
         if (search(DATA.data, "burtproperties.com")) {
@@ -896,9 +831,25 @@ if (ip.dst == 'MoDeM' && ip.proto == UDP && udp.dst == 53) {
           msg("[morpheus] |  info : DarkComet RAT controller!");
           msg("[morpheus] |  hex  : 73 68 61 64 6f 77 73 2e 73 79 74 65 73 2e 6e 65 74");
           msg("[morpheus] |_ decoded: shadows.sytes.net\n");
-        }
-        }
-        }
+       }else{
+       if (search(DATA.data, "www.google.pt")) {
+         msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
+         msg("[morpheus] | status: DNS remote query found!");
+         msg("[morpheus] |  info : normal connection from source!");
+         msg("[morpheus] |  hex  : 63 6c 69 65 6e 74 73 34 2e 67 6f 6f 67 6c 65");
+         msg("[morpheus] |_ decoded: www.google.pt\n");
+       }else{
+       if (search(DATA.data, "www.youtube.com")) {
+         msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
+         msg("[morpheus] | status: DNS remote query found!");
+         msg("[morpheus] |  info : normal connection from source!");
+         msg("[morpheus] |  hex  : 63 6c 69 65 6e 74 73 34 2e 67 6f 6f 67 6c 65");
+         msg("[morpheus] |_ decoded: www.youtube.com\n");
+       }
+       }
+       }
+       }
+       }
 }
 # [ END OF PARANOIC FUNTION ]...
 
