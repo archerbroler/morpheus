@@ -488,11 +488,13 @@ fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose fi
   ed=`hostname`
   echo "$ed"7 > /tmp/test
   hOstNaMe=`cat /tmp/test`
+  dIsd=`uname -r`
   # replace values in template.filter with sed bash command
   sed -i "s|TaRONE|$fil_one|g" firewall.eft # NO dev/null to report file not existence :D
   sed -i "s|TaRTWO|$fil_two|g" firewall.eft > /dev/null 2>&1
   sed -i "s|hOst|$hOstNaMe|g" firewall.eft > /dev/null 2>&1
   sed -i "s|MoDeM|$GaTe|g" firewall.eft > /dev/null 2>&1
+  sed -i "s|DisTr|$dIsd|g" firewall.eft > /dev/null 2>&1
   rm /tmp/test /dev/null 2>&1
   cd $IPATH
   zenity --info --title="☠ MORPHEUS SCRIPTING CONSOLE ☠" --text "morpheus framework now gives you\nthe oportunity to just run the filter\nOR to scripting it further...\n\n'Have fun scripting it further'..." --width 270 > /dev/null 2>&1

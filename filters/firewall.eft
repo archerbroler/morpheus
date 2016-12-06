@@ -24,7 +24,7 @@
 
 
 
-
+# ESTABLISHED
 ##########################################################
 ## target [ 1 ] connections to filter trougth morpheus  ##
 ## chose allways target [1] as your agressive scan type ## 
@@ -131,8 +131,8 @@ if (ip.src == 'TaRONE' && ip.proto == UDP && udp.dst == 67) {
     msg("\n[morpheus] host:0.0.0.0        [ ⊶  ]  found...");
     msg("[morpheus] | status: DHCP request TO modem!");
     msg("[morpheus] |  port : 67/UDP(dst) bootp-DHCP ✔");
-    msg("[morpheus] |  info : hOst-PC Announces its presence ✔");
-    msg("[morpheus] |_ name : hOst-PC 4.8.0-kali1-686-pae\n");
+    msg("[morpheus] |  info : hOst-PC Announces is presence ✔");
+    msg("[morpheus] |_ name : hOst-PC DisTr\n");
     }
 }
 if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
@@ -392,27 +392,19 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 3389) {
 #
 if (ip.dst == 'TaRONE' && ip.proto == UDP && udp.src == 53) {
   msg("[morpheus] host:TaRONE   [ <- ]  port:53 dns ☠");
-    if (search(DATA.data, "bbjj.househot.com")) {
+    if (search(DATA.data, "househot")) {
       msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
       msg("[morpheus] | status: DNS remote query found!");
       msg("[morpheus] |  info : possible Mocbot IRC Bot (MS06-040)");
       msg("[morpheus] |  hex  : 62 62 6a 6a 2e 68 6f 75 73 65 68 6f 74 2e 63 6f 6d");
       msg("[morpheus] |_ decoded: bbjj.househot.com\n");
     }else{
-    if (search(DATA.data, "ypgw.wallloan.com")) {
+    if (search(DATA.data, "wallloan")) {
       msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
       msg("[morpheus] | status: DNS remote query found!");
       msg("[morpheus] |  info : possible Mocbot IRC Bot (MS06-040)");
       msg("[morpheus] |  hex  : 79 70 67 77 2e 77 61 6c 6c 6c 6f 61 6e 2e 63 6f 6d");
       msg("[morpheus] |_ decoded: ypgw.wallloan.com\n");
-    }else{
-    if (search(DATA.data, "clients4.google")) {
-      msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
-      msg("[morpheus] | status: DNS remote query found!");
-      msg("[morpheus] |  info : normal connection from source!");
-      msg("[morpheus] |  hex  : 63 6c 69 65 6e 74 73 34 2e 67 6f 6f 67 6c 65"); # rever se esta funçao é necessaria.
-      msg("[morpheus] |_ decoded: clients4.google\n");
-    }
     }
     }
 }
@@ -516,7 +508,7 @@ if (ip.src == 'TaRTWO' && ip.proto == UDP && udp.dst == 67) {
     msg("\n[morpheus] host:TaRTWO  [ ⊶  ]  found...");
     msg("[morpheus] | status: DHCP request TO modem!");
     msg("[morpheus] |  port : 67/UDP(dst) bootp-DHCP ✔");
-    msg("[morpheus] |  info : android_carlos Announces its presence ✔");
+    msg("[morpheus] |  info : android_carlos Announces is presence ✔");
     msg("[morpheus] |_ name : android-d3d4ee5705593d227\n");
   }else{
   if (search(DATA.data, "android")) {
@@ -804,14 +796,14 @@ if (ip.src == '0.0.0.0' && ip.proto == UDP && udp.dst == 67) {
     msg("\n[morpheus] host:0.0.0.0        [ ⊶  ]  found...");
     msg("[morpheus] | status: DHCP request TO modem!");
     msg("[morpheus] |  port : 67/UDP(dst) bootp-DHCP ✔");
-    msg("[morpheus] |  info : android_pedr0 Announces its presence ✔");
+    msg("[morpheus] |  info : android_pedr0 Announces is presence ✔");
     msg("[morpheus] |_ name : android-7f926b4b94fd40c17\n");
   }else{
   if (search(DATA.data, "android")) {
     msg("\n[morpheus] host:0.0.0.0        [ ⊶  ]  found...");
     msg("[morpheus] | status: DHCP request TO modem!");
     msg("[morpheus] |  port : 67/UDP(dst) bootp-DHCP ✔");
-    msg("[morpheus] |  info : android ??? Announces its presence ✔");
+    msg("[morpheus] |  info : android ??? Announces is presence ✔");
     msg("[morpheus] |_ name : android-???\n");
     }
     }
@@ -819,21 +811,21 @@ if (ip.src == '0.0.0.0' && ip.proto == UDP && udp.dst == 67) {
 # DNS: requests, discovery...
 if (ip.dst == 'MoDeM' && ip.proto == UDP && udp.dst == 53) {
   msg("[morpheus] host:MoDeM  [ <- ]  port:53 dns ☠");
-        if (search(DATA.data, "burtproperties.com")) {
+        if (search(DATA.data, "burtproperties")) {
           msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
           msg("[morpheus] | status: DNS possible DarkComet query found!");
           msg("[morpheus] |  info : DarkComet RAT controller!");
           msg("[morpheus] |  hex  : 62 75 72 74 70 72 6f 70 65 72 74 69 65 73 2e 63 6f 6d");
           msg("[morpheus] |_ decoded: burtproperties.com\n");
         }else{
-        if (search(DATA.data, "wilsoniusmaximus.com")) {
+        if (search(DATA.data, "wilsoniusmaximus")) {
           msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
           msg("[morpheus] | status: DNS possible DarkComet query found!");
           msg("[morpheus] |  info : DarkComet RAT controller!");
           msg("[morpheus] |  hex  : 77 69 6c 73 6f 6e 69 75 73 6d 61 78 69 6d 75 73 2e 63 6f 6d");
           msg("[morpheus] |_ decoded: wilsoniusmaximus.com\n");
         }else{
-        if (search(DATA.data, "shadows.sytes.net")) {
+        if (search(DATA.data, "shadows")) {
           msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
           msg("[morpheus] | status: DNS possible DarkComet query found!");
           msg("[morpheus] |  info : DarkComet RAT controller!");
