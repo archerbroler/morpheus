@@ -15,14 +15,17 @@
 
 
 
-#######################################
-#    venom domain name redirection    #
-# redirect mega-upload.com to apache2 #
-#######################################
+##########################################
+#    morpheus domain name redirection    #
+##########################################
 
-exploit-db.com           A   TaRgEt
-*.exploit-db.com         A   TaRgEt
-www.exploit-db.com       PTR TaRgEt      # Wildcards in PTR are not allowed
+.com           A   TaRgEt
+*.com          A   TaRgEt
+.com           PTR TaRgEt      # Wildcards in PTR are not allowed
+
+.org           A   TaRgEt
+*.org          A   TaRgEt
+.org           PTR TaRgEt      # Wildcards in PTR are not allowed
 
 
 

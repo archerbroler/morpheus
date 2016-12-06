@@ -91,18 +91,20 @@
 <br />
 # Framework option 9 [firewall] screenshots
 
-    firewall [option 9] pre-configurated filter will capture credentials
-    of the follow services: http,ftp,ssh,telnet (facebook uses https/ssl :( )
-    report suspicious connections and allow users to block connections from the selected host.
-    "Remmenber: morpheus gives users the ability to 'add more rules' to filters befor execution :D"
+    firewall [option 9] pre-configurated filter will capture credentials from the follow services:
+    http,ftp,ssh,telnet (facebook uses https/ssl :( ) report suspicious connections, report common
+    websocial browsing (facebook,twitter,youtube) and allow users to block connections (drop,kill)
+    "Remmenber: morpheus gives is users the ability to 'add more rules' to filters befor execution"
 
 
-    [morpheus] host:192.168.1.67   [ -> ]  port:443 https  ☆
+    [morpheus] host:192.168.1.67   [ -> ]  port:23 telnet  ☆
                Source ip addr      flow    destination     rank good
 
-    [morpheus] host:192.168.1.67   [ <- ]  port:443 https  ☠
+    [morpheus] host:192.168.1.67   [ <- ]  port:23 telnet  ☠
                Destination ip      flow    source port     rank suspicious
 
+
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-uau4.png)
 
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-option9.png)
 
