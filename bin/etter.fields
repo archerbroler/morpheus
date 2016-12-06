@@ -28,6 +28,8 @@ ahd_username
 unickname
 nickname
 user
+USER
+USERNAME
 user_name
 alias
 pseudo
@@ -66,6 +68,8 @@ sign-in
 
 ahd_password
 pass
+PASS
+PASSWORD
 password
 _password
 passwd

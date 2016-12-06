@@ -91,7 +91,8 @@
 
     firewall [option 9] pre-configurated filter will capture credentials from the follow services:
     http,ftp,ssh,telnet (facebook uses https/ssl :( ) report suspicious connections, report common
-    websocial browsing (facebook,twitter,youtube) and allow users to block connections (drop,kill)
+    websocial browsing (facebook,twitter,youtube), report the existence of botnet connections like:
+    Mocbot IRC Bot, Darkcomet, redirect browser traffic and allow users to block connections (drop,kill) 
     "Remmenber: morpheus gives is users the ability to 'add more rules' to filters befor execution"
 
     [morpheus] host:192.168.1.67   [ -> ]  port:23 telnet  ☆
@@ -112,6 +113,8 @@
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-creds1.png)
 
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/gtf.png)
+
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-ircbot.png)
 
 > Basically firewall filter will act like one offensive and defensive tool analyzing the
 <br />
