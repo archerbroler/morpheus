@@ -18,10 +18,9 @@
     consent its illegal and punished by law.
 
 # Framework description
-    morpheus framework automates tcp/udp packet manipulation tasks by using
-    ettercap filters to manipulate target http requests under MitM attacks
-    replacing the http packet contents by our own contents befor sending the
-    packet back to the host that have requested for it (tcp/ip hijacking).
+    morpheus framework automates tcp/udp packet manipulation tasks by using etter filters
+    to manipulate target requests/responses under MitM attacks replacing the tcp/udp packet
+    contents by our contents befor forward the packet back to the target host...
 
     workflow:
     1º - attacker -> arp poison local lan (mitm)
@@ -29,18 +28,17 @@
     3º - attacker -> modifies webpage response (contents)
     4º - attacker -> modified packet its forward back to target host
 
-    morpheus ships with some pre-configurated filters but it will allow users
-    to improve them when lunching the attack (morpheus scripting console).
-    In the end of the attack morpheus will revert the filter back to is default
-    stage, this will allow users to improve filters at running time without
-    the fear of messing with filter command syntax and spoil the filter...
+    morpheus ships with some pre-configurated filters but it will allow users to improve them
+    when lunching the attack (morpheus scripting console). In the end of the attack morpheus
+    will revert the filter back to is default stage, this will allow users to improve filters
+    at running time without the fear of messing with filter command syntax and spoil the filter.
 
     "Perfect for scripting fans to safely test new concepts"...
 
 
 # What can we acomplish by using filters?
     morpheus ships with a collection of etter filters writen be me to acomplish various tasks:
-    replacing images in webpages, replace text in webpages, inject payloads using html <form> tag
+    replacing images in webpages, replace text in webpages, inject payloads using html <form> tag,
     denial-of-service attacks (drop,kill packets from source), https/ssh downgrade attacks,
     redirect target browser traffic to another domain and gives you the ability to build
     compile your filter from scratch and lunch it through morpheus framework (option W).
@@ -48,7 +46,7 @@
     "filters can be extended using browser languages like: javascript,css,flash,etc"...
 
 
-> In this example we are using '<head> HTML tag' to inject an rediretion url into target request
+> In this example we are using "<head> HTML tag" to inject an rediretion url in target request
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-refresh.png)
 > In this example we are using 'CSS3' to trigger webpage 180º rotation
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-css.png)
@@ -95,7 +93,6 @@
     http,ftp,ssh,telnet (facebook uses https/ssl :( ) report suspicious connections, report common
     websocial browsing (facebook,twitter,youtube) and allow users to block connections (drop,kill)
     "Remmenber: morpheus gives is users the ability to 'add more rules' to filters befor execution"
-
 
     [morpheus] host:192.168.1.67   [ -> ]  port:23 telnet  ☆
                Source ip addr      flow    destination     rank good
