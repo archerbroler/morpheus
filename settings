@@ -61,7 +61,9 @@ ETTER_FIEL=/usr/share/ettercap/etter.fields
 
 
 
-### apache2 webroot
+### APACHE2 WEBROOT (PATH)
+# just change the next values to point to
+# your apache2 webroot install folders.
 ---------------------
 AP_PATH=/var/www/html
 ---------------------
