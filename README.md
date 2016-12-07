@@ -76,7 +76,7 @@
 <br />
 
 # Dependencies
-    ettercap, nmap, zenity
+    ettercap, nmap, apache2, zenity
 
 # Credits
     alor&naga (ettercap framework)  | fyodor (nmap framework)

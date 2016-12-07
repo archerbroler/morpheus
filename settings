@@ -59,3 +59,12 @@ ETTER_FIEL=/usr/share/ettercap/etter.fields
 -------------------------------------------
 
 
+
+
+### apache2 webroot
+---------------------
+AP_PATH=/var/www/html
+---------------------
+
+
+_EOF

@@ -812,21 +812,21 @@ if (ip.src == '0.0.0.0' && ip.proto == UDP && udp.dst == 67) {
 if (ip.dst == 'MoDeM' && ip.proto == UDP && udp.dst == 53) {
   msg("[morpheus] host:MoDeM  [ <- ]  port:53 dns ☠");
         if (search(DATA.data, "burtproperties")) {
-          msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
+          msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: DNS possible DarkComet query found!");
           msg("[morpheus] |  info : DarkComet RAT controller!");
           msg("[morpheus] |  hex  : 62 75 72 74 70 72 6f 70 65 72 74 69 65 73 2e 63 6f 6d");
           msg("[morpheus] |_ decoded: burtproperties.com\n");
         }else{
         if (search(DATA.data, "wilsoniusmaximus")) {
-          msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
+          msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: DNS possible DarkComet query found!");
           msg("[morpheus] |  info : DarkComet RAT controller!");
           msg("[morpheus] |  hex  : 77 69 6c 73 6f 6e 69 75 73 6d 61 78 69 6d 75 73 2e 63 6f 6d");
           msg("[morpheus] |_ decoded: wilsoniusmaximus.com\n");
         }else{
         if (search(DATA.data, "shadows")) {
-          msg("\n[morpheus] host:MoDeM   [ ⊶  ]  found...");
+          msg("\n[morpheus] host:MoDeM  [ ⊶  ]  found...");
           msg("[morpheus] | status: DNS possible DarkComet query found!");
           msg("[morpheus] |  info : DarkComet RAT controller!");
           msg("[morpheus] |  hex  : 73 68 61 64 6f 77 73 2e 73 79 74 65 73 2e 6e 65 74");
