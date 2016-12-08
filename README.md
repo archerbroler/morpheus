@@ -54,17 +54,18 @@
 
 # Framework limitations
     1º - morpheus will fail if target system its protected againt arp poison atacks
-    2º - downgrade attacks will fail if browser target as installed no-http addon's
+    2º - downgrade attacks will fail if browser target as installed only-https addon's
     3º - target system sometimes needs to clear netcache for arp poison to be effective
+    4º - many attacks described in morpheus may be droped by target HSTS detection sys.
 
-> 4º - incorrect number of token (///) in TARGET !!
+> 5º - incorrect number of token (///) in TARGET !!
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-error1.png)
 
     morpheus by default will run ettercap using IPv6 (USE_IPV6=ACTIVE) like its previous
     configurated into the 'settings' file, if you are reciving this error edit settings
     file befor runing morpheus and set (USE_IPV6=DISABLED) to force ettercap to use IPV4
 
-> 5º - morpheus needs ettercap to be executed with higth privileges (uid 0 | gid 0).
+> 6º - morpheus needs ettercap to be executed with higth privileges (uid 0 | gid 0).
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-sslBug.png)
 
 > correct ettercap configuration display (running as Admin without ssl disectors active)
