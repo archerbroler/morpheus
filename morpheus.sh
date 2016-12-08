@@ -152,7 +152,7 @@ InT3R=`netstat -r | grep "default" | awk {'print $8'}` # grab interface in use
 case $DiStR0 in
     Kali) IP=`ifconfig $InT3R | egrep -w "inet" | awk '{print $2}'`;;
     Debian) IP=`ifconfig $InT3R | egrep -w "inet" | awk '{print $2}'`;;
-    Ubuntu) IP=`ifconfig $InT3R | egrep -w "inet" | cut -d ':' -f2 | cut -d 'B' -f1`;;
+    Ubuntu) IP=`ifconfig $InT3R | egrep -w "inet" | awk {'print $2'} | cut -d ':' -f2`;;
     Parrot) IP=`ifconfig $InT3R | egrep -w "inet" | cut -d ':' -f2 | cut -d 'B' -f1`;;
     BackBox) IP=`ifconfig $InT3R | egrep -w "inet" | cut -d ':' -f2 | cut -d 'B' -f1`;;
     elementary) IP=`ifconfig $InT3R | egrep -w "inet" | cut -d ':' -f2 | cut -d 'B' -f1`;;
