@@ -1072,7 +1072,7 @@ cat << !
 echo ${BlueF}"    VERSION:${YellowF}$V3R${BlueF} DISTRO:${YellowF}$DiStR0${BlueF} IP:${YellowF}$IP${BlueF} INTERFACE:${YellowF}$InT3R${BlueF} IPv6:${YellowF}$IpV"${BlueF}
 cat << !
     ╔────────╦──────────────────────────────────────────────────────────╗
-    | OPTION |                 DESCRIPTION(filters)               v:$V3R |
+    | OPTION |                 DESCRIPTION(filters)                     |
     ╠────────╩──────────────────────────────────────────────────────────╣
     |   1    -  Firewall filter tcp/udp          [report/capture_creds] |
     |   2    -  Sidejacking (http)               [capture auth cookie ] |
