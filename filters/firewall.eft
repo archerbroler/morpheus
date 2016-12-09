@@ -153,6 +153,13 @@ if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
           msg("[morpheus] |  hex  : 65 64 67 65 2d 63 68 61 74 08 66 61 63 65 62 6f 6f 6b 03 6f 6d");
           msg("[morpheus] |_ decoded: edge-chat.facebook.com\n");
         }else{
+        if (search(DATA.data, "hotmail")) {
+          msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
+          msg("[morpheus] | status: DNS possible hotmail query found!");
+          msg("[morpheus] |  info : normal connection from source!");
+          msg("[morpheus] |  hex  : 77 77 77 2e 68 6f 74 6d 61 69 6c 2e 63 6f 6d");
+          msg("[morpheus] |_ decoded: www.hotmail.com\n");
+        }else{
         if (search(DATA.data, "twitter")) {
           msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
           msg("[morpheus] | status: DNS remote query found!");
@@ -173,6 +180,7 @@ if (ip.src == 'TaRONE' && ip.proto == UDP && tcp.dst == 53) {
           msg("[morpheus] |  info : normal connection? scan-type? arp-poison?");
           msg("[morpheus] |  hex  : 64 64 62 04 61 72 70 61");
           msg("[morpheus] |_ decoded: ddr.arpa\n");
+       }
        }
        }
        }
