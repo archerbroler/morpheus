@@ -88,9 +88,9 @@
 
 
 <br />
-# Framework option 9 [firewall] screenshots
+# Framework option 1 [firewall] screenshots
 
-    firewall [option 9] pre-configurated filter will capture credentials from the follow services:
+    firewall [option 1] pre-configurated filter will capture credentials from the follow services:
     http,ftp,ssh,telnet (facebook uses https/ssl :( ) report suspicious connections, report common
     websocial browsing (facebook,twitter,youtube), report the existence of botnet connections like:
     Mocbot IRC Bot, Darkcomet, redirect browser traffic and allow users to block connections (drop,kill) 
