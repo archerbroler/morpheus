@@ -1102,6 +1102,8 @@ case $choice in
 2) sh_stage2 ;;
 3) sh_stage3 ;;
 4) sh_stage4 ;;
+5) sh_stage5 ;;
+6) sh_stage6 ;;
 10) sh_stage10 ;;
 11) sh_stage11 ;;
 W) sh_stageW ;;

