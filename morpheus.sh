@@ -1074,17 +1074,17 @@ cat << !
     ╔────────╦──────────────────────────────────────────────────────────╗
     | OPTION |                 DESCRIPTION(filters)                     |
     ╠────────╩──────────────────────────────────────────────────────────╣
-    |   1    -  Firewall filter tcp/udp          [report/capture_creds] |
-    |   2    -  Sidejacking (http)               [capture auth cookie ] |
-    |   3    -  Drop all packets from/to         [ packets drop,kill  ] |
+    |   1    -  Firewall filter (tcp/udp)        [report/capture_creds] |
+    |   2    -  Sidejacking cookie (http)        [capture auth cookies] |
+    |   3    -  Drop all packets (src/dst)       [ packets drop,kill  ] |
     |   4    -  Redirect browser traffic         [ to another domain  ] |
     |   5    -  Redirect browser traffic         [ to google sphere   ] |
     |   6    -  Inject backdoor into </body>     [ meterpreter.exe    ] |
     |   7    -  Replace website images           [ img src=http://www ] |
     |   8    -  Replace website text             [ replace: worlds    ] |
     |   9    -  Rotate website document 180º     [ CSS3 injection     ] |
-    |  10    -  https downgrade attack demo      [ replace: https     ] |
-    |  11    -  ssh downgrade attack demo        [ replace: SSH-1.99  ] |
+    |  10    -  https downgrade attack (demo)    [ replace: https     ] |
+    |  11    -  ssh downgrade attack (demo)      [ replace: SSH-1.99  ] |
     |                                                                   |
     |   W    -  Write your own filter            [ use morpheus tool  ] |
     |   S    -  Scan LAN for live hosts          [ use nmap framework ] |
