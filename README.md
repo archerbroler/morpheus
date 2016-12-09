@@ -113,6 +113,8 @@
 
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-creds1.png)
 
+![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/sidejacking.png)
+
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/gtf.png)
 
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-ircbot.png)

