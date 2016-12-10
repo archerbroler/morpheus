@@ -19,40 +19,9 @@
 
 
 #
-# just to be sure that target system its talking to LAN?
-#
-if (ip.src == 'TaRgEt' || ip.dst == 'TaRgEt') {
-  if (ip.proto == TCP && tcp.src == 443 || tcp.dst == 443) {
-    msg("[morpheus] host:TaRgEt   [ <> ]  port:443(tcp) https ☆");
-  }else{
-  if (ip.proto == TCP && tcp.src == 80 || tcp.dst == 80) {
-    msg("[morpheus] host:TaRgEt   [ <> ]  port:80(tcp) http ☆");
-  }else{
-  if (ip.proto == UDP && udp.src == 53 || udp.dst == 53) {
-    msg("[morpheus] host:TaRgEt   [ <> ]  port:53(udp) domain ☆");
-  }
-  }
-  }
-}
-
-
-
-#
-# Filter (drop/kill) packets from source ip addr.
-#
-if (ip.src == 'TaRgEt') {
-  msg("\n[morpheus] host:TaRgEt   [ ⊶  ]  found...");
-  msg("[morpheus] | status: block connection (src)!");
-  msg("[morpheus] |  info : drop target tcp/udp packet ✔");
-  msg("[morpheus] |_ info : kill target tcp/udp connection ✔\n");
- drop();
- drop();
-kill();
-}
-#
 # Filter (drop/kill) packets from destination ip addr.
 #
-if (ip.dst == 'TaRgEt') {
+if (ip.dst == 'TaRgEt' || ip.sc == 'TaRgEt') {
   msg("\n[morpheus] host:TaRgEt   [ ⊶  ]  found...");
   msg("[morpheus] | status: block connection (dst)!");
   msg("[morpheus] |  info : drop target tcp/udp packet ✔");
@@ -61,6 +30,19 @@ if (ip.dst == 'TaRgEt') {
  drop();
 kill();
 }
+#
+# just to be sure that target system its talking to LAN?
+#
+if (ip.src == 'TaRgEt' || ip.dst == 'TaRgEt') {
+  if (ip.proto == TCP && tcp.src == 443 || tcp.dst == 443) {
+    msg("[morpheus] host:TaRgEt   [ <> ]  port:443(tcp) https ☆");
+  }else{
+  if (ip.proto == TCP && tcp.src == 80 || tcp.dst == 80) {
+    msg("[morpheus] host:TaRgEt   [ <> ]  port:80(tcp) http ☆");
+  }
+  }
+}
+
 
 
 

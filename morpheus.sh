@@ -128,7 +128,7 @@ done
 # ---------------------
 dtr=`date | awk '{print $4}'`        # grab current hour
 V3R="1.7"                            # module version number
-cnm="Antidote"                       # module codename
+cnm="blue_dream"                       # module codename
 DiStR0=`awk '{print $1}' /etc/issue` # grab distribution -  Ubuntu or Kali
 IPATH=`pwd`                          # grab morpheus.sh install path
 GaTe=`ip route | grep "default" | awk {'print $3'}`     # gateway
@@ -233,7 +233,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
   cp $IPATH/filters/firewall.eft $IPATH/filters/firewall.rb > /dev/null 2>&1
   sleep 1
 
-  echo ${BlueF}[☠]${white} Edit firewall.eft '(filter)'${RedF}!${Reset};
+  echo ${BlueF}[☠]${white} Edit firewall.eft'[filter]'${RedF}!${Reset};
   sleep 1
 fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose first target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
   fil_two=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose last target to filter through morpheus.\nchose gateway ip, if you dont have any more targets." --entry --width 270) > /dev/null 2>&1
@@ -317,7 +317,7 @@ echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}    This module will display port 80(tcp) and port 443(https)     ${BlueF}|"
 echo "${BlueF}    | ${YellowF}  traffic from selected target host, And it will warn attacker    ${BlueF}|"
-echo "${BlueF}    | ${YellowF}  If any auth cookie its captured And stored 'sidejacking.log'    ${BlueF}|"
+echo "${BlueF}    | ${YellowF} If any auth cookie its captured And stored in 'sidejacking.log'  ${BlueF}|"
 echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
 echo ""
 sleep 2
@@ -334,7 +334,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
   cp $IPATH/filters/sidejacking.eft $IPATH/filters/sidejacking.rb > /dev/null 2>&1
   sleep 1
 
-  echo ${BlueF}[☠]${white} Edit sidejacking.eft '(filter)'${RedF}!${Reset};
+  echo ${BlueF}[☠]${white} Edit sidejacking.eft'[filter]'${RedF}!${Reset};
   sleep 1
  fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
   # replace values in template.filter with sed bash command
@@ -421,7 +421,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
   cp $IPATH/filters/packet_drop.eft $IPATH/filters/packet_drop.rb > /dev/null 2>&1
   sleep 1
 
-  echo ${BlueF}[☠]${white} Edit packet_drop.eft '(filter)'${RedF}!${Reset};
+  echo ${BlueF}[☠]${white} Edit packet_drop.eft'[filter]'${RedF}!${Reset};
   sleep 1
  fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
   # replace values in template.filter with sed bash command
@@ -809,7 +809,7 @@ echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
 cp $IPATH/filters/img_replace.eft $IPATH/filters/img_replace.rb > /dev/null 2>&1
 sleep 1
 
-  echo ${BlueF}[☠]${white} Edit img_replace.eft '(filter)'${RedF}!${Reset};
+  echo ${BlueF}[☠]${white} Edit img_replace.eft'[filter]'${RedF}!${Reset};
   sleep 1
  fil_one=$(zenity --title="☠ TARGET HOST ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
   # replace values in template.filter with sed bash command
@@ -899,7 +899,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
   cp $IPATH/filters/template.eft $IPATH/filters/template.rb > /dev/null 2>&1
   sleep 1
 
-  echo ${BlueF}[☠]${white} Edit template '(filter)'${RedF}!${Reset};
+  echo ${BlueF}[☠]${white} Edit template'[filter]'${RedF}!${Reset};
   xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/template.eft"
   sleep 1
 
@@ -973,8 +973,10 @@ if [ "$?" -eq "0" ]; then
   # grab ip range + scan with nmap + zenity display results
   IP_RANGE=`ip route | grep "kernel" | awk {'print $1'}`
   echo ${BlueF}[☠]${white} Ip Range${RedF}:${white}$IP_RANGE${RedF}! ${Reset};
-  nmap -sn $IP_RANGE | grep "for" | awk {'print $3,$5,$6'} > $IPATH/logs/lan.mop
-  cat $IPATH/logs/lan.mop | zenity --title "☠ LOCAL LAN REPORT ☠" --text-info --width 410 --height 400 > /dev/null 2>&1
+  # scan local lan using nmap
+  nmap -sn $IP_RANGE -oN $IPATH/logs/lan.mop | zenity --progress --pulsate --title "☠ MORPHEUS TCP/IP HIJACKING ☠" --text="[nmap] Scanning local lan..." --percentage=0 --auto-close --width 290 > /dev/null 2>&1
+  # strip results and print report
+  cat $IPATH/logs/lan.mop | grep "for" | awk {'print $3,$5,$6'} | zenity --title "☠ LOCAL LAN REPORT ☠" --text-info --width 410 --height 400 > /dev/null 2>&1
 
     # cleanup
     echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
