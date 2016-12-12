@@ -28,7 +28,7 @@ if (ip.proto == TCP && tcp.src == 443 || tcp.dst == 443) {
 
 
 #
-# Report port 80/443 (tcp) traffic
+# Report port 80 (tcp) traffic
 # And warn attacker that auth cookie has captured...
 #
 if (ip.proto == TCP && tcp.src == 80 || tcp.dst == 80) {
