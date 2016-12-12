@@ -853,8 +853,8 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
   # User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0
   nOn="50"
   Hod=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}`
-  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3,$4'}`
-  VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $8'} | cut -d '/' -f2`
+  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3,$4'}` > /dev/null 2>&1
+  VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $8'} | cut -d '/' -f2` > /dev/null 2>&1
   echo "${GreenF}    Host: $Hod ${BlueF}"
   sleep 1
   echo "${GreenF}    Firefox version : $VeVul ${BlueF}"
@@ -868,7 +868,7 @@ echo "${GreenF}    Browser report  :${RedF} not vulnerable...${BlueF}"
 sleep 3
 sh_exit
 else
-echo "${GreenF}    Browser report  : vulnerable...${BlueF}"
+echo "${GreenF}    Browser report  : vulnerable to d0s...${BlueF}"
 sleep 2
 fi
 

