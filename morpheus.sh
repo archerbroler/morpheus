@@ -856,14 +856,23 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
   nOn="50"
   Hod=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}`
   AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3,$4'}`
-  VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8'}`
+  VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $8'} | cut -d '/' -f2`
   echo "${GreenF}    Host: $Hod ${BlueF}"
   sleep 1
-  echo "${GreenF}    Accept-Language: $AcLa ${BlueF}"
+  echo "${GreenF}    Firefox version : $VeVul ${BlueF}"
   sleep 1
-  echo "${GreenF}    User-Agent: $VeVul ${BlueF}"
+  echo "${GreenF}    Accept-Language : $AcLa ${BlueF}"
   sleep 2
 
+
+if [ $VeVul \> $nOn ]; then
+echo "${GreenF}    Browser report  :${RedF} not vulnerable...${BlueF}"
+sleep 3
+sh_exit
+else
+echo "${GreenF}    Browser report  : vulnerable...${BlueF}"
+sleep 2
+fi
 
       # run mitm+filter
       cd $IPATH/logs
