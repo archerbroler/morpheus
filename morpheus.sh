@@ -794,7 +794,7 @@ fi
 sh_stage7 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
-echo "${BlueF}    | ${YellowF} This module will crash target mozilla firefox (=< 49.0.0) using  ${BlueF}|"
+echo "${BlueF}    | ${YellowF} This module will crash target mozilla firefox (=< 49.0.1) using  ${BlueF}|"
 echo "${BlueF}    | ${YellowF}  a buffer overflow writen in javascript (deliver under mitm+dns) ${BlueF}|"
 echo "${BlueF}    | ${YellowF}  'All [.com] domains will be redirected to the exploit webpage'  ${BlueF}|"
 echo "${BlueF}    | ${YellowF}                                                                  ${BlueF}|"
