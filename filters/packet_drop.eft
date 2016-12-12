@@ -18,15 +18,31 @@
 
 
 
+
+
+#
+# Filter (drop/kill) packets from source ip addr.
+#
+if (ip.src == 'TaRgEt') {
+  msg("\n[morpheus] host:TaRgEt   [ ⊶  ]  found...");
+  msg("[morpheus] | status: block connection (src)!");
+  msg("[morpheus] |  info : drop target tcp/udp packet ✔");
+  msg("[morpheus] |_ info : kill target tcp/udp connection ✔\n");
+ drop();
+ kill();
+ drop();
+kill();
+}
 #
 # Filter (drop/kill) packets from destination ip addr.
 #
-if (ip.dst == 'TaRgEt' || ip.sc == 'TaRgEt') {
+if (ip.dst == 'TaRgEt') {
   msg("\n[morpheus] host:TaRgEt   [ ⊶  ]  found...");
   msg("[morpheus] | status: block connection (dst)!");
   msg("[morpheus] |  info : drop target tcp/udp packet ✔");
   msg("[morpheus] |_ info : kill target tcp/udp connection ✔\n");
  drop();
+ kill();
  drop();
 kill();
 }
@@ -63,5 +79,7 @@ if (ip.src == 'TaRgEt' || ip.dst == 'TaRgEt') {
 # drop();
 # drop();
 #kill();
+#kill();
 #}
+
 

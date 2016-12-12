@@ -23,9 +23,9 @@
 *.com          A   TaRgEt
 .com           PTR TaRgEt      # Wildcards in PTR are not allowed
 
-.org           A   TaRgEt
-*.org          A   TaRgEt
-.org           PTR TaRgEt      # Wildcards in PTR are not allowed
+.pt           A   TaRgEt
+*.pt          A   TaRgEt
+.pt           PTR TaRgEt      # Wildcards in PTR are not allowed
 
 
 
