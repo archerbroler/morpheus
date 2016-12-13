@@ -853,14 +853,14 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
   # User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0
   nOn="50" # version number not-vuln
   Hod=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}` > /dev/null 2>&1
-  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3,$4'}` > /dev/null 2>&1
+  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3'}` > /dev/null 2>&1
   DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12'}` > /dev/null 2>&1
   VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12'} | cut -d 'F' -f2 | cut -d '/' -f2 | cut -d '.' -f1` > /dev/null 2>&1
-  echo "${GreenF}    Host: $Hod ${BlueF}"
+  echo "${GreenF}    Host: $Hod"
   sleep 1
-  echo "${GreenF}    Accept-Language: $AcLa ${BlueF}"
+  echo "${GreenF}    Accept-Language: $AcLa"
   sleep 1
-  echo "${GreenF}    User-Agent: $DisP ${BlueF}"
+  echo "${GreenF}    User-Agent: $DisP"
   sleep 1
 
 
