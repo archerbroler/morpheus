@@ -865,13 +865,13 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
 
 
 if [ $VeVul \> $nOn ]; then
-echo "${GreenF}    Browser report:${RedF} not vulnerable...${BlueF}"
-sleep 2
+echo "${GreenF}    Browser report:${RedF} $UpL not vulnerable...${BlueF}"
+sleep 3
 echo ${BlueF}[☠]${YellowF} module cant verify browser version '(running blind)'${RedF}!${Reset};
 sleep 1
 else
-echo "${GreenF}    Browser report: vulnerable...${BlueF}"
-sleep 2
+echo "${GreenF}    Browser report: $UpL vulnerable...${BlueF}"
+sleep 3
 fi
 
       # run mitm+filter
