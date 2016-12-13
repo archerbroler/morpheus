@@ -853,23 +853,24 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
   # User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0
   nOn="50.0"
   Hod=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}`
+  DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8'}`
   AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3,$4'}` > /dev/null 2>&1
   VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $8'} | cut -d '/' -f2` > /dev/null 2>&1
   echo "${GreenF}    Host: $Hod ${BlueF}"
   sleep 1
-  echo "${GreenF}    Firefox version : $VeVul ${BlueF}"
+  echo "${GreenF}    Accept-Language: $AcLa ${BlueF}"
   sleep 1
-  echo "${GreenF}    Accept-Language : $AcLa ${BlueF}"
+  echo "${GreenF}    User-Agent: $DisP ${BlueF}"
   sleep 1
 
 
 if [ $VeVul \> $nOn ]; then
-echo "${GreenF}    Browser report  :${RedF} not vulnerable...${BlueF}"
+echo "${GreenF}    Browser report:${RedF} not vulnerable...${BlueF}"
 sleep 2
 echo ${BlueF}[☠]${RedF} Running exploit againts a non-vulnerable target...${Reset};
 sleep 1
 else
-echo "${GreenF}    Browser report  : vulnerable...${BlueF}"
+echo "${GreenF}    Browser report: vulnerable...${BlueF}"
 sleep 2
 fi
 
