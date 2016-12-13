@@ -53,8 +53,8 @@ if (ip.dst == 'IpAdDR' && ip.proto == TCP && tcp.dst == 80) {
 if (ip.dst == 'IpAdDR' && ip.proto == TCP && tcp.src == 80) {
   if search(DATA.data, "X-XSS-Protection: 1")){
     replace("X-XSS-Protection: 1", "X-XSS-Protection: 0");
-      msg("[morpheus] | X-XSS-Protection: found in packet header ☆");
-      msg("[Morpheus] | status: replacing xss protection ✔");
+      msg("[morpheus] | String: X-XSS-Protection found in header ☆");
+      msg("[Morpheus] | status: replacing xss protection level ✔");
       msg("[morpheus] |_ info : packet forward back to target host ✔\n");
   }
 }
