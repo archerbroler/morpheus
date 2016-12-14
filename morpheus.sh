@@ -851,7 +851,7 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
 
   # check if target system its vuln
   # User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0
-  nOn="50" # version number not-vuln
+  nOn="48" # above versions are patched (official release its 51.0.1)...
   HoSt=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}` > /dev/null 2>&1
   AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3'}` > /dev/null 2>&1
   DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12'}` > /dev/null 2>&1
@@ -867,7 +867,7 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
 if [ $VeVul \> $nOn ]; then
 echo "${GreenF}    Browser report:${RedF} not vulnerable...${BlueF}"
 sleep 3
-echo ${BlueF}[☠]${YellowF} module cant verify browser version '(running blind)'${RedF}!${Reset};
+echo ${YellowF}[☠] module cant verify browser version '(running blind)'${RedF}!${Reset};
 sleep 1
 else
 echo "${GreenF}    Browser report: vulnerable...${BlueF}"
@@ -989,12 +989,12 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
       fi
 
   # check if target system its vuln
-  # User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0
-  nOn="android"
+  # Mozilla/5.0 (Linux; U; Android 4.0.3; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30
+  nOn="Android"
   HoSt=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}` > /dev/null 2>&1
-  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3'}` > /dev/null 2>&1
-  DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12'}` > /dev/null 2>&1
-  VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12'} | cut -d 'F' -f2 | cut -d '/' -f2 | cut -d '.' -f1` > /dev/null 2>&1
+  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3,$3'}` > /dev/null 2>&1
+  DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16'}` > /dev/null 2>&1
+  VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $5'}` > /dev/null 2>&1 # user-agent == Android
   echo "${GreenF}    Host: $HoSt"
   sleep 1
   echo "${GreenF}    Accept-Language: $AcLa"
@@ -1003,15 +1003,15 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
   sleep 1
 
 
-# if in captured packet its writen: android then its vulnerable
-if [ $VeVul \> $nOn ]; then
-echo "${GreenF}    Browser report:${RedF} not vulnerable...${BlueF}"
-sleep 3
-echo ${BlueF}[☠]${YellowF} module cant verify browser version '(running blind)'${RedF}!${Reset};
-sleep 1
-else
+# if in captured packet its writen: Android then its vulnerable
+if [ "$VeVul" = "$nOn" ]; then
 echo "${GreenF}    Browser report: vulnerable...${BlueF}"
 sleep 3
+else
+echo "${GreenF}    Browser report:${RedF} not vulnerable...${BlueF}"
+sleep 3
+echo ${YellowF}[☠] module cant verify browser version '(running blind)'${RedF}!${Reset};
+sleep 1
 fi
 
       # run mitm+filter
