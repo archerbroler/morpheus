@@ -1106,7 +1106,7 @@ UpL=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target
 
       # run mitm+filter
       cd $IPATH/logs
-      echo ${BlueF}[☠]${white} Please wait, Capturing traffic${RedF}!${Reset};
+      echo ${BlueF}[☠]${white} Please wait, Capturing ${YellowF}HTTP${white} traffic${RedF}!${Reset};
       sleep 2
       if [ "$IpV" = "ACTIVE" ]; then
       echo ${RedF}  # webspy -i $InT3R $UpL
