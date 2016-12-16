@@ -1219,7 +1219,7 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
   sleep 1
 
 
-if [ $VeVul \> $nOn ]; then
+if [ $VeVul != $nOn ]; then
 echo "${GreenF}    System report:${RedF} not vulnerable...${BlueF}"
 sleep 3
 echo "${RedF}[x]${white} module cant verify system distro ${RedF}(${YellowF}running blind${RedF})!"
