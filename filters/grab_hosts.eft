@@ -13,14 +13,14 @@
 
 ##
 #  This filter will store target packet header to figure it out
-#  If target its vulnerable to d0s (firefox =< 49.0.1 versions) 
+#  Is hostname (list of webdomains visited And dump tcp data)
 ##
 
 
 
 #
 # Report port 80 (tcp) traffic
-# And warn attacker that User-Agent has captured...
+# And warn attacker that Host value has been captured...
 #
 if (ip.proto == TCP && tcp.dst == 80 || tcp.src == 80) {
   msg("[morpheus] host:TaRgEt   [ ⊶ ]  port:80 HTTP ☆");

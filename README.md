@@ -1,13 +1,13 @@
-[![Version](https://img.shields.io/badge/MORPHEUS-1.7-brightgreen.svg?maxAge=259200)]()
+[![Version](https://img.shields.io/badge/MORPHEUS-1.8-brightgreen.svg?maxAge=259200)]()
 [![Stage](https://img.shields.io/badge/Release-developing-red.svg)]()
 [![Build](https://img.shields.io/badge/Supported_OS-linux-orange.svg)]()
 [![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)]()
 [![AUR](https://img.shields.io/aur/license/yaourt.svg)]()
 
 # Morpheus - automated ettercap TCP/IP Hijacking tool
-![morpheus v1.7-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-banner.png)
+![morpheus v1.8-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-banner.png)
 
-    Version release : v1.7-Alpha
+    Version release : v1.8-Alpha
     Author : pedro ubuntu  [ r00t-3xp10it ]
     Distros Supported : Linux Ubuntu, Kali, Mint, Parrot OS
     Suspicious-Shell-Activity (SSA) RedTeam develop @2016
@@ -81,7 +81,7 @@
 
 # Credits
     alor&naga (ettercap framework)  | fyodor (nmap framework)
-    filters: irongeek (replace img) | seannicholls (rotate 180º)
+    filters: irongeek (replace img) | seannicholls (rotate 180º) | TheBlaCkCoDeR09 (ToR-Browser-0day)
     Most of the filters in morpheus framework have been writen be me except the ones described
     above, but this project will contemplate new external addictions (authors) also new examples
     can be found editing ettercap's etter.filter.examples file that will help us write new ones.

