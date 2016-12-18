@@ -78,6 +78,7 @@
 
 # Dependencies
     ettercap, nmap, apache2, zenity
+    sub-dependencies: dnsniff (urlsnarf,tcpkill)
 
 # Credits
     alor&naga (ettercap framework)  | fyodor (nmap framework)

