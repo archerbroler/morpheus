@@ -69,4 +69,15 @@ AP_PATH=/var/www/html
 ---------------------
 
 
+
+
+### DNSNIFF SUITE (PATH)
+# just change the next values to point to
+# your dnsniff packet install folders.
+--------------------------
+TCP_KILL=/usr/sbin/tcpkill
+--------------------------
+
+
+
 _EOF

@@ -139,6 +139,7 @@ IpV=`cat $IPATH/settings | egrep -m 1 "USE_IPV6" | cut -d '=' -f2` > /dev/null 2
 Edns=`cat $IPATH/settings | egrep -m 1 "ETTER_DNS" | cut -d '=' -f2` > /dev/null 2>&1
 Econ=`cat $IPATH/settings | egrep -m 1 "ETTER_CONF" | cut -d '=' -f2` > /dev/null 2>&1
 ApachE=`cat $IPATH/settings | egrep -m 1 "AP_PATH" | cut -d '=' -f2` > /dev/null 2>&1 # apache2 webroot
+TcPkiL=`cat $IPATH/settings | egrep -m 1 "TCP_KILL" | cut -d '=' -f2` > /dev/null 2>&1
 
 
 
@@ -415,7 +416,7 @@ rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Exec
 if [ "$?" -eq "0" ]; then
 
 ch=`which tcpkill`
-if [ "$ch" != "/usr/sbin/tcpkill" ]; then
+if [ "$ch" != "$TcPkiL" ]; then
 echo ${RedF}[x]${white} tcpkill utility not found${RedF}!${Reset};
 sleep 1
 echo ${RedF}[x]${white} please Install:${RedF}dnsniff${white} packet...${Reset};
