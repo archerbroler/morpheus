@@ -140,7 +140,7 @@ Edns=`cat $IPATH/settings | egrep -m 1 "ETTER_DNS" | cut -d '=' -f2` > /dev/null
 Econ=`cat $IPATH/settings | egrep -m 1 "ETTER_CONF" | cut -d '=' -f2` > /dev/null 2>&1
 ApachE=`cat $IPATH/settings | egrep -m 1 "AP_PATH" | cut -d '=' -f2` > /dev/null 2>&1 # apache2 webroot
 TcPkiL=`cat $IPATH/settings | egrep -m 1 "TCP_KILL" | cut -d '=' -f2` > /dev/null 2>&1
-
+UsNar=`cat $IPATH/settings | egrep -m 1 "URL_SNARF" | cut -d '=' -f2` > /dev/null 2>&1
 
 
 
@@ -702,6 +702,16 @@ sleep 2
 # run module?
 rUn=$(zenity --question --title="☠ MORPHEUS TCP/IP HIJACKING ☠" --text "Execute this module?" --width 270) > /dev/null 2>&1
 if [ "$?" -eq "0" ]; then
+
+
+ch=`which urlsnarf`
+if [ "$ch" != "$UsNar" ]; then
+echo ${RedF}[x]${white} urlsnarf utility not found${RedF}!${Reset};
+sleep 1
+echo ${RedF}[x]${white} please Install:${RedF}dnsniff${white} packet...${Reset};
+sleep 3
+sh_exit
+fi
 
 # get user input to build filter
 rm $IPATH/logs/grab_hosts.log > /dev/null 2>&1
@@ -1709,9 +1719,9 @@ cat << !
     |   5    -  Redirect browser traffic        -  to google sphere     |
     |   6    -  Capture  browser traffic (http) -  visited url's        |
     |   7    -  Inject backdoor into (</body>)  -  exe,bat,jar,ps1,dll  |
-    |   8    -  Firefox denial-of-service       -  buffer overflow      |
-    |   9    -  Android denial-of-service       -  buffer overflow      |
-    |  10    -  Tor-browser d0s (windows)       -  buffer overflow      |
+    |   8    -  Firefox browser heap-spray      -  buffer overflow      |
+    |   9    -  Android browser heap-spray      -  buffer overflow      |
+    |  10    -  Tor-browser heap-spray(windows) -  buffer overflow      |
     |  11    -  Clone website + keylooger       -  javascritp_keylooger |
     |  12    -  Replace website images          -  img src=http://other |
     |  13    -  Replace website text            -  replace: worlds      |
