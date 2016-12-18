@@ -77,7 +77,7 @@
 <br />
 
 # Dependencies
-    ettercap, nmap, apache2, zenity
+    required: ettercap, nmap, apache2, zenity
     sub-dependencies: dnsniff (urlsnarf,tcpkill)
 
 # Credits
