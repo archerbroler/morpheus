@@ -15,7 +15,7 @@
 # LEGAL DISCLAMER
     The author does not hold any responsibility for the bad use
     of this tool, remember that attacking targets without prior
-    consent is illegal and punished by law.
+    consent its illegal and punished by law.
 
 # Framework description
     morpheus framework automates tcp/udp packet manipulation tasks by using etter filters
@@ -29,19 +29,19 @@
     4º - attacker -> modified packet its forward back to target host
 
     morpheus ships with some pre-configurated filters but it will allow users to improve them
-    when launching the attack (morpheus scripting console). At the end of the attack morpheus
-    will revert the filter back to it's default stage. This will allow users to improve filters
-    at runtime without the fear of messing with filter command syntax and spoil the filter.
+    when lunching the attack (morpheus scripting console). In the end of the attack morpheus
+    will revert the filter back to is default stage, this will allow users to improve filters
+    at running time without the fear of messing with filter command syntax and spoil the filter.
 
     "Perfect for scripting fans to safely test new concepts"...
 
 
 # What can we acomplish by using filters?
-    morpheus ships with a collection of etter filters writen by me to accomplish various tasks:
+    morpheus ships with a collection of etter filters writen be me to acomplish various tasks:
     replacing images in webpages, replace text in webpages, inject payloads using html <form> tag,
     denial-of-service attacks (drop,kill packets from source), https/ssh downgrade attacks,
     redirect target browser traffic to another domain and gives you the ability to build
-    compile your filter from scratch and launch it through morpheus framework (option W).
+    compile your filter from scratch and lunch it through morpheus framework (option W).
 
     "filters can be extended using browser languages like: javascript,css,flash,etc"...
 
@@ -56,23 +56,23 @@
     1º - morpheus will fail if target system its protected againt arp poison atacks
     2º - downgrade attacks will fail if browser target as installed only-https addon's
     3º - target system sometimes needs to clear netcache for arp poison to be effective
-    4º - many attacks described in morpheus may be dropped by target HSTS detection sys.
+    4º - many attacks described in morpheus may be droped by target HSTS detection sys.
 
 > 5º - incorrect number of token (///) in TARGET !!
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-error1.png)
 
     morpheus by default will run ettercap using IPv6 (USE_IPV6=ACTIVE) like its previous
-    configurated into the 'settings' file, if you are receiving this error edit settings
-    file before running morpheus and set (USE_IPV6=DISABLED) to force ettercap to use IPV4
+    configurated into the 'settings' file, if you are reciving this error edit settings
+    file befor runing morpheus and set (USE_IPV6=DISABLED) to force ettercap to use IPV4
 
-> 6º - morpheus needs ettercap to be executed with high privileges (uid 0 | gid 0).
+> 6º - morpheus needs ettercap to be executed with higth privileges (uid 0 | gid 0).
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-sslBug.png)
 
-> correct ettercap configuration display (running as Admin without ssl dissectors active)
+> correct ettercap configuration display (running as Admin without ssl disectors active)
 ![morpheus v1.6-Alpha](https://dl.dropboxusercontent.com/u/21426454/morpheus-sslBug3.png)
 
     By default morpheus (at startup) will replace the original etter.conf/etter.dns files
-    provided by ettercap, at framework exit morpheus will revert files to it's original state.. 
+    provided by ettercap, at framework exit morpheus will revert files to is original state.. 
 
 <br />
 
@@ -83,7 +83,7 @@
 # Credits
     alor&naga (ettercap framework)  | fyodor (nmap framework)
     filters: irongeek (replace img) | seannicholls (rotate 180º) | TheBlaCkCoDeR09 (ToR-Browser-0day)
-    Most of the filters in morpheus framework have been written by me except the ones described
+    Most of the filters in morpheus framework have been writen be me except the ones described
     above, but this project will contemplate new external addictions (authors) also new examples
     can be found editing ettercap's etter.filter.examples file that will help us write new ones.
 
@@ -95,7 +95,7 @@
     http,ftp,ssh,telnet (facebook uses https/ssl :( ) report suspicious connections, report common
     websocial browsing (facebook,twitter,youtube), report the existence of botnet connections like:
     Mocbot IRC Bot, Darkcomet, redirect browser traffic and allow users to block connections (drop,kill) 
-    "Remember: morpheus gives its users the ability to 'add more rules' to filters before execution"
+    "Remmenber: morpheus gives is users the ability to 'add more rules' to filters befor execution"
 
     [morpheus] host:192.168.1.67   [ -> ]  port:23 telnet  ☆
                Source ip addr      flow    destination     rank good
